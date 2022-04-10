@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CrediKiosko</string>
+    <string name="under_construction">En construcción</string>
+    <string name="create_an_account">Crear una cuenta</string>
+    <string name="log_in">Iniciar sesión</string>
+    <string name="password">Contraseña</string>
+    <string name="email">Correo</string>
+    <string name="login_description">Ingrese su correo y contraseña para acceder a su\ncuenta, cree una cuenta o inicie con su cuenta de\nGoogle.</string>
+</resources>
