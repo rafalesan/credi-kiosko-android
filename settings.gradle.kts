@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "CrediKiosko"
-include ':app'
-include ':presentation'
+include(":app")
+include(":presentation")
