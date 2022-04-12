@@ -5,13 +5,14 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+
+    compileSdk = findProperty("compileSdkVersion").toString().toInt()
 
     defaultConfig {
-        minSdk = 22
-        targetSdk = 31
+        minSdk = findProperty("minSdkVersion").toString().toInt()
+        targetSdk = findProperty("targetSdkVersion").toString().toInt()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = findProperty("testInstrumentationRunner").toString()
         consumerProguardFiles("consumer-rules.pro")
     }
 
