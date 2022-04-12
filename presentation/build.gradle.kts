@@ -37,16 +37,14 @@ android {
 
 dependencies {
 
-    val navVersion = "2.4.2"
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.appCompat)
+    implementation(Google.android.material)
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("com.google.android.material:material:1.5.0")
+    implementation(AndroidX.navigation.fragmentKtx)
+    implementation(AndroidX.navigation.uiKtx)
 
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation(Testing.junit4)
+    androidTestImplementation(AndroidX.test.ext.junitKtx)
+    androidTestImplementation(AndroidX.test.espresso.core)
 }
