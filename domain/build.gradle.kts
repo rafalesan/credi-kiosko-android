@@ -5,13 +5,8 @@ plugins {
 
 
 android {
-    compileSdk = findProperty("compileSdkVersion").toString().toInt()
 
     defaultConfig {
-        minSdk = findProperty("minSdkVersion").toString().toInt()
-        targetSdk = findProperty("targetSdkVersion").toString().toInt()
-
-        testInstrumentationRunner = findProperty("testInstrumentationRunner").toString()
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -23,13 +18,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
