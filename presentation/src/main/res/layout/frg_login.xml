@@ -61,8 +61,10 @@
                 android:id="@+id/inputEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_default"
                 android:hint="@string/email"
                 app:errorEnabled="true"
+                app:errorText='@{viewModel.formErrors["email"]}'
                 app:startIconDrawable="@drawable/ic_email"
                 app:layout_constraintTop_toBottomOf="@+id/tvLoginDescription"
                 app:layout_constraintBottom_toTopOf="@+id/inputPassword"
@@ -73,7 +75,8 @@
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,7 +88,9 @@
                 android:layout_marginBottom="@dimen/space_default"
                 android:hint="@string/password"
                 app:errorEnabled="true"
+                app:errorText='@{viewModel.formErrors["password"]}'
                 app:endIconMode="password_toggle"
+                app:errorIconDrawable="@null"
                 app:startIconDrawable="@drawable/ic_lock"
                 app:layout_constraintTop_toBottomOf="@+id/inputEmail"
                 app:layout_constraintBottom_toTopOf="@+id/btnLogin"
@@ -96,7 +101,8 @@
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.password}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,6 +112,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/log_in"
+                android:onClick="@{() -> viewModel.onLogin()}"
                 app:layout_constraintTop_toBottomOf="@+id/inputPassword"
                 app:layout_constraintBottom_toTopOf="@+id/btnCreateAccount"
                 app:layout_constraintEnd_toEndOf="parent"

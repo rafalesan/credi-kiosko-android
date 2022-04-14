@@ -7,4 +7,7 @@
     <string name="password">Contraseña</string>
     <string name="email">Correo</string>
     <string name="login_description">Ingrese su correo y contraseña para acceder a su\ncuenta, cree una cuenta o inicie con su cuenta de\nGoogle.</string>
+    <string name="val_empty_email">Por favor ingrese su correo</string>
+    <string name="val_invalid_email">Por favor ingrese un correo válido</string>
+    <string name="val_empty_password">Por favor ingrese su contraseña</string>
 </resources>

@@ -6,7 +6,7 @@ import com.rafalesan.credikiosko.presentation.base.utils.SingleLiveEvent
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val _toast = SingleLiveEvent<String>()
+    protected val _toast = SingleLiveEvent<String>()
     val toast: LiveData<String> = _toast
 
 }
