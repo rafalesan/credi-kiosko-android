@@ -1,13 +1,18 @@
 package com.rafalesan.credikiosko.presentation.base
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.rafalesan.credikiosko.presentation.BR
 import com.rafalesan.credikiosko.presentation.base.utils.AutoClearedValue
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 abstract class BaseViewModelFragment<VM: BaseViewModel, VB: ViewDataBinding> : Fragment() {
 
@@ -43,9 +48,9 @@ abstract class BaseViewModelFragment<VM: BaseViewModel, VB: ViewDataBinding> : F
     }
 
     protected open fun onSubscribeToViewModel() {
-        viewModel.toast.observe(viewLifecycleOwner) {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        }
+        viewModel.toast.onEach {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
 }

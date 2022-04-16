@@ -24,7 +24,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
     }
 
     private fun createAccount() {
-        _toast.value = "Under construction"
+        toast("En construcción")
     }
 
     private fun login() {
@@ -40,7 +40,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
 
             when(result) {
                 is Result.Success -> {
-                    _toast.value = result.value.name
+                    toast(result.value.name)
                 }
                 is Result.InvalidData -> {
                     handleInvalidDataResult(result)
@@ -62,7 +62,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
                 CredentialsValidator.CredentialValidation.EMPTY_EMAIL       -> errorsMap["email"] = R.string.val_empty_email
                 CredentialsValidator.CredentialValidation.INVALID_EMAIL     -> errorsMap["email"] = R.string.val_invalid_email
                 CredentialsValidator.CredentialValidation.EMPTY_PASSWORD    -> errorsMap["password"] = R.string.val_empty_password
-                CredentialsValidator.CredentialValidation.EMPTY_DEVICE_NAME -> _toast.value = "No se asignó el nombre del dispositivo"
+                CredentialsValidator.CredentialValidation.EMPTY_DEVICE_NAME -> toast("No se asignó el nombre del dispositivo")
             }
         }
         viewModelScope.launch {
@@ -72,9 +72,9 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
 
     private fun handleResultFailure(resultFailure: Result.Failure) {
         when(resultFailure) {
-            is Result.Failure.ApiFailure  -> _toast.value = resultFailure.message
-            Result.Failure.NoInternet     -> _toast.value = "No hay conexión a internet"
-            Result.Failure.UnknownFailure -> _toast.value = "Ocurrió un error desconocido"
+            is Result.Failure.ApiFailure  -> toast(resultFailure.message)
+            Result.Failure.NoInternet     -> toast("No hay conexión a internet")
+            Result.Failure.UnknownFailure -> toast("Ocurrió un error desconocido")
         }
     }
 
