@@ -3,6 +3,7 @@ package com.rafalesan.credikiosko.presentation.auth.login
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator
+import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator.CredentialValidation.*
 import com.rafalesan.credikiosko.domain.utils.Result
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModel
@@ -59,10 +60,10 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
         val errorsMap = mutableMapOf<String, Int>()
         validations.forEach { validation ->
             when(validation) {
-                CredentialsValidator.CredentialValidation.EMPTY_EMAIL       -> errorsMap["email"] = R.string.val_empty_email
-                CredentialsValidator.CredentialValidation.INVALID_EMAIL     -> errorsMap["email"] = R.string.val_invalid_email
-                CredentialsValidator.CredentialValidation.EMPTY_PASSWORD    -> errorsMap["password"] = R.string.val_empty_password
-                CredentialsValidator.CredentialValidation.EMPTY_DEVICE_NAME -> toast("No se asignó el nombre del dispositivo")
+                EMPTY_EMAIL       -> errorsMap["email"] = R.string.val_empty_email
+                INVALID_EMAIL     -> errorsMap["email"] = R.string.val_invalid_email
+                EMPTY_PASSWORD    -> errorsMap["password"] = R.string.val_empty_password
+                EMPTY_DEVICE_NAME -> toast("No se asignó el nombre del dispositivo")
             }
         }
         viewModelScope.launch {
