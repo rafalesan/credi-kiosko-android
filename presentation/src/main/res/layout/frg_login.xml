@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="com.rafalesan.credikiosko.presentation.auth.login.LoginAction" />
         <variable
             name="viewModel"
             type="com.rafalesan.credikiosko.presentation.auth.login.LoginViewModel" />
@@ -112,7 +113,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/log_in"
-                android:onClick="@{() -> viewModel.onLogin()}"
+                android:onClick="@{() -> viewModel.perform(LoginAction.Login.INSTANCE)}"
                 app:layout_constraintTop_toBottomOf="@+id/inputPassword"
                 app:layout_constraintBottom_toTopOf="@+id/btnCreateAccount"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +126,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/create_an_account"
-                android:onClick="@{() -> viewModel.onCreateAccount()}"
+                android:onClick="@{() -> viewModel.perform(LoginAction.CreateAccount.INSTANCE)}"
                 app:layout_constraintTop_toBottomOf="@+id/btnLogin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
