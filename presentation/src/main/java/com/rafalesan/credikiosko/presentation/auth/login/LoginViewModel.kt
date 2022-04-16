@@ -16,11 +16,18 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
     var deviceName: String? = null
     val formErrors = MutableStateFlow(mutableMapOf<String, Int>())
 
-    fun onCreateAccount() {
+    fun perform(action: LoginAction){
+        when(action) {
+            LoginAction.Login         -> login()
+            LoginAction.CreateAccount -> createAccount()
+        }
+    }
+
+    private fun createAccount() {
         _toast.value = "Under construction"
     }
 
-    fun onLogin() {
+    private fun login() {
 
         clearFormErrors()
 
