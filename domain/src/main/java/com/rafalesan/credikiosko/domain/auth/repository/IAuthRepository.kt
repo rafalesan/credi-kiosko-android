@@ -6,6 +6,6 @@ import com.rafalesan.credikiosko.domain.utils.Result
 
 interface IAuthRepository {
 
-    suspend fun login(credentials: LoginUseCase.Credentials): Result<UserSession>
+    suspend fun login(credentials: LoginUseCase.Credentials): Result<UserSession, Nothing>
 
 }

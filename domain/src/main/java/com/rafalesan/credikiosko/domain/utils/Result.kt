@@ -1,8 +1,12 @@
 package com.rafalesan.credikiosko.domain.utils
 
-sealed class Result<out T> {
-    class Success<out T>(val value: T): Result<T>()
-    class Failure(val failureStatus: FailureStatus,
-                  val code: Int? = null,
-                  val message: String? = "Unknown error") : Result<Nothing>()
+sealed class Result<out L, out R> {
+    class Success<out L>(val value: L): Result<L, Nothing>()
+    class InvalidData<out R>(val validations: List<R>): Result<Nothing, R>()
+    sealed class Failure : Result<Nothing, Nothing>() {
+        class ApiFailure(val message: String?,
+                         val errors: Map<String, List<String>>?): Failure()
+        object NoInternet : Failure()
+        object UnknownFailure : Failure()
+    }
 }
