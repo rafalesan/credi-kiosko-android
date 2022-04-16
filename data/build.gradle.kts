@@ -13,26 +13,21 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro")
         }
-    }
-
-    buildFeatures {
-        dataBinding = true
     }
 
 }
 
 dependencies {
 
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.appCompat)
-    implementation(Google.android.material)
+    implementation(Square.Retrofit2.retrofit)
+    implementation(Square.moshi)
+    kapt(Square.moshi.kotlinCodegen)
 
-    implementation(AndroidX.navigation.fragmentKtx)
-    implementation(AndroidX.navigation.uiKtx)
-
-    implementation(Koin.android)
+    implementation(KotlinX.coroutines.android)
+    implementation(JakeWharton.timber)
 
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junitKtx)

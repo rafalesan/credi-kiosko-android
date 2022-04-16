@@ -35,3 +35,4 @@ rootProject.name = "CrediKiosko"
 include(":app")
 include(":presentation")
 include(":domain")
+include(":data")
