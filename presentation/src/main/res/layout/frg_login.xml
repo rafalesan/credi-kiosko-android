@@ -121,10 +121,11 @@
             <com.google.android.material.button.MaterialButton
                 style="@style/SecondaryButton"
                 android:id="@+id/btnCreateAccount"
+                android:layout_marginBottom="@dimen/space_4x"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/create_an_account"
-                android:layout_marginBottom="@dimen/space_4x"
+                android:onClick="@{() -> viewModel.onCreateAccount()}"
                 app:layout_constraintTop_toBottomOf="@+id/btnLogin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
