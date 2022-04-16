@@ -1,7 +1,7 @@
 package com.rafalesan.credikiosko.presentation.auth.login
 
-import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
@@ -15,7 +15,8 @@ class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.deviceName = Build.MODEL
+        viewModel.deviceName = Settings.Global.getString(requireContext().contentResolver,
+                                                         "device_name")
     }
 
 }

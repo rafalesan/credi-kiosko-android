@@ -2,7 +2,9 @@ package com.rafalesan.credikiosko.presentation.auth.login
 
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
+import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator
 import com.rafalesan.credikiosko.domain.utils.Result
+import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -12,12 +14,16 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
     val email = MutableStateFlow("")
     val password = MutableStateFlow("")
     var deviceName: String? = null
-    val formErrors = MutableStateFlow(mutableMapOf<String, Int?>())
+    val formErrors = MutableStateFlow(mutableMapOf<String, Int>())
+
+    fun onCreateAccount() {
+        _toast.value = "Under construction"
+    }
 
     fun onLogin() {
-        if(!isFormValid()) {
-            return
-        }
+
+        clearFormErrors()
+
         val credentials = LoginUseCase.Credentials(email.value,
                                                    password.value,
                                                    deviceName)
@@ -29,8 +35,11 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
                 is Result.Success -> {
                     _toast.value = result.value.name
                 }
+                is Result.InvalidData -> {
+                    handleInvalidDataResult(result)
+                }
                 is Result.Failure -> {
-                    _toast.value = result.message
+                    handleResultFailure(result)
                 }
             }
 
@@ -38,21 +47,34 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
 
     }
 
-    fun onCreateAccount() {
-        _toast.value = "Under construction"
-    }
-
-    private fun isFormValid(): Boolean {
-        val errorsMap = mutableMapOf(
-                "email" to CredentialsValidator.validateEmail(email.value),
-                "password" to CredentialsValidator.validatePassword(password.value)
-        )
+    private fun handleInvalidDataResult(invalidDataResult: Result.InvalidData<CredentialsValidator.CredentialValidation>) {
+        val validations = invalidDataResult.validations
+        val errorsMap = mutableMapOf<String, Int>()
+        validations.forEach { validation ->
+            when(validation) {
+                CredentialsValidator.CredentialValidation.EMPTY_EMAIL       -> errorsMap["email"] = R.string.val_empty_email
+                CredentialsValidator.CredentialValidation.INVALID_EMAIL     -> errorsMap["email"] = R.string.val_invalid_email
+                CredentialsValidator.CredentialValidation.EMPTY_PASSWORD    -> errorsMap["password"] = R.string.val_empty_password
+                CredentialsValidator.CredentialValidation.EMPTY_DEVICE_NAME -> _toast.value = "No se asignó el nombre del dispositivo"
+            }
+        }
         viewModelScope.launch {
             formErrors.emit(errorsMap)
         }
-        errorsMap.values.removeAll(sequenceOf(null))
-        return errorsMap.isEmpty()
+    }
 
+    private fun handleResultFailure(resultFailure: Result.Failure) {
+        when(resultFailure) {
+            is Result.Failure.ApiFailure  -> _toast.value = resultFailure.message
+            Result.Failure.NoInternet     -> _toast.value = "No hay conexión a internet"
+            Result.Failure.UnknownFailure -> _toast.value = "Ocurrió un error desconocido"
+        }
+    }
+
+    private fun clearFormErrors() {
+        viewModelScope.launch {
+            formErrors.emit(mutableMapOf())
+        }
     }
 
 }

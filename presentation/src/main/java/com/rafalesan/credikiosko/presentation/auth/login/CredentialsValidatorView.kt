@@ -3,7 +3,7 @@ package com.rafalesan.credikiosko.presentation.auth.login
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.extensions.isNotValidEmail
 
-object CredentialsValidator {
+object CredentialsValidatorView {
 
     fun validateEmail(email: String?): Int? {
         return when {

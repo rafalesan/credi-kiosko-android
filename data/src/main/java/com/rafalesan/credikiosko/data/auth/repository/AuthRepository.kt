@@ -9,12 +9,11 @@ import com.rafalesan.credikiosko.data.auth.utils.NoInternetException
 import com.rafalesan.credikiosko.domain.auth.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
-import com.rafalesan.credikiosko.domain.utils.FailureStatus
 import com.rafalesan.credikiosko.domain.utils.Result
 
 class AuthRepository(private val authDataSource: AuthDataSource) : IAuthRepository {
 
-    override suspend fun login(credentials: LoginUseCase.Credentials): Result<UserSession> {
+    override suspend fun login(credentials: LoginUseCase.Credentials): Result<UserSession, Nothing> {
 
         val loginRequest = credentials.toLoginRequest()
 
@@ -25,11 +24,10 @@ class AuthRepository(private val authDataSource: AuthDataSource) : IAuthReposito
             }
             is ApiResult.Error   -> {
                 when(apiResult.exception) {
-                    is NoInternetException -> Result.Failure(FailureStatus.NO_INTERNET)
-                    is ApiException        -> Result.Failure(FailureStatus.API_FAILURE,
-                                                      apiResult.exception.statusCode,
-                                                      apiResult.exception.message)
-                    else -> Result.Failure(FailureStatus.UNKNOWN)
+                    is NoInternetException -> Result.Failure.NoInternet
+                    is ApiException        -> Result.Failure.ApiFailure(apiResult.exception.message,
+                                                                        apiResult.exception.errors)
+                    else -> Result.Failure.UnknownFailure
                 }
             }
         }
