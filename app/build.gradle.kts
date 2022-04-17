@@ -64,6 +64,8 @@ dependencies {
     implementation(Chucker.library)
     implementation(JakeWharton.timber)
 
+    implementation(AndroidX.dataStore.preferences)
+
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junitKtx)
     androidTestImplementation(AndroidX.test.espresso.core)

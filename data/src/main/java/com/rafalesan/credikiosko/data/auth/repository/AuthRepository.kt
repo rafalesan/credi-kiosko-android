@@ -1,6 +1,6 @@
 package com.rafalesan.credikiosko.data.auth.repository
 
-import com.rafalesan.credikiosko.data.auth.datasource.AuthDataSource
+import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
 import com.rafalesan.credikiosko.data.auth.mappers.toLoginRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toUserSession
 import com.rafalesan.credikiosko.data.auth.utils.ApiException

@@ -26,6 +26,7 @@ class MainApp : Application() {
             androidContext(this@MainApp)
             modules(appModule,
                     retrofitModule,
+                    dataStoreModule,
                     apiModule,
                     datasourceModule,
                     repositoryModule,

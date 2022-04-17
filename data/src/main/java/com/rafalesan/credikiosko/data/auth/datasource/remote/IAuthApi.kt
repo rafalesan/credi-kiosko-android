@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.data.auth.datasource
+package com.rafalesan.credikiosko.data.auth.datasource.remote
 
 import com.rafalesan.credikiosko.data.auth.entity.remote.LoginRequest
 import com.rafalesan.credikiosko.data.auth.entity.remote.LoginResponse
