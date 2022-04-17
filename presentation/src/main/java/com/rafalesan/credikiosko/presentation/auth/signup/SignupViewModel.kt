@@ -8,9 +8,7 @@ import com.rafalesan.credikiosko.domain.utils.Result
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.presentation.base.utils.UiState
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel() {
@@ -24,9 +22,6 @@ class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel(
     var deviceName: String = "Generic Device"
     val formErrors = MutableStateFlow(mutableMapOf<String, Int>())
     val apiFormErrors = MutableStateFlow(mutableMapOf<String, String?>())
-
-    private val _uiState = Channel<UiState>(Channel.BUFFERED)
-    val uiState = _uiState.receiveAsFlow()
 
     fun perform(signupAction: SignupAction) {
         when(signupAction){

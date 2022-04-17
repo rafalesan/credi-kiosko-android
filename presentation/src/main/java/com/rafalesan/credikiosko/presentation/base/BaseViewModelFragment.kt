@@ -10,13 +10,19 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.rafalesan.credikiosko.presentation.BR
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.utils.AutoClearedValue
 import com.rafalesan.credikiosko.presentation.base.utils.DialogHelper
+import com.rafalesan.credikiosko.presentation.base.utils.UiState
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 abstract class BaseViewModelFragment<VM: BaseViewModel, VB: ViewDataBinding> : Fragment() {
 
@@ -57,6 +63,26 @@ abstract class BaseViewModelFragment<VM: BaseViewModel, VB: ViewDataBinding> : F
         viewModel.toast.onEach {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    handleUiState(it)
+                }
+
+            }
+        }
+    }
+
+    private fun handleUiState(uiState: UiState) {
+        when(uiState) {
+            is UiState.ApiError     -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
+            UiState.ApiNotAvailable -> DialogHelper.showApiNotAvailableErrorDialog(requireContext())
+            is UiState.Loading      -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
+            UiState.NoInternet      -> DialogHelper.showNoInternetDialog(requireContext())
+            UiState.UnknownError    -> DialogHelper.showUnknownErrorDialog(requireContext())
+            UiState.Idle            -> { Timber.d("Login is idle") }
+        }
     }
 
     protected fun showProgress(isLoading: Boolean, description: Int? = null) {

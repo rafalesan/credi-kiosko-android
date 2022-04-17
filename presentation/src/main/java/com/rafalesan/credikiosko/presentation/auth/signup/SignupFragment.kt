@@ -3,18 +3,10 @@ package com.rafalesan.credikiosko.presentation.auth.signup
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
-import com.rafalesan.credikiosko.presentation.base.utils.DialogHelper
-import com.rafalesan.credikiosko.presentation.base.utils.UiState
 import com.rafalesan.credikiosko.presentation.databinding.FrgSignupBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class SignupFragment : BaseViewModelFragment<SignupViewModel, FrgSignupBinding>() {
 
@@ -25,29 +17,6 @@ class SignupFragment : BaseViewModelFragment<SignupViewModel, FrgSignupBinding>(
         super.onViewCreated(view, savedInstanceState)
         viewModel.deviceName = Settings.Global.getString(requireContext().contentResolver,
                                                          "device_name")
-    }
-
-    override fun onSubscribeToViewModel() {
-        super.onSubscribeToViewModel()
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    handleUiState(it)
-                }
-
-            }
-        }
-    }
-
-    private fun handleUiState(uiState: UiState) {
-        when(uiState) {
-            is UiState.Loading     -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
-            is UiState.ApiError    -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
-            UiState.ApiNotAvailable -> DialogHelper.showApiNotAvailableErrorDialog(requireContext())
-            UiState.NoInternet   -> DialogHelper.showNoInternetDialog(requireContext())
-            UiState.UnknownError -> DialogHelper.showUnknownErrorDialog(requireContext())
-            UiState.Idle         -> { Timber.d("Signup is idle") }
-        }
     }
 
 }

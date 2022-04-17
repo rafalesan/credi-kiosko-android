@@ -9,13 +9,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
-import com.rafalesan.credikiosko.presentation.base.utils.DialogHelper
-import com.rafalesan.credikiosko.presentation.base.utils.UiState
 import com.rafalesan.credikiosko.presentation.databinding.FrgLoginBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
 
@@ -32,29 +29,10 @@ class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
         super.onSubscribeToViewModel()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    handleUiState(it)
-                }
-
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.event.collect {
                     handleEvent(it)
                 }
             }
-        }
-    }
-
-    private fun handleUiState(uiState: UiState) {
-        when(uiState) {
-            is UiState.ApiError     -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
-            UiState.ApiNotAvailable -> DialogHelper.showApiNotAvailableErrorDialog(requireContext())
-            is UiState.Loading      -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
-            UiState.NoInternet      -> DialogHelper.showNoInternetDialog(requireContext())
-            UiState.UnknownError    -> DialogHelper.showUnknownErrorDialog(requireContext())
-            UiState.Idle            -> { Timber.d("Login is idle") }
         }
     }
 
