@@ -41,6 +41,7 @@ object ApiHandler {
     }
 
     private fun handleException(exception: Exception): ApiResult.Error {
+        Timber.e(exception)
         return ApiResult.Error(exception)
     }
 
