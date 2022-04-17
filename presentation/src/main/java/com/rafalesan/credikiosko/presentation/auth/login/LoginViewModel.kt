@@ -7,7 +7,9 @@ import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator.Cre
 import com.rafalesan.credikiosko.domain.utils.Result
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
@@ -16,6 +18,9 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
     val password = MutableStateFlow("")
     var deviceName: String? = null
     val formErrors = MutableStateFlow(mutableMapOf<String, Int>())
+
+    private val _uiState = Channel<LoginUiState>(Channel.BUFFERED)
+    val uiState = _uiState.receiveAsFlow()
 
     fun perform(action: LoginAction){
         when(action) {
@@ -37,7 +42,13 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
                                                    deviceName)
 
         viewModelScope.launch {
+
+            _uiState.send(LoginUiState.Loading(true,
+                                               R.string.authenticating))
+
             val result = loginUseCase.invoke(credentials)
+
+            _uiState.send(LoginUiState.Loading(false))
 
             when(result) {
                 is Result.Success -> {
@@ -71,11 +82,11 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
         }
     }
 
-    private fun handleResultFailure(resultFailure: Result.Failure) {
+    private fun handleResultFailure(resultFailure: Result.Failure) = viewModelScope.launch {
         when(resultFailure) {
-            is Result.Failure.ApiFailure  -> toast(resultFailure.message)
-            Result.Failure.NoInternet     -> toast("No hay conexión a internet")
-            Result.Failure.UnknownFailure -> toast("Ocurrió un error desconocido")
+            is Result.Failure.ApiFailure  -> _uiState.send(LoginUiState.ApiError(resultFailure.message))
+            Result.Failure.NoInternet     -> _uiState.send(LoginUiState.NoInternet)
+            Result.Failure.UnknownFailure -> _uiState.send(LoginUiState.UnknownError)
         }
     }
 

@@ -1,5 +1,5 @@
-import java.net.NetworkInterface
 import java.net.InetAddress
+import java.net.NetworkInterface
 
 plugins {
     id("com.android.application")
@@ -63,6 +63,10 @@ dependencies {
     implementation(Square.OkHttp3.loggingInterceptor)
     implementation(Chucker.library)
     implementation(JakeWharton.timber)
+
+    testImplementation(Testing.junit4)
+    androidTestImplementation(AndroidX.test.ext.junitKtx)
+    androidTestImplementation(AndroidX.test.espresso.core)
 
     implementation(project(":presentation"))
     implementation(project(":domain"))

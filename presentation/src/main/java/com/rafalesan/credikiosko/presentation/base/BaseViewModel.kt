@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected val _toast = Channel<String>(Channel.BUFFERED)
+    private val _toast = Channel<String>(Channel.BUFFERED)
     val toast = _toast.receiveAsFlow()
 
     protected fun toast(message: String?) {
