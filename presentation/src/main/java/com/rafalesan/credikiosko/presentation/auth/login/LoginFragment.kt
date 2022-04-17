@@ -48,11 +48,12 @@ class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
 
     private fun handleUiState(uiState: LoginUiState) {
         when(uiState) {
-            is LoginUiState.ApiError  -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
-            is LoginUiState.Loading   -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
-            LoginUiState.NoInternet   -> DialogHelper.showNoInternetDialog(requireContext())
-            LoginUiState.UnknownError -> DialogHelper.showUnknownErrorDialog(requireContext())
-            LoginUiState.Idle         -> { Timber.d("Login is idle") }
+            is LoginUiState.ApiError     -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
+            LoginUiState.ApiNotAvailable -> DialogHelper.showApiNotAvailableErrorDialog(requireContext())
+            is LoginUiState.Loading      -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
+            LoginUiState.NoInternet      -> DialogHelper.showNoInternetDialog(requireContext())
+            LoginUiState.UnknownError    -> DialogHelper.showUnknownErrorDialog(requireContext())
+            LoginUiState.Idle            -> { Timber.d("Login is idle") }
         }
     }
 

@@ -86,6 +86,14 @@ object DialogHelper {
         showDialog(context, apiErrorDialogAttrs)
     }
 
+    fun showApiNotAvailableErrorDialog(context: Context) {
+        val apiNotAvailableDialogAttrs = DialogAttrs(context.getString(R.string.message),
+                                                     R.drawable.ic_cloud_off,
+                                                     context.getString(R.string.server_not_available_or_bad_internet_connection),
+                                                     iconTintColorRes = R.color.orange)
+        showDialog(context, apiNotAvailableDialogAttrs)
+    }
+
     fun showUnknownErrorDialog(context: Context) {
         val unknownErrorDialogAttrs = DialogAttrs(context.getString(R.string.message),
                                               R.drawable.ic_device_unknown,

@@ -97,8 +97,9 @@ class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel(
                 _uiState.send(SignupUiState.ApiError(resultFailure.message))
                 showErrorsFromApi(resultFailure.errors)
             }
-            Result.Failure.NoInternet     -> _uiState.send(SignupUiState.NoInternet)
-            Result.Failure.UnknownFailure -> _uiState.send(SignupUiState.UnknownError)
+            Result.Failure.ApiNotAvailable -> _uiState.send(SignupUiState.ApiNotAvailable)
+            Result.Failure.NoInternet      -> _uiState.send(SignupUiState.NoInternet)
+            Result.Failure.UnknownFailure  -> _uiState.send(SignupUiState.UnknownError)
         }
     }
 
