@@ -7,6 +7,7 @@ import com.rafalesan.credikiosko.domain.auth.validators.SignupValidator.SignupVa
 import com.rafalesan.credikiosko.domain.utils.Result
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModel
+import com.rafalesan.credikiosko.presentation.base.utils.UiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -24,7 +25,7 @@ class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel(
     val formErrors = MutableStateFlow(mutableMapOf<String, Int>())
     val apiFormErrors = MutableStateFlow(mutableMapOf<String, String?>())
 
-    private val _uiState = Channel<SignupUiState>(Channel.BUFFERED)
+    private val _uiState = Channel<UiState>(Channel.BUFFERED)
     val uiState = _uiState.receiveAsFlow()
 
     fun perform(signupAction: SignupAction) {
@@ -43,12 +44,12 @@ class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel(
                                                   passwordConfirmation.value,
                                                   deviceName)
         viewModelScope.launch {
-            _uiState.send(SignupUiState.Loading(true,
-                                                R.string.registering))
+            _uiState.send(UiState.Loading(true,
+                                          R.string.registering))
 
             val result = signupUseCase(signupData)
 
-            _uiState.send(SignupUiState.Loading(false))
+            _uiState.send(UiState.Loading(false))
 
             when(result) {
                 is Result.Success -> {
@@ -94,12 +95,12 @@ class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel(
     private fun handleResultFailure(resultFailure: Result.Failure) = viewModelScope.launch {
         when(resultFailure) {
             is Result.Failure.ApiFailure  -> {
-                _uiState.send(SignupUiState.ApiError(resultFailure.message))
+                _uiState.send(UiState.ApiError(resultFailure.message))
                 showErrorsFromApi(resultFailure.errors)
             }
-            Result.Failure.ApiNotAvailable -> _uiState.send(SignupUiState.ApiNotAvailable)
-            Result.Failure.NoInternet      -> _uiState.send(SignupUiState.NoInternet)
-            Result.Failure.UnknownFailure  -> _uiState.send(SignupUiState.UnknownError)
+            Result.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
+            Result.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
+            Result.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
         }
     }
 

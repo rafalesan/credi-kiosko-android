@@ -9,6 +9,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.base.utils.DialogHelper
+import com.rafalesan.credikiosko.presentation.base.utils.UiState
 import com.rafalesan.credikiosko.presentation.databinding.FrgSignupBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -38,14 +39,14 @@ class SignupFragment : BaseViewModelFragment<SignupViewModel, FrgSignupBinding>(
         }
     }
 
-    private fun handleUiState(uiState: SignupUiState) {
+    private fun handleUiState(uiState: UiState) {
         when(uiState) {
-            is SignupUiState.Loading     -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
-            is SignupUiState.ApiError    -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
-            SignupUiState.ApiNotAvailable -> DialogHelper.showApiNotAvailableErrorDialog(requireContext())
-            SignupUiState.NoInternet   -> DialogHelper.showNoInternetDialog(requireContext())
-            SignupUiState.UnknownError -> DialogHelper.showUnknownErrorDialog(requireContext())
-            SignupUiState.Idle         -> { Timber.d("Signup is idle") }
+            is UiState.Loading     -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
+            is UiState.ApiError    -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
+            UiState.ApiNotAvailable -> DialogHelper.showApiNotAvailableErrorDialog(requireContext())
+            UiState.NoInternet   -> DialogHelper.showNoInternetDialog(requireContext())
+            UiState.UnknownError -> DialogHelper.showUnknownErrorDialog(requireContext())
+            UiState.Idle         -> { Timber.d("Signup is idle") }
         }
     }
 
