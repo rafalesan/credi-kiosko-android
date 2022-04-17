@@ -5,7 +5,7 @@ sealed class Result<out L, out R> {
     class InvalidData<out R>(val validations: List<R>): Result<Nothing, R>()
     sealed class Failure : Result<Nothing, Nothing>() {
         class ApiFailure(val message: String = "",
-                         val errors: Map<String, List<String>>?): Failure()
+                         val errors: Map<String, List<String>>? = null): Failure()
         object NoInternet : Failure()
         object UnknownFailure : Failure()
     }

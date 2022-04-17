@@ -2,13 +2,13 @@ package com.rafalesan.credikiosko.data.auth.repository
 
 import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
 import com.rafalesan.credikiosko.data.auth.mappers.toLoginRequest
+import com.rafalesan.credikiosko.data.auth.mappers.toSignupRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toUserSession
-import com.rafalesan.credikiosko.data.auth.utils.ApiException
-import com.rafalesan.credikiosko.data.auth.utils.ApiResult
-import com.rafalesan.credikiosko.data.auth.utils.NoInternetException
+import com.rafalesan.credikiosko.data.auth.utils.ApiResultHandler
 import com.rafalesan.credikiosko.domain.auth.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
+import com.rafalesan.credikiosko.domain.auth.usecases.SignupUseCase
 import com.rafalesan.credikiosko.domain.utils.Result
 
 class AuthRepository(private val authDataSource: AuthDataSource) : IAuthRepository {
@@ -17,19 +17,22 @@ class AuthRepository(private val authDataSource: AuthDataSource) : IAuthReposito
 
         val loginRequest = credentials.toLoginRequest()
 
-        return when(val apiResult = authDataSource.login(loginRequest)) {
-            is ApiResult.Success -> {
-                val userSession = apiResult.response.data.toUserSession()
-                Result.Success(userSession)
-            }
-            is ApiResult.Error   -> {
-                when(apiResult.exception) {
-                    is NoInternetException -> Result.Failure.NoInternet
-                    is ApiException        -> Result.Failure.ApiFailure(apiResult.exception.message ?: "",
-                                                                        apiResult.exception.errors)
-                    else -> Result.Failure.UnknownFailure
-                }
-            }
+        val apiResult = authDataSource.login(loginRequest)
+
+        return ApiResultHandler.handle(apiResult) { response ->
+            val userSession = response.data.toUserSession()
+            Result.Success(userSession)
+        }
+
+    }
+
+    override suspend fun signup(signupData: SignupUseCase.SignupData): Result<UserSession, Nothing> {
+        val signupRequest = signupData.toSignupRequest()
+        val apiResult = authDataSource.signup(signupRequest)
+
+        return ApiResultHandler.handle(apiResult) { response ->
+            val userSession = response.data.toUserSession()
+            Result.Success(userSession)
         }
 
     }
