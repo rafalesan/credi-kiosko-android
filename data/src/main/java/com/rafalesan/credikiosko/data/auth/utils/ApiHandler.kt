@@ -64,7 +64,7 @@ object ApiHandler {
                 errorsDetailJsonObj.keys().forEach {
                     val errorsList = mutableListOf<String>()
                     val errorsJsonArray = errorsDetailJsonObj.getJSONArray(it)
-                    for (i in 0..errorsJsonArray.length()) {
+                    for (i in 0 until errorsJsonArray.length()) {
                         errorsList.add(errorsJsonArray.getString(i))
                     }
                     put(it, errorsList)

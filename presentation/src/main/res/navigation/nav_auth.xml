@@ -8,6 +8,21 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.rafalesan.credikiosko.presentation.auth.login.LoginFragment"
-        tools:layout="@layout/frg_login" />
+        tools:layout="@layout/frg_login">
+
+        <action
+            android:id="@+id/action_to_signup_fragment"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.rafalesan.credikiosko.presentation.auth.signup.SignupFragment"
+        tools:layout="@layout/frg_signup" />
 
 </navigation>

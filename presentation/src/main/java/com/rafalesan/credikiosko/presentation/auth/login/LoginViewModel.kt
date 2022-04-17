@@ -22,6 +22,9 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
     private val _uiState = Channel<LoginUiState>(Channel.BUFFERED)
     val uiState = _uiState.receiveAsFlow()
 
+    private val _event = Channel<LoginEvent>(Channel.BUFFERED)
+    val event = _event.receiveAsFlow()
+
     fun perform(action: LoginAction){
         when(action) {
             LoginAction.Login         -> login()
@@ -30,7 +33,9 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
     }
 
     private fun createAccount() {
-        toast("En construcción")
+        viewModelScope.launch {
+            _event.send(LoginEvent.OpenSignup)
+        }
     }
 
     private fun login() {
