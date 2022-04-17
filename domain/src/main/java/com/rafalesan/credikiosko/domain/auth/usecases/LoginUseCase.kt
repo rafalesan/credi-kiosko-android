@@ -1,11 +1,13 @@
 package com.rafalesan.credikiosko.domain.auth.usecases
 
+import com.rafalesan.credikiosko.domain.account.usecases.SaveUserSessionUseCase
 import com.rafalesan.credikiosko.domain.auth.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator
 import com.rafalesan.credikiosko.domain.utils.Result
 
-class LoginUseCase(private val authRepository: IAuthRepository) {
+class LoginUseCase(private val authRepository: IAuthRepository,
+                   private val saveUserSessionUseCase: SaveUserSessionUseCase) {
 
     suspend operator fun invoke(credentials: Credentials): Result<UserSession, CredentialsValidator.CredentialValidation> {
 
@@ -18,7 +20,13 @@ class LoginUseCase(private val authRepository: IAuthRepository) {
             return Result.InvalidData(validations)
         }
 
-        return authRepository.login(credentials)
+        val result = authRepository.login(credentials)
+
+        if(result is Result.Success) {
+            saveUserSessionUseCase.invoke(result.value)
+        }
+
+        return result
 
     }
 
