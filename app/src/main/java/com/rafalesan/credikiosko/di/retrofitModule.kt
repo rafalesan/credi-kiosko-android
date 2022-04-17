@@ -3,7 +3,10 @@ package com.rafalesan.credikiosko.di
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.rafalesan.credikiosko.BuildConfig
-import com.squareup.moshi.Moshi
+import com.rafalesan.credikiosko.data.auth.datasource.local.UserSessionDataSource
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -15,12 +18,25 @@ const val REQUEST_TIME_OUT: Long = 60
 
 val retrofitModule = module {
 
+    single { provideAuthorizationHeader(get()) }
     single { provideLoggingInterceptor() }
     single { provideChuckerInterceptor(get()) }
-    single { provideOkHttpClient(get(), get()) }
+    single { provideOkHttpClient(get(), get(), get()) }
     single { provideMoshiConverter() }
     single { provideRetrofit(get(), get()) }
 
+}
+
+private fun provideAuthorizationHeader(userSessionDataSource: UserSessionDataSource): Interceptor {
+    val userSessionData = userSessionDataSource.userSession()
+    val token = runBlocking { userSessionData.first() }?.token
+    return Interceptor { chain ->
+        chain.proceed(
+                chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer ${token ?: ""}")
+                        .build()
+        )
+    }
 }
 
 private fun provideLoggingInterceptor(): HttpLoggingInterceptor {
@@ -33,12 +49,14 @@ private fun provideChuckerInterceptor(AppContext: Context): ChuckerInterceptor {
     return ChuckerInterceptor.Builder(AppContext).build()
 }
 
-private fun provideOkHttpClient(logging: HttpLoggingInterceptor,
+private fun provideOkHttpClient(tokenInterceptor: Interceptor,
+                                logging: HttpLoggingInterceptor,
                                 chuckerInterceptor: ChuckerInterceptor): OkHttpClient {
 
     val okHttpBuilder = OkHttpClient.Builder()
             .readTimeout(REQUEST_TIME_OUT, TimeUnit.MINUTES)
             .connectTimeout(REQUEST_TIME_OUT, TimeUnit.MINUTES)
+            .addInterceptor(tokenInterceptor)
 
     if(BuildConfig.DEBUG) {
         okHttpBuilder.addNetworkInterceptor(logging)
