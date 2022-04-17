@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.base.utils.DialogHelper
@@ -33,6 +34,14 @@ class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
                 viewModel.uiState.collect {
                     handleUiState(it)
                 }
+
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.event.collect {
+                    handleEvent(it)
+                }
             }
         }
     }
@@ -45,6 +54,16 @@ class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
             LoginUiState.UnknownError -> DialogHelper.showUnknownErrorDialog(requireContext())
             LoginUiState.Idle         -> { Timber.d("Login is idle") }
         }
+    }
+
+    private fun handleEvent(loginEvent: LoginEvent) {
+        when(loginEvent) {
+            LoginEvent.OpenSignup -> openSignup()
+        }
+    }
+
+    private fun openSignup() {
+        findNavController().navigate(R.id.action_to_signup_fragment)
     }
 
 }

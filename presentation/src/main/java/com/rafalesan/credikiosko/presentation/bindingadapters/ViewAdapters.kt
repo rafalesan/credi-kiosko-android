@@ -11,3 +11,11 @@ fun TextInputLayout.setErrorText(@StringRes stringResId: Int?) {
     }
     this.error = context.getString(stringResId)
 }
+
+@BindingAdapter("app:errorTextString")
+fun TextInputLayout.setErrorTextString(stringText: String?) {
+    stringText ?: return run {
+        this.error = null
+    }
+    this.error = stringText
+}

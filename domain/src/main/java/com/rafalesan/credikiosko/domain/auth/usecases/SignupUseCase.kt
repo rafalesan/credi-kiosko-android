@@ -33,12 +33,12 @@ class SignupUseCase(private val authRepository: IAuthRepository,
         return result
     }
 
-    data class SignupData(val name: String?,
-                          val nickname: String?,
-                          val businessName: String?,
-                          val email: String?,
-                          val password: String?,
-                          val passwordConfirmation: String?,
-                          val deviceName: String?)
+    data class SignupData(val name: String,
+                          val nickname: String,
+                          val businessName: String,
+                          val email: String,
+                          val password: String,
+                          val passwordConfirmation: String,
+                          val deviceName: String)
 
 }
