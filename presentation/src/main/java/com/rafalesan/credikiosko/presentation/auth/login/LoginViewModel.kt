@@ -89,9 +89,10 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
 
     private fun handleResultFailure(resultFailure: Result.Failure) = viewModelScope.launch {
         when(resultFailure) {
-            is Result.Failure.ApiFailure  -> _uiState.send(LoginUiState.ApiError(resultFailure.message))
-            Result.Failure.NoInternet     -> _uiState.send(LoginUiState.NoInternet)
-            Result.Failure.UnknownFailure -> _uiState.send(LoginUiState.UnknownError)
+            is Result.Failure.ApiFailure   -> _uiState.send(LoginUiState.ApiError(resultFailure.message))
+            Result.Failure.ApiNotAvailable -> _uiState.send(LoginUiState.ApiNotAvailable)
+            Result.Failure.NoInternet      -> _uiState.send(LoginUiState.NoInternet)
+            Result.Failure.UnknownFailure  -> _uiState.send(LoginUiState.UnknownError)
         }
     }
 

@@ -8,5 +8,6 @@ sealed class LoginUiState {
                   @StringRes val stringResMessageId: Int? = null): LoginUiState()
     object NoInternet: LoginUiState()
     class ApiError(val message: String): LoginUiState()
+    object ApiNotAvailable : LoginUiState()
     object UnknownError: LoginUiState()
 }

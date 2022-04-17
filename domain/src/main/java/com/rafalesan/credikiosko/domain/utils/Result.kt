@@ -6,6 +6,7 @@ sealed class Result<out L, out R> {
     sealed class Failure : Result<Nothing, Nothing>() {
         class ApiFailure(val message: String = "",
                          val errors: Map<String, List<String>>? = null): Failure()
+        object ApiNotAvailable : Failure()
         object NoInternet : Failure()
         object UnknownFailure : Failure()
     }

@@ -40,8 +40,9 @@ class SignupFragment : BaseViewModelFragment<SignupViewModel, FrgSignupBinding>(
 
     private fun handleUiState(uiState: SignupUiState) {
         when(uiState) {
-            is SignupUiState.ApiError  -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
-            is SignupUiState.Loading   -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
+            is SignupUiState.Loading     -> showProgress(isLoading = uiState.isLoading, uiState.stringResMessageId)
+            is SignupUiState.ApiError    -> DialogHelper.showApiErrorDialog(requireContext(), uiState.message)
+            SignupUiState.ApiNotAvailable -> DialogHelper.showApiNotAvailableErrorDialog(requireContext())
             SignupUiState.NoInternet   -> DialogHelper.showNoInternetDialog(requireContext())
             SignupUiState.UnknownError -> DialogHelper.showUnknownErrorDialog(requireContext())
             SignupUiState.Idle         -> { Timber.d("Signup is idle") }
