@@ -25,7 +25,7 @@ class AuthRepository(private val authDataSource: AuthDataSource) : IAuthReposito
             is ApiResult.Error   -> {
                 when(apiResult.exception) {
                     is NoInternetException -> Result.Failure.NoInternet
-                    is ApiException        -> Result.Failure.ApiFailure(apiResult.exception.message,
+                    is ApiException        -> Result.Failure.ApiFailure(apiResult.exception.message ?: "",
                                                                         apiResult.exception.errors)
                     else -> Result.Failure.UnknownFailure
                 }

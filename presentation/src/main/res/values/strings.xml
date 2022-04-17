@@ -10,4 +10,12 @@
     <string name="val_empty_email">Por favor ingrese su correo</string>
     <string name="val_invalid_email">Por favor ingrese un correo válido</string>
     <string name="val_empty_password">Por favor ingrese su contraseña</string>
+    <string name="authenticating">Iniciando sesión</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="no_internet_connection">Sin conexión a internet</string>
+    <string name="no_internet_connection_description">Al parecer usted no cuenta con conexión a internet. Verifique si su wifi o datos móviles están activados.</string>
+    <string name="message">Mensaje</string>
+    <string name="loading">Cargando</string>
+    <string name="unknown_error_description">Ocurrió un error desconocido</string>
 </resources>
