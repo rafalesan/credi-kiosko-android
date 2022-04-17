@@ -20,9 +20,6 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
     var deviceName: String? = null
     val formErrors = MutableStateFlow(mutableMapOf<String, Int>())
 
-    private val _uiState = Channel<UiState>(Channel.BUFFERED)
-    val uiState = _uiState.receiveAsFlow()
-
     private val _event = Channel<LoginEvent>(Channel.BUFFERED)
     val event = _event.receiveAsFlow()
 
