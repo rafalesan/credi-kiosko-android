@@ -22,6 +22,8 @@ android {
 
 dependencies {
 
+    implementation(KotlinX.coroutines.android)
+
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junitKtx)
     androidTestImplementation(AndroidX.test.espresso.core)
