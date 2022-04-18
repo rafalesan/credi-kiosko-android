@@ -6,6 +6,8 @@ import org.koin.dsl.module
 
 val dataStoreModule = module {
     single(named(USER_SESSION_PREFERENCES)) { preferencesDataStore(name = USER_SESSION_PREFERENCES).getValue(get(), String::javaClass) }
+    single(named(USER_PREFERENCES)) { preferencesDataStore(name = USER_PREFERENCES).getValue(get(), String::javaClass) }
 }
 
 const val USER_SESSION_PREFERENCES = "userSessionPreferences"
+const val USER_PREFERENCES = "userPreferences"
