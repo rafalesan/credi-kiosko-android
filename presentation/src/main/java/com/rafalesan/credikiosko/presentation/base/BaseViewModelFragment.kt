@@ -18,7 +18,6 @@ import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.utils.AutoClearedValue
 import com.rafalesan.credikiosko.presentation.base.utils.DialogHelper
 import com.rafalesan.credikiosko.presentation.base.utils.UiState
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
