@@ -3,6 +3,6 @@
     package="com.rafalesan.credikiosko.presentation">
 
     <application
-        android:theme="@style/Theme.CrediKiosko.NoActionBar" />
+        android:theme="@style/Theme.CrediKiosko.NoActionBar"/>
 
 </manifest>
