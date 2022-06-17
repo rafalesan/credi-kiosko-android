@@ -55,7 +55,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
 
             when(result) {
                 is Result.Success -> {
-                    toast(result.value.name)
+                    _event.send(LoginEvent.OpenHome)
                 }
                 is Result.InvalidData -> {
                     handleInvalidDataResult(result)
