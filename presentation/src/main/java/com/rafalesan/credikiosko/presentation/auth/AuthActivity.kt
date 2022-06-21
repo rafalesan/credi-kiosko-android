@@ -1,6 +1,9 @@
 package com.rafalesan.credikiosko.presentation.auth
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -13,6 +16,7 @@ import com.rafalesan.credikiosko.presentation.bindingadapters.setImage
 import com.rafalesan.credikiosko.presentation.bindingadapters.setTint
 import com.rafalesan.credikiosko.presentation.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
+import com.rafalesan.credikiosko.presentation.main.MainActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,6 +31,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
     }
 
     private fun setup() {
+        setupSplash()
         setupIvTheme(isSystemInDarkTheme())
     }
 
@@ -38,6 +43,40 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
                 }
             }
         }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.event.collect {
+                    handleEvent(it)
+                }
+            }
+        }
+    }
+
+    private fun handleEvent(authEvent: AuthEvent) {
+        when(authEvent) {
+            AuthEvent.OpenHome -> openHome()
+        }
+    }
+
+    private fun openHome() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    private fun setupSplash() {
+        val content = findViewById<View>(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
+
+            override fun onPreDraw(): Boolean {
+                viewModel.perform(AuthAction.SessionValidation)
+                content.viewTreeObserver.removeOnPreDrawListener(this)
+                return true
+            }
+
+        })
     }
 
     private fun setTheme(theme: Theme?) {

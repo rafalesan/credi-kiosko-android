@@ -7,6 +7,6 @@ import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<IAuthRepository> { AuthRepository(get()) }
+    single<IAuthRepository> { AuthRepository(get(), get()) }
     single<IAccountRepository> { AccountRepository(get(), get()) }
 }
