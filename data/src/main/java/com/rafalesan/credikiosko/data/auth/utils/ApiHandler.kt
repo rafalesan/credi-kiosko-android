@@ -1,7 +1,9 @@
 package com.rafalesan.credikiosko.data.auth.utils
 
+import com.rafalesan.credikiosko.data.base.ErrorResponse
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.coroutineScope
-import org.json.JSONObject
 import retrofit2.Response
 import timber.log.Timber
 
@@ -52,29 +54,20 @@ object ApiHandler {
     }
 
     private fun getApiExceptionFrom(response: Response<*>): ApiException {
-        val errorResponse = response.errorBody()
-        errorResponse ?: return ApiException("No error message provided by api",
-                                             response.code())
-        val jsonString = errorResponse.string()
-        val errorJsonObj = JSONObject(jsonString)
-        val errorMessage = errorJsonObj.optString("message") ?: "No error message provided by api"
-        val errorsDetailJsonObj = errorJsonObj.optJSONObject("errors")
-        var errorsMap: MutableMap<String, List<String>>? = null
-        errorsDetailJsonObj?.let {
-            errorsMap = mutableMapOf<String, List<String>>().apply {
-                errorsDetailJsonObj.keys().forEach {
-                    val errorsList = mutableListOf<String>()
-                    val errorsJsonArray = errorsDetailJsonObj.getJSONArray(it)
-                    for (i in 0 until errorsJsonArray.length()) {
-                        errorsList.add(errorsJsonArray.getString(i))
-                    }
-                    put(it, errorsList)
-                }
-            }
-        }
-        return ApiException(errorMessage,
-                response.code(),
-                errorsMap)
+        val errorBody = response.errorBody()
+        errorBody ?: return ApiException("No error message provided by api",
+                                         response.code())
+        val jsonString = errorBody.string()
+
+        val moshi = Moshi.Builder().build()
+
+        val adapter: JsonAdapter<ErrorResponse> = moshi.adapter(ErrorResponse::class.java)
+
+        val errorResponse = adapter.fromJson(jsonString)
+
+        return ApiException(errorResponse?.message ?: "Unknown error",
+                            response.code(),
+                            errorResponse?.errors)
     }
 
 }
