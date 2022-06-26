@@ -15,6 +15,7 @@ import com.rafalesan.credikiosko.presentation.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
 import com.rafalesan.credikiosko.presentation.main.MainActivity
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
+import com.rafalesan.credikiosko.presentation.utils.helpers.ThemeHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
@@ -34,7 +35,9 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
 
     override fun onSubscribeViewModel() {
         viewModel.theme.collect(this) { theme ->
-            setTheme(theme)
+            ThemeHelper.setTheme(this, theme, binding.ivTheme) { isDarkTheme ->
+                viewModel.perform(AuthAction.ChangeTheme(isDarkTheme))
+            }
         }
 
         viewModel.event.collect(this) {

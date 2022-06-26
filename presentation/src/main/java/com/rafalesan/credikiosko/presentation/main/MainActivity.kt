@@ -12,6 +12,7 @@ import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseActivity
 import com.rafalesan.credikiosko.presentation.databinding.ActMainBinding
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
+import com.rafalesan.credikiosko.presentation.utils.helpers.ThemeHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<MainViewModel, ActMainBinding>() {
@@ -36,6 +37,13 @@ class MainActivity : BaseActivity<MainViewModel, ActMainBinding>() {
         super.onSubscribeViewModel()
         viewModel.userSession.collect(this) { userSession ->
             showUserInfoFrom(userSession)
+        }
+        viewModel.theme.collect(this) {
+            viewModel.theme.collect(this) { theme ->
+                ThemeHelper.setTheme(this, theme, navHeaderView.findViewById(R.id.ivTheme)) { isDarkTheme ->
+                    viewModel.perform(MainAction.ChangeTheme(isDarkTheme))
+                }
+            }
         }
     }
 
