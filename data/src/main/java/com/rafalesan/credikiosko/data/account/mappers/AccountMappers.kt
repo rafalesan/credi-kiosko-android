@@ -11,3 +11,12 @@ fun UserSession.toUserSessionData(): UserSessionData {
                            email,
                            token)
 }
+
+fun UserSessionData.toUserSessionDomain(): UserSession {
+    return UserSession(userId,
+                       businessId,
+                       name,
+                       nickname,
+                       email,
+                       token)
+}

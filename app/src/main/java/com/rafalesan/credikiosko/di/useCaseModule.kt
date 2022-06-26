@@ -2,6 +2,7 @@ package com.rafalesan.credikiosko.di
 
 import com.rafalesan.credikiosko.domain.account.usecases.ChangeThemeUseCase
 import com.rafalesan.credikiosko.domain.account.usecases.GetThemeUseCase
+import com.rafalesan.credikiosko.domain.account.usecases.GetUserSessionInfoUseCase
 import com.rafalesan.credikiosko.domain.account.usecases.SaveUserSessionUseCase
 import com.rafalesan.credikiosko.domain.auth.usecases.ExistUserSession
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
@@ -15,4 +16,5 @@ val useCaseModule = module {
     single { GetThemeUseCase(get()) }
     single { ChangeThemeUseCase(get()) }
     single { ExistUserSession(get()) }
+    single { GetUserSessionInfoUseCase(get()) }
 }

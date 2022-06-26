@@ -23,11 +23,11 @@ fun AuthResponse.toUserSession(): UserSession {
 }
 
 fun SignupUseCase.SignupData.toSignupRequest(): SignupRequest {
-    return SignupRequest(name!!,
-                         nickname!!,
-                         businessName!!,
-                         email!!,
-                         password!!,
-                         passwordConfirmation!!,
-                         deviceName!!)
+    return SignupRequest(name,
+                         nickname,
+                         businessName,
+                         email,
+                         password,
+                         passwordConfirmation,
+                         deviceName)
 }
