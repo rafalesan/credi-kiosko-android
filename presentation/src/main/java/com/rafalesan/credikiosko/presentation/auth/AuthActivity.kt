@@ -6,9 +6,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.rafalesan.credikiosko.domain.account.entity.Theme
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseActivity
@@ -17,7 +14,7 @@ import com.rafalesan.credikiosko.presentation.bindingadapters.setTint
 import com.rafalesan.credikiosko.presentation.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
 import com.rafalesan.credikiosko.presentation.main.MainActivity
-import kotlinx.coroutines.launch
+import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
@@ -36,19 +33,12 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
     }
 
     override fun onSubscribeViewModel() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.theme.collect { theme ->
-                    setTheme(theme)
-                }
-            }
+        viewModel.theme.collect(this) { theme ->
+            setTheme(theme)
         }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.event.collect {
-                    handleEvent(it)
-                }
-            }
+
+        viewModel.event.collect(this) {
+            handleEvent(it)
         }
     }
 

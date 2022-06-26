@@ -10,17 +10,15 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.rafalesan.credikiosko.presentation.BR
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.utils.AutoClearedValue
 import com.rafalesan.credikiosko.presentation.base.utils.DialogHelper
 import com.rafalesan.credikiosko.presentation.base.utils.UiState
+import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 abstract class BaseViewModelFragment<VM: BaseViewModel, VB: ViewDataBinding> : Fragment() {
@@ -63,14 +61,10 @@ abstract class BaseViewModelFragment<VM: BaseViewModel, VB: ViewDataBinding> : F
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    handleUiState(it)
-                }
-
-            }
+        viewModel.uiState.collect(viewLifecycleOwner) {
+            handleUiState(it)
         }
+
     }
 
     private fun handleUiState(uiState: UiState) {

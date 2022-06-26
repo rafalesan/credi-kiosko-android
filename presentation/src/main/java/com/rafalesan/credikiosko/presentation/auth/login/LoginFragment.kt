@@ -4,15 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.databinding.FrgLoginBinding
 import com.rafalesan.credikiosko.presentation.main.MainActivity
-import kotlinx.coroutines.launch
+import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
@@ -28,12 +25,8 @@ class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
 
     override fun onSubscribeToViewModel() {
         super.onSubscribeToViewModel()
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.event.collect {
-                    handleEvent(it)
-                }
-            }
+        viewModel.event.collect(this) {
+            handleEvent(it)
         }
     }
 
