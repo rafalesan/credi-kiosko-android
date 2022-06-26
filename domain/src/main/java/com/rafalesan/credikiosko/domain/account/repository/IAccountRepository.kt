@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface IAccountRepository {
 
     suspend fun saveUserSession(userSession: UserSession)
+    fun getUserSessionInfo(): Flow<UserSession?>
     fun getTheme(): Flow<Theme>
     suspend fun changeTheme(lightTheme: Boolean)
 

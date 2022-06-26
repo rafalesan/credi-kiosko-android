@@ -13,7 +13,7 @@ val appModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { SignupViewModel(get()) }
     viewModel { AuthViewModel(get(), get(), get()) }
-    viewModel { MainViewModel() }
+    viewModel { MainViewModel(get()) }
     viewModel { HomeViewModel() }
 
 }
