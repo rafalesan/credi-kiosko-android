@@ -8,4 +8,5 @@
     <dimen name="space_6x">48dp</dimen>
     <dimen name="space_7x">56dp</dimen>
     <dimen name="space_8x">64dp</dimen>
+    <dimen name="space_4n">4dp</dimen>
 </resources>
