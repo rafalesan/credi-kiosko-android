@@ -35,4 +35,9 @@
     <string name="val_password_not_equals">Las contraseñas no coinciden</string>
     <string name="server_not_available_or_bad_internet_connection">El servidor no se encuentra disponible o su conexión a internet es inestable. Por favor verifique su conexión a internet.</string>
     <string name="home">Inicio</string>
+    <string name="products">Productos</string>
+    <string name="customers">Clientes</string>
+    <string name="credits">Créditos</string>
+    <string name="cutoffs">Cortes</string>
+    <string name="logout">Cerrar sesión</string>
 </resources>
