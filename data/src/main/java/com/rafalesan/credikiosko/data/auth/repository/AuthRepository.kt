@@ -5,7 +5,7 @@ import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
 import com.rafalesan.credikiosko.data.auth.mappers.toLoginRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toSignupRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toUserSession
-import com.rafalesan.credikiosko.data.auth.utils.ApiResultHandler
+import com.rafalesan.credikiosko.data.utils.ApiResultHandler
 import com.rafalesan.credikiosko.domain.auth.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase

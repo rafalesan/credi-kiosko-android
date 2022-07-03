@@ -1,6 +1,8 @@
-package com.rafalesan.credikiosko.data.auth.utils
+package com.rafalesan.credikiosko.data.utils
 
 import com.rafalesan.credikiosko.data.base.ErrorResponse
+import com.rafalesan.credikiosko.data.utils.exceptions.ApiException
+import com.rafalesan.credikiosko.data.utils.exceptions.NoInternetException
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.coroutineScope
