@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.data.auth.utils
+package com.rafalesan.credikiosko.data.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

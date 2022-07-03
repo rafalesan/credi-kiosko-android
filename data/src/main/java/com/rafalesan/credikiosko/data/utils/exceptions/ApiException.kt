@@ -1,6 +1,4 @@
-package com.rafalesan.credikiosko.data.auth.utils
-
-import java.lang.Exception
+package com.rafalesan.credikiosko.data.utils.exceptions
 
 class ApiException(message: String,
                    var statusCode: Int,

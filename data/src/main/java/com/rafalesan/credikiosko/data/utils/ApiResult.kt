@@ -1,6 +1,4 @@
-package com.rafalesan.credikiosko.data.auth.utils
-
-import java.lang.Exception
+package com.rafalesan.credikiosko.data.utils
 
 sealed class ApiResult <out T> {
     class Success<out T>(val response: T): ApiResult<T>()
