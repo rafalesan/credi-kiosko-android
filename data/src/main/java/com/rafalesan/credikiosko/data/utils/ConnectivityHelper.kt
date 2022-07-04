@@ -8,11 +8,11 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @Suppress("BlockingMethodInNonBlockingContext")
-object ConnectivityHelper {
+object ConnectivityHelper : IConnectivityHelper {
 
     private const val GOOGLE_PAGE_URL = "https://www.google.com"
 
-    suspend fun isInternetAvailable(timeout: Int = 6000) = withContext(Dispatchers.IO) {
+    override suspend fun isInternetAvailable(timeout: Int) = withContext(Dispatchers.IO) {
         try {
             val urlConnection = URL(GOOGLE_PAGE_URL).openConnection() as HttpURLConnection
             urlConnection.setRequestProperty("User-Agent", "Test")
