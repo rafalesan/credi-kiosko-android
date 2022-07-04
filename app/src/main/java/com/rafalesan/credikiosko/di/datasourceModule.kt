@@ -7,7 +7,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val datasourceModule = module {
-    single { AuthDataSource(get()) }
+    single { AuthDataSource(get(), get()) }
     single { UserSessionDataSource(get(named(USER_SESSION_PREFERENCES))) }
     single { UserPreferenceDataSource(get(named(USER_PREFERENCES))) }
 }

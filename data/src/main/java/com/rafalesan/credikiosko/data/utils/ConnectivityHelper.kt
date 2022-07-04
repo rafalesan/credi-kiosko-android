@@ -8,9 +8,11 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @Suppress("BlockingMethodInNonBlockingContext")
-object ConnectivityHelper : IConnectivityHelper {
+class ConnectivityHelper : IConnectivityHelper {
 
-    private const val GOOGLE_PAGE_URL = "https://www.google.com"
+    companion object {
+        private const val GOOGLE_PAGE_URL = "https://www.google.com"
+    }
 
     override suspend fun isInternetAvailable(timeout: Int) = withContext(Dispatchers.IO) {
         try {

@@ -9,11 +9,11 @@ import kotlinx.coroutines.coroutineScope
 import retrofit2.Response
 import timber.log.Timber
 
-object ApiHandler {
+class ApiHandler(private val connectivityHelper: IConnectivityHelper) : IApiHandler {
 
-    suspend fun <T> performApiCall(call: suspend () -> Response<T>): ApiResult<T> {
+    override suspend fun <T> performApiCall(call: suspend () -> Response<T>): ApiResult<T> {
 
-        val isInternetAvailable = ConnectivityHelper.isInternetAvailable()
+        val isInternetAvailable = connectivityHelper.isInternetAvailable()
         if(!isInternetAvailable) {
             return ApiResult.Error(NoInternetException())
         }
