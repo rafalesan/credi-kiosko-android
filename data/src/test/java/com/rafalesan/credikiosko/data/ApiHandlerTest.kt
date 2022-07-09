@@ -47,8 +47,8 @@ class ApiHandlerTest {
         apiHandler = ApiHandler(connectivityHelper)
 
         //dummy apiCall just to test no internet validation
-        val apiCall: suspend () -> Response<Any> = {
-            Response.success(Any())
+        val apiCall: suspend () -> Response<String> = {
+            Response.success(API_SUCCESS_BODY)
         }
 
         val apiResult = apiHandler.performApiCall { apiCall() }
@@ -69,7 +69,7 @@ class ApiHandlerTest {
         apiHandler = ApiHandler(connectivityHelper)
 
         //dummy apiCall just to test returning an ApiException
-        val apiCall: suspend () -> Response<Any> = {
+        val apiCall: suspend () -> Response<String> = {
             Response.error(422, buildErrorResponseBody())
         }
 
