@@ -6,19 +6,17 @@ import com.rafalesan.credikiosko.data.utils.IApiHandler
 import com.rafalesan.credikiosko.data.utils.IConnectivityHelper
 import com.rafalesan.credikiosko.data.utils.exceptions.ApiException
 import com.rafalesan.credikiosko.data.utils.exceptions.NoInternetException
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import org.junit.Assert
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 class ApiHandlerTest {
 
     companion object {
@@ -29,9 +27,9 @@ class ApiHandlerTest {
 
     private lateinit var apiHandler: IApiHandler
 
-    private suspend fun getMockConnectivityWith(internetConnectivityResult: Boolean): IConnectivityHelper {
-        val connectivityHelper = Mockito.mock(IConnectivityHelper::class.java)
-        Mockito.`when`(connectivityHelper.isInternetAvailable()).thenReturn(internetConnectivityResult)
+    private fun getMockConnectivityWith(internetConnectivityResult: Boolean): IConnectivityHelper {
+        val connectivityHelper = mockk<IConnectivityHelper>()
+        coEvery { connectivityHelper.isInternetAvailable() } returns internetConnectivityResult
         return connectivityHelper
     }
 

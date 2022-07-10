@@ -32,7 +32,7 @@ dependencies {
     implementation(AndroidX.dataStore.preferences)
 
     testImplementation(Testing.junit4)
-    testImplementation(Testing.Mockito.kotlin)
+    testImplementation(Testing.MockK)
     testImplementation(KotlinX.coroutines.test)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
