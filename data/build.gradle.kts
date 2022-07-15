@@ -34,6 +34,7 @@ dependencies {
     testImplementation(Testing.junit4)
     testImplementation(Testing.MockK)
     testImplementation(KotlinX.coroutines.test)
+    testImplementation(AndroidX.test.ext.truth)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
 

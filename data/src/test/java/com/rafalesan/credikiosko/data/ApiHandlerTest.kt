@@ -1,5 +1,7 @@
 package com.rafalesan.credikiosko.data
 
+import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import com.rafalesan.credikiosko.data.utils.ApiHandler
 import com.rafalesan.credikiosko.data.utils.ApiResult
 import com.rafalesan.credikiosko.data.utils.IApiHandler
@@ -12,7 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType
 import okhttp3.ResponseBody
-import org.junit.Assert
+import org.junit.Assert.fail
 import org.junit.Test
 import retrofit2.Response
 
@@ -52,13 +54,14 @@ class ApiHandlerTest {
         val apiResult = apiHandler.performApiCall { apiCall() }
 
         if(apiResult !is ApiResult.Error) {
-            Assert.fail("apiResult should be an ApiResult.Error")
+            fail("apiResult should be an ApiResult.Error")
             return@runTest
         }
 
-        assert(apiResult.exception is NoInternetException) {
-            "apiResult.exception should be a NoInternetException"
-        }
+        assertWithMessage("apiResult.exception should be a NoInternetException")
+                .that(apiResult.exception)
+                .isInstanceOf(NoInternetException::class.java)
+
     }
 
     @Test
@@ -74,17 +77,17 @@ class ApiHandlerTest {
         val apiResult = apiHandler.performApiCall { apiCall() }
 
         if(apiResult !is ApiResult.Error) {
-            Assert.fail("apiResult should be an ApiResult.Error")
+            fail("apiResult should be an ApiResult.Error")
             return@runTest
         }
 
-        assert(apiResult.exception is ApiException)  {
-            "apiResult.exception should be an ApiException"
-        }
+        assertWithMessage("apiResult.exception should be an ApiException")
+                .that(apiResult.exception)
+                .isInstanceOf(ApiException::class.java)
 
-        assert(apiResult.exception.message == API_ERROR_MESSAGE) {
-            "apiResult.exception.message is not equals to API_ERROR_MESSAGE"
-        }
+        assertWithMessage("apiResult.exception.message is not equals to API_ERROR_MESSAGE")
+                .that(apiResult.exception.message)
+                .isEqualTo(API_ERROR_MESSAGE)
     }
 
     @Test
@@ -99,12 +102,12 @@ class ApiHandlerTest {
         val apiResult = apiHandler.performApiCall { apiCall() }
 
         if(apiResult !is ApiResult.Success) {
-            Assert.fail("apiResult should be an ApiResult.Success")
+            fail("apiResult should be an ApiResult.Success")
             return@runTest
         }
 
-        assert(apiResult.response == API_SUCCESS_BODY)
-
+        assertThat(apiResult.response)
+                .isEqualTo(API_SUCCESS_BODY)
     }
 
 }
