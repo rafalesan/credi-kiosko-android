@@ -2,26 +2,26 @@ package com.rafalesan.credikiosko.data.utils
 
 import com.rafalesan.credikiosko.data.utils.exceptions.ApiException
 import com.rafalesan.credikiosko.data.utils.exceptions.NoInternetException
-import com.rafalesan.credikiosko.domain.utils.Result
+import com.rafalesan.credikiosko.domain.utils.ResultOf
 import java.net.ConnectException
 import java.net.UnknownHostException
 
 object ApiResultHandler {
 
-    fun <T, L, R> handle(apiResult: ApiResult<T>, onSuccess: (T) -> Result<L, R>): Result<L, R> {
+    fun <T, L, R> handle(apiResult: ApiResult<T>, onSuccess: (T) -> ResultOf<L, R>): ResultOf<L, R> {
         return when(apiResult) {
             is ApiResult.Success -> {
                 onSuccess.invoke(apiResult.response)
             }
             is ApiResult.Error -> {
                 when(apiResult.exception) {
-                    is NoInternetException -> Result.Failure.NoInternet
-                    is ApiException        -> Result.Failure.ApiFailure(apiResult.exception.message ?: "",
-                                                                         apiResult.exception.errors)
+                    is NoInternetException -> ResultOf.Failure.NoInternet
+                    is ApiException        -> ResultOf.Failure.ApiFailure(apiResult.exception.message ?: "",
+                                                                          apiResult.exception.errors)
                     is ConnectException,
-                    is UnknownHostException -> Result.Failure.ApiNotAvailable
+                    is UnknownHostException -> ResultOf.Failure.ApiNotAvailable
 
-                    else -> Result.Failure.UnknownFailure
+                    else -> ResultOf.Failure.UnknownFailure
                 }
             }
         }
