@@ -1,19 +1,16 @@
-package com.rafalesan.credikiosko.data
+package com.rafalesan.credikiosko.data.utils
 
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
-import com.rafalesan.credikiosko.data.utils.ApiHandler
-import com.rafalesan.credikiosko.data.utils.ApiResult
-import com.rafalesan.credikiosko.data.utils.IApiHandler
-import com.rafalesan.credikiosko.data.utils.IConnectivityHelper
 import com.rafalesan.credikiosko.data.utils.exceptions.ApiException
 import com.rafalesan.credikiosko.data.utils.exceptions.NoInternetException
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.fail
 import org.junit.Test
 import retrofit2.Response
@@ -36,8 +33,7 @@ class ApiHandlerTest {
     }
 
     private fun buildErrorResponseBody(): ResponseBody {
-        return ResponseBody.create(MediaType.parse("application/json"),
-                                   ERROR_RESPONSE)
+        return ERROR_RESPONSE.toResponseBody("application/json".toMediaTypeOrNull())
     }
 
     @Test
