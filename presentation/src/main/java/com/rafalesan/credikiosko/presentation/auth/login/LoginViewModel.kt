@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator
 import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator.CredentialValidation.*
-import com.rafalesan.credikiosko.domain.utils.Result
+import com.rafalesan.credikiosko.domain.utils.ResultOf
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.presentation.base.utils.UiState
@@ -54,13 +54,13 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
             _uiState.send(UiState.Loading(false))
 
             when(result) {
-                is Result.Success -> {
+                is ResultOf.Success     -> {
                     _event.send(LoginEvent.OpenHome)
                 }
-                is Result.InvalidData -> {
+                is ResultOf.InvalidData -> {
                     handleInvalidDataResult(result)
                 }
-                is Result.Failure -> {
+                is ResultOf.Failure     -> {
                     handleResultFailure(result)
                 }
             }
@@ -69,7 +69,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
 
     }
 
-    private fun handleInvalidDataResult(invalidDataResult: Result.InvalidData<CredentialsValidator.CredentialValidation>) {
+    private fun handleInvalidDataResult(invalidDataResult: ResultOf.InvalidData<CredentialsValidator.CredentialValidation>) {
         val validations = invalidDataResult.validations
         val errorsMap = mutableMapOf<String, Int>()
         validations.forEach { validation ->
@@ -85,12 +85,12 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
         }
     }
 
-    private fun handleResultFailure(resultFailure: Result.Failure) = viewModelScope.launch {
+    private fun handleResultFailure(resultFailure: ResultOf.Failure) = viewModelScope.launch {
         when(resultFailure) {
-            is Result.Failure.ApiFailure   -> _uiState.send(UiState.ApiError(resultFailure.message))
-            Result.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
-            Result.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
-            Result.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
+            is ResultOf.Failure.ApiFailure   -> _uiState.send(UiState.ApiError(resultFailure.message))
+            ResultOf.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
+            ResultOf.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
+            ResultOf.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
         }
     }
 

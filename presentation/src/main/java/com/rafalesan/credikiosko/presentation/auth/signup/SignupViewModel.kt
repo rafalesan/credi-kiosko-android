@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.domain.auth.usecases.SignupUseCase
 import com.rafalesan.credikiosko.domain.auth.validators.SignupValidator
 import com.rafalesan.credikiosko.domain.auth.validators.SignupValidator.SignupValidation.*
-import com.rafalesan.credikiosko.domain.utils.Result
+import com.rafalesan.credikiosko.domain.utils.ResultOf
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.presentation.base.utils.UiState
@@ -47,20 +47,20 @@ class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel(
             _uiState.send(UiState.Loading(false))
 
             when(result) {
-                is Result.Success -> {
+                is ResultOf.Success     -> {
                     toast(result.value.name)
                 }
-                is Result.InvalidData -> {
+                is ResultOf.InvalidData -> {
                     handleInvalidDataResult(result)
                 }
-                is Result.Failure -> {
+                is ResultOf.Failure     -> {
                     handleResultFailure(result)
                 }
             }
         }
     }
 
-    private fun handleInvalidDataResult(invalidDataResult: Result.InvalidData<SignupValidator.SignupValidation>) {
+    private fun handleInvalidDataResult(invalidDataResult: ResultOf.InvalidData<SignupValidator.SignupValidation>) {
         val validations = invalidDataResult.validations
         val errorsMap = mutableMapOf<String, Int>()
         validations.forEach { validation ->
@@ -87,15 +87,15 @@ class SignupViewModel(private val signupUseCase: SignupUseCase) : BaseViewModel(
         }
     }
 
-    private fun handleResultFailure(resultFailure: Result.Failure) = viewModelScope.launch {
+    private fun handleResultFailure(resultFailure: ResultOf.Failure) = viewModelScope.launch {
         when(resultFailure) {
-            is Result.Failure.ApiFailure  -> {
+            is ResultOf.Failure.ApiFailure   -> {
                 _uiState.send(UiState.ApiError(resultFailure.message))
                 showErrorsFromApi(resultFailure.errors)
             }
-            Result.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
-            Result.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
-            Result.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
+            ResultOf.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
+            ResultOf.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
+            ResultOf.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
         }
     }
 

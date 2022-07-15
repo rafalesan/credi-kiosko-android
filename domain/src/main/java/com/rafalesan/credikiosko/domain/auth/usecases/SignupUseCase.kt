@@ -4,12 +4,12 @@ import com.rafalesan.credikiosko.domain.account.usecases.SaveUserSessionUseCase
 import com.rafalesan.credikiosko.domain.auth.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.validators.SignupValidator
-import com.rafalesan.credikiosko.domain.utils.Result
+import com.rafalesan.credikiosko.domain.utils.ResultOf
 
 class SignupUseCase(private val authRepository: IAuthRepository,
                     private val saveUserSessionUseCase: SaveUserSessionUseCase) {
 
-    suspend operator fun invoke(signupData: SignupData): Result<UserSession, SignupValidator.SignupValidation> {
+    suspend operator fun invoke(signupData: SignupData): ResultOf<UserSession, SignupValidator.SignupValidation> {
 
         val validations = listOfNotNull(
             SignupValidator.validateName(signupData.name),
@@ -21,12 +21,12 @@ class SignupUseCase(private val authRepository: IAuthRepository,
             SignupValidator.validateDeviceName(signupData.deviceName))
 
         if(validations.isNotEmpty()) {
-            return Result.InvalidData(validations)
+            return ResultOf.InvalidData(validations)
         }
 
         val result = authRepository.signup(signupData)
 
-        if(result is Result.Success) {
+        if(result is ResultOf.Success) {
             saveUserSessionUseCase.invoke(result.value)
         }
 
