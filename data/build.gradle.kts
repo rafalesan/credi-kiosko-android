@@ -23,6 +23,7 @@ android {
 dependencies {
 
     implementation(Square.Retrofit2.retrofit)
+    implementation(Square.OkHttp3.okHttp)
     implementation(Square.moshi)
     kapt(Square.moshi.kotlinCodegen)
 
@@ -35,6 +36,8 @@ dependencies {
     testImplementation(Testing.MockK)
     testImplementation(KotlinX.coroutines.test)
     testImplementation(AndroidX.test.ext.truth)
+    testImplementation(Square.OkHttp3.mockWebServer)
+    testImplementation(Square.Retrofit2.converter.moshi)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
 
