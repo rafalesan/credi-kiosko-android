@@ -1,0 +1,17 @@
+{
+  "message": "User Registered",
+  "data": {
+    "token": "12|ZHRgwrKPHpUgegOntW3Aoxogg5z43Wqo3ddonMhv",
+    "user": {
+      "id": 1,
+      "business_id": 1,
+      "name": "Rafael Alegría Sánchez",
+      "nickname": "rafalesan",
+      "email": "rafalesan96@gmail.com",
+      "email_verified_at": null,
+      "created_at": "2022-04-17T13:36:05.000000Z",
+      "updated_at": "2022-04-17T13:36:05.000000Z",
+      "deleted_at": null
+    }
+  }
+}
