@@ -1,0 +1,8 @@
+{
+  "message": "Los datos proporcionados no son válidos",
+  "errors": {
+    "email": [
+      "El email ya ha sido registrado."
+    ]
+  }
+}

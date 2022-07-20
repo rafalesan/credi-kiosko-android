@@ -5,20 +5,20 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.common.truth.Truth.assertWithMessage
-import com.rafalesan.credikiosko.data.FileResourceHelper.getBufferedSourceOf
 import com.rafalesan.credikiosko.data.auth.datasource.local.UserSessionDataSource
 import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
 import com.rafalesan.credikiosko.data.auth.datasource.remote.IAuthApi
+import com.rafalesan.credikiosko.data.enqueue
 import com.rafalesan.credikiosko.data.utils.ApiHandler
 import com.rafalesan.credikiosko.data.utils.ConnectivityHelper
 import com.rafalesan.credikiosko.domain.auth.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
+import com.rafalesan.credikiosko.domain.auth.usecases.SignupUseCase
 import com.rafalesan.credikiosko.domain.utils.ResultOf
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.fail
 import org.junit.Before
@@ -79,14 +79,13 @@ class AuthRepositoryTest {
     @Test
     fun `when login success then get result of success with user session`() {
 
-        val source = getBufferedSourceOf("login_success_response.json")
-        val mockResponse = MockResponse()
-        mockResponse.setBody(source.readString(Charsets.UTF_8))
-        mockServer.enqueue(mockResponse)
+        mockServer.enqueue("auth/login_success_response.json")
 
         runTest {
 
-            val result = authRepository.login(LoginUseCase.Credentials("", "", ""))
+            val result = authRepository.login(LoginUseCase.Credentials("rafalesan96@gmail.com",
+                                                                       "password",
+                                                                       "S21 de Rafael"))
             if (result !is ResultOf.Success) {
                 fail("result is not ResultOf.Success")
                 return@runTest
@@ -97,6 +96,75 @@ class AuthRepositoryTest {
                     .isInstanceOf(UserSession::class.java)
 
         }
+    }
+
+    @Test
+    fun `when login unsuccessful then get result of failure api failure`() {
+
+        mockServer.enqueue("auth/login_unsuccessful_response.json", 422)
+
+        runTest {
+
+            val result = authRepository.login(LoginUseCase.Credentials("rafalesan96@gmail.com",
+                                                                       "password",
+                                                                       "S21 de Rafael"))
+
+            assertWithMessage("result is not an ResultOf.Failure.ApiFailure")
+                    .that(result)
+                    .isInstanceOf(ResultOf.Failure.ApiFailure::class.java)
+
+        }
+
+    }
+
+    @Test
+    fun `when signup success then get result of success`() {
+
+        mockServer.enqueue("auth/signup_success_response.json")
+
+        runTest {
+
+            val result = authRepository.signup(SignupUseCase.SignupData("Rafael Alegría Sánchez",
+                                                                        "rafalesan",
+                                                                        "rafalesan corporation",
+                                                                        "rafalesan96@gmail.com",
+                                                                        "password",
+                                                                        "password",
+                                                                        "S21 de Rafael"))
+            if (result !is ResultOf.Success) {
+                fail("result is not ResultOf.Success")
+                return@runTest
+            }
+
+            assertWithMessage("result.value is not an UserSession")
+                    .that(result.value)
+                    .isInstanceOf(UserSession::class.java)
+
+        }
+
+    }
+
+    @Test
+    fun `when signup unsuccessful then get result of failure api failure`() {
+
+        mockServer.enqueue("auth/signup_unsuccessful_response.json", 422)
+
+        runTest {
+
+            val result = authRepository.signup(SignupUseCase.SignupData("Rafael Alegría Sánchez",
+                                                                        "rafalesan",
+                                                                        "rafalesan corporation",
+                                                                        "rafalesan96@gmail.com",
+                                                                        "password",
+                                                                        "password",
+                                                                        "S21 de Rafael"))
+
+            assertWithMessage("result is not an ResultOf.Failure.ApiFailure")
+                    .that(result)
+                    .isInstanceOf(ResultOf.Failure.ApiFailure::class.java)
+
+        }
+
     }
 
 }
