@@ -28,6 +28,7 @@ fun getIp(): String {
     return (result ?: run { InetAddress.getLocalHost() } ).hostAddress
 }
 
+@Suppress("UnstableApiUsage")
 android {
 
     buildTypes {
