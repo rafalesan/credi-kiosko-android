@@ -29,7 +29,8 @@ dependencies {
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)
 
-    implementation(AndroidX.lifecycle.runtimeKtx)
+    implementation(AndroidX.lifecycle.runtime.ktx)
+    implementation(AndroidX.lifecycle.viewModelKtx)
 
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(AndroidX.navigation.uiKtx)
