@@ -3,8 +3,8 @@ package com.rafalesan.credikiosko.presentation.auth.signup
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.databinding.FrgSignupBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

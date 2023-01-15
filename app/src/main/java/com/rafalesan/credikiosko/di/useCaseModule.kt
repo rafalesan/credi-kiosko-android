@@ -1,9 +1,9 @@
 package com.rafalesan.credikiosko.di
 
-import com.rafalesan.credikiosko.domain.account.usecases.ChangeThemeUseCase
-import com.rafalesan.credikiosko.domain.account.usecases.GetThemeUseCase
-import com.rafalesan.credikiosko.domain.account.usecases.GetUserSessionInfoUseCase
-import com.rafalesan.credikiosko.domain.account.usecases.SaveUserSessionUseCase
+import com.rafalesan.credikiosko.core.commons.domain.usecases.ChangeThemeUseCase
+import com.rafalesan.credikiosko.core.commons.domain.usecases.GetThemeUseCase
+import com.rafalesan.credikiosko.core.commons.domain.usecases.GetUserSessionInfoUseCase
+import com.rafalesan.credikiosko.core.commons.domain.usecases.SaveUserSessionUseCase
 import com.rafalesan.credikiosko.domain.auth.usecases.ExistUserSession
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.domain.auth.usecases.SignupUseCase

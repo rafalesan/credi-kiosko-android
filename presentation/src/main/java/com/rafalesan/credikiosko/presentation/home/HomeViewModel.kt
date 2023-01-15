@@ -1,8 +1,8 @@
 package com.rafalesan.credikiosko.presentation.home
 
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.presentation.home.HomeAction.HomeOptionSelected
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted

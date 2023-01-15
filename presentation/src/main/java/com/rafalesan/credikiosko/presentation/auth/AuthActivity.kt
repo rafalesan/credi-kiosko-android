@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
+import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
 import com.rafalesan.credikiosko.domain.account.entity.Theme
 import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.base.BaseActivity
 import com.rafalesan.credikiosko.presentation.bindingadapters.setImage
 import com.rafalesan.credikiosko.presentation.bindingadapters.setTint
 import com.rafalesan.credikiosko.presentation.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
 import com.rafalesan.credikiosko.presentation.main.MainActivity
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
-import com.rafalesan.credikiosko.presentation.utils.helpers.ThemeHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
@@ -35,7 +35,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
 
     override fun onSubscribeViewModel() {
         viewModel.theme.collect(this) { theme ->
-            ThemeHelper.setTheme(this, theme, binding.ivTheme) { isDarkTheme ->
+            ThemeUtil.setTheme(this, theme, binding.ivTheme) { isDarkTheme ->
                 viewModel.perform(AuthAction.ChangeTheme(isDarkTheme))
             }
         }

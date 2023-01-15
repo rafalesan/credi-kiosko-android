@@ -21,6 +21,7 @@ android {
 dependencies {
 
     implementation(KotlinX.coroutines.android)
+    implementation(project(mapOf("path" to ":core")))
 
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)

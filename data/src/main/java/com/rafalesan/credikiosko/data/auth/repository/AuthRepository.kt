@@ -1,16 +1,16 @@
 package com.rafalesan.credikiosko.data.auth.repository
 
-import com.rafalesan.credikiosko.data.auth.datasource.local.UserSessionDataSource
+import com.rafalesan.credikiosko.core.commons.data.datasource.local.UserSessionDataSource
+import com.rafalesan.credikiosko.core.commons.data.utils.ApiResultHandler
+import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
+import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
 import com.rafalesan.credikiosko.data.auth.mappers.toLoginRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toSignupRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toUserSession
-import com.rafalesan.credikiosko.data.utils.ApiResultHandler
-import com.rafalesan.credikiosko.domain.auth.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.domain.auth.usecases.SignupUseCase
-import com.rafalesan.credikiosko.domain.utils.ResultOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 

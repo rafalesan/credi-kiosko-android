@@ -3,7 +3,7 @@ package com.rafalesan.credikiosko.di
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.rafalesan.credikiosko.BuildConfig
-import com.rafalesan.credikiosko.data.auth.datasource.local.UserSessionDataSource
+import com.rafalesan.credikiosko.core.commons.data.datasource.local.UserSessionDataSource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
