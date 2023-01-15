@@ -1,8 +1,8 @@
 package com.rafalesan.credikiosko.data.auth.mappers
 
-import com.rafalesan.credikiosko.core.commons.data.entity.remote.AuthResponse
-import com.rafalesan.credikiosko.core.commons.data.entity.remote.LoginRequest
-import com.rafalesan.credikiosko.core.commons.data.entity.remote.SignupRequest
+import com.rafalesan.credikiosko.core.commons.data.dto.AuthResponse
+import com.rafalesan.credikiosko.core.commons.data.dto.LoginRequest
+import com.rafalesan.credikiosko.core.commons.data.dto.SignupRequest
 import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.domain.auth.usecases.SignupUseCase
