@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.core.commons.data.entity.remote
+package com.rafalesan.credikiosko.core.commons.data.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
