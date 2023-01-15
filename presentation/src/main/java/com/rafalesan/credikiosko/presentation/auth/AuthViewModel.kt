@@ -1,12 +1,12 @@
 package com.rafalesan.credikiosko.presentation.auth
 
 import androidx.lifecycle.viewModelScope
-import com.rafalesan.credikiosko.domain.account.entity.Theme
-import com.rafalesan.credikiosko.domain.account.usecases.ChangeThemeUseCase
-import com.rafalesan.credikiosko.domain.account.usecases.GetThemeUseCase
+import com.rafalesan.credikiosko.core.commons.domain.entity.Theme
+import com.rafalesan.credikiosko.core.commons.domain.usecases.ChangeThemeUseCase
+import com.rafalesan.credikiosko.core.commons.domain.usecases.GetThemeUseCase
+import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.domain.auth.usecases.ExistUserSession
 import com.rafalesan.credikiosko.presentation.auth.AuthAction.ChangeTheme
-import com.rafalesan.credikiosko.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -26,6 +26,7 @@ dependencies {
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.OkHttp3.okHttp)
     implementation(Square.moshi)
+    implementation(project(mapOf("path" to ":core")))
     kapt(Square.moshi.kotlinCodegen)
 
     implementation(KotlinX.coroutines.android)

@@ -1,0 +1,62 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.CrediKiosko" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.CrediKiosko.NoActionBar" parent="Theme.CrediKiosko">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.CrediKiosko.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+
+    <style name="Theme.CrediKiosko.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
+    <style name="BaseButton">
+        <item name="android:paddingTop">@dimen/space_2x</item>
+        <item name="android:paddingBottom">@dimen/space_2x</item>
+    </style>
+
+    <style name="PrimaryButton" parent="BaseButton">
+
+    </style>
+
+    <style name="SecondaryButton" parent="BaseButton">
+        <item name="backgroundTint">@color/teal_200</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Center" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitlePanelStyle">@style/Title.Panel.Center</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="Title.Panel.Center" parent="MaterialAlertDialog.MaterialComponents.Title.Panel">
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/purple_500</item>
+    </style>
+
+</resources>

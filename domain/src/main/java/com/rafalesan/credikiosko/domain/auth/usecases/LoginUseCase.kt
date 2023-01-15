@@ -1,10 +1,10 @@
 package com.rafalesan.credikiosko.domain.auth.usecases
 
-import com.rafalesan.credikiosko.domain.account.usecases.SaveUserSessionUseCase
-import com.rafalesan.credikiosko.domain.auth.entity.UserSession
+import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
+import com.rafalesan.credikiosko.core.commons.domain.usecases.SaveUserSessionUseCase
+import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator
-import com.rafalesan.credikiosko.domain.utils.ResultOf
 
 class LoginUseCase(private val authRepository: IAuthRepository,
                    private val saveUserSessionUseCase: SaveUserSessionUseCase) {

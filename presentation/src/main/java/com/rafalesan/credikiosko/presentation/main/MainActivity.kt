@@ -7,12 +7,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.rafalesan.credikiosko.domain.auth.entity.UserSession
+import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
+import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
+import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
 import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.base.BaseActivity
 import com.rafalesan.credikiosko.presentation.databinding.ActMainBinding
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
-import com.rafalesan.credikiosko.presentation.utils.helpers.ThemeHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<MainViewModel, ActMainBinding>() {
@@ -40,7 +40,7 @@ class MainActivity : BaseActivity<MainViewModel, ActMainBinding>() {
         }
         viewModel.theme.collect(this) {
             viewModel.theme.collect(this) { theme ->
-                ThemeHelper.setTheme(this, theme, navHeaderView.findViewById(R.id.ivTheme)) { isDarkTheme ->
+                ThemeUtil.setTheme(this, theme, navHeaderView.findViewById(R.id.ivTheme)) { isDarkTheme ->
                     viewModel.perform(MainAction.ChangeTheme(isDarkTheme))
                 }
             }

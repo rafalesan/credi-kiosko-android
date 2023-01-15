@@ -1,12 +1,12 @@
 package com.rafalesan.credikiosko.di
 
-import com.rafalesan.credikiosko.data.account.repository.AccountRepository
+import com.rafalesan.credikiosko.core.commons.data.repository.AccountRepository
+import com.rafalesan.credikiosko.core.commons.data.utils.ApiHandler
+import com.rafalesan.credikiosko.core.commons.data.utils.ConnectivityHelper
+import com.rafalesan.credikiosko.core.commons.data.utils.IApiHandler
+import com.rafalesan.credikiosko.core.commons.data.utils.IConnectivityHelper
+import com.rafalesan.credikiosko.core.commons.domain.repository.IAccountRepository
 import com.rafalesan.credikiosko.data.auth.repository.AuthRepository
-import com.rafalesan.credikiosko.data.utils.ApiHandler
-import com.rafalesan.credikiosko.data.utils.ConnectivityHelper
-import com.rafalesan.credikiosko.data.utils.IApiHandler
-import com.rafalesan.credikiosko.data.utils.IConnectivityHelper
-import com.rafalesan.credikiosko.domain.account.repository.IAccountRepository
 import com.rafalesan.credikiosko.domain.auth.repository.IAuthRepository
 import org.koin.dsl.module
 

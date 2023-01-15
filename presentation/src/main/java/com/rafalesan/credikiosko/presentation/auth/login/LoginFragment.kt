@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.databinding.FrgLoginBinding
 import com.rafalesan.credikiosko.presentation.main.MainActivity
 import com.rafalesan.credikiosko.presentation.utils.ext.collect

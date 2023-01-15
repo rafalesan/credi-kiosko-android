@@ -1,6 +1,6 @@
 package com.rafalesan.credikiosko.domain.auth.validators
 
-import com.rafalesan.credikiosko.domain.utils.ext.isNotValidEmail
+import com.rafalesan.credikiosko.core.commons.domain.utils.ext.isNotValidEmail
 
 object CredentialsValidator {
 

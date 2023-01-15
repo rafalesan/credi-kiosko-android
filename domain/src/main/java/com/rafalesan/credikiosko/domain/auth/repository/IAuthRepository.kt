@@ -1,9 +1,9 @@
 package com.rafalesan.credikiosko.domain.auth.repository
 
-import com.rafalesan.credikiosko.domain.auth.entity.UserSession
+import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
+import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.domain.auth.usecases.SignupUseCase
-import com.rafalesan.credikiosko.domain.utils.ResultOf
 
 interface IAuthRepository {
 

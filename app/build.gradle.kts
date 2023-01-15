@@ -60,6 +60,7 @@ dependencies {
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.Retrofit2.converter.moshi)
     implementation(Square.moshi.adapters)
+    implementation(project(mapOf("path" to ":core")))
     kapt(Square.moshi.kotlinCodegen)
     implementation(Square.OkHttp3.loggingInterceptor)
     implementation(Chucker.library)
