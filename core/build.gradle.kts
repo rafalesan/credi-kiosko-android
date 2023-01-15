@@ -5,6 +5,7 @@ plugins {
 
 @Suppress("UnstableApiUsage")
 android {
+    namespace = "com.rafalesan.credikiosko.core"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -13,17 +14,14 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro")
+                          "proguard-rules.pro")
         }
     }
 }
 
 dependencies {
 
-    implementation(KotlinX.coroutines.android)
-
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
-
 }
