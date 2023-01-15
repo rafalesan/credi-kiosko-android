@@ -45,6 +45,5 @@ dependencies {
     androidTestImplementation(AndroidX.test.espresso.core)
 
     implementation(project(":core"))
-    implementation(project(":domain"))
 
 }
