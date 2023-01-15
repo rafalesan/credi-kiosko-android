@@ -60,7 +60,6 @@ dependencies {
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.Retrofit2.converter.moshi)
     implementation(Square.moshi.adapters)
-    implementation(project(mapOf("path" to ":core")))
     kapt(Square.moshi.kotlinCodegen)
     implementation(Square.OkHttp3.loggingInterceptor)
     implementation(Chucker.library)
@@ -72,8 +71,7 @@ dependencies {
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
 
+    implementation(project(":core"))
     implementation(project(":presentation"))
-    implementation(project(":domain"))
-    implementation(project(":data"))
 
 }
