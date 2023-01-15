@@ -1,12 +1,12 @@
 package com.rafalesan.credikiosko.presentation.auth.login
 
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.LoginUseCase
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator.CredentialValidation.*
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
-import com.rafalesan.credikiosko.domain.auth.usecases.LoginUseCase
-import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator
-import com.rafalesan.credikiosko.domain.auth.validators.CredentialsValidator.CredentialValidation.*
 import com.rafalesan.credikiosko.presentation.R
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
