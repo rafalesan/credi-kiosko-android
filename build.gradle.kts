@@ -15,7 +15,6 @@ fun BaseExtension.baseConfig() {
     defaultConfig.apply {
         minSdk = findProperty("minSdkVersion").toString().toInt()
         targetSdk = findProperty("targetSdkVersion").toString().toInt()
-
         testInstrumentationRunner = findProperty("testInstrumentationRunner").toString()
     }
 
