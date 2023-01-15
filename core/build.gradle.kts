@@ -51,10 +51,11 @@ dependencies {
     implementation(JakeWharton.timber)
 
     testImplementation(Testing.junit4)
-    androidTestImplementation(AndroidX.test.ext.junit.ktx)
-    androidTestImplementation(AndroidX.test.espresso.core)
-
-    testImplementation(Testing.junit4)
+    testImplementation(Testing.MockK)
+    testImplementation(KotlinX.coroutines.test)
+    testImplementation(AndroidX.test.ext.truth)
+    testImplementation(Square.OkHttp3.mockWebServer)
+    testImplementation(Square.Retrofit2.converter.moshi)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
 }

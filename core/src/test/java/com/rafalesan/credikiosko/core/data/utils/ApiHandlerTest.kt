@@ -1,9 +1,13 @@
-package com.rafalesan.credikiosko.data.utils
+package com.rafalesan.credikiosko.core.data.utils
 
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
-import com.rafalesan.credikiosko.data.utils.exceptions.ApiException
-import com.rafalesan.credikiosko.data.utils.exceptions.NoInternetException
+import com.rafalesan.credikiosko.core.commons.data.utils.ApiHandler
+import com.rafalesan.credikiosko.core.commons.data.utils.ApiResult
+import com.rafalesan.credikiosko.core.commons.data.utils.IApiHandler
+import com.rafalesan.credikiosko.core.commons.data.utils.IConnectivityHelper
+import com.rafalesan.credikiosko.core.commons.data.utils.exceptions.ApiException
+import com.rafalesan.credikiosko.core.commons.data.utils.exceptions.NoInternetException
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,11 +1,11 @@
 package com.rafalesan.credikiosko.data.auth.datasource.remote
 
 import com.rafalesan.credikiosko.core.commons.data.base.BaseResponse
+import com.rafalesan.credikiosko.core.commons.data.entity.remote.AuthResponse
+import com.rafalesan.credikiosko.core.commons.data.entity.remote.LoginRequest
+import com.rafalesan.credikiosko.core.commons.data.entity.remote.SignupRequest
 import com.rafalesan.credikiosko.core.commons.data.utils.ApiResult
 import com.rafalesan.credikiosko.core.commons.data.utils.IApiHandler
-import com.rafalesan.credikiosko.data.auth.entity.remote.AuthResponse
-import com.rafalesan.credikiosko.data.auth.entity.remote.LoginRequest
-import com.rafalesan.credikiosko.data.auth.entity.remote.SignupRequest
 
 class AuthDataSource(private val authApi: IAuthApi,
                      private val apiHandler: IApiHandler) {
