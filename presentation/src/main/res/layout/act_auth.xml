@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.rafalesan.credikiosko.domain.account.entity.Theme" />
         <import type="com.rafalesan.credikiosko.presentation.auth.AuthAction" />
         <variable
             name="viewModel"

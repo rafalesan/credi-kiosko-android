@@ -4,14 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
 import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
-import com.rafalesan.credikiosko.domain.account.entity.Theme
 import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.bindingadapters.setImage
-import com.rafalesan.credikiosko.presentation.bindingadapters.setTint
 import com.rafalesan.credikiosko.presentation.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
 import com.rafalesan.credikiosko.presentation.main.MainActivity
@@ -30,7 +25,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
 
     private fun setup() {
         setupSplash()
-        setupIvTheme(isSystemInDarkTheme())
+        ThemeUtil.setupIvTheme(this, isSystemInDarkTheme(), binding.ivTheme)
     }
 
     override fun onSubscribeViewModel() {
@@ -70,38 +65,6 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
             }
 
         })
-    }
-
-    private fun setTheme(theme: Theme?) {
-
-        val isDarkTheme = when(theme) {
-            Theme.NIGHT_YES -> false
-            Theme.NIGHT_NO -> true
-            Theme.NIGHT_UNSPECIFIED -> isSystemInDarkTheme()
-            null -> return
-        }
-
-        setupIvTheme(isDarkTheme)
-
-        if(isDarkTheme) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-        binding.ivTheme.setOnClickListener {
-            viewModel.perform(AuthAction.ChangeTheme(isDarkTheme))
-        }
-    }
-
-    private fun setupIvTheme(isDarkTheme: Boolean) {
-        if(isDarkTheme) {
-            binding.ivTheme.setImage(R.drawable.ic_light_mode)
-            binding.ivTheme.setTint(ContextCompat.getColor(this, R.color.yellow))
-        } else {
-            binding.ivTheme.setImage(R.drawable.ic_dark_mode)
-            binding.ivTheme.setTint(ContextCompat.getColor(this, R.color.purple_500))
-        }
-
     }
 
 }
