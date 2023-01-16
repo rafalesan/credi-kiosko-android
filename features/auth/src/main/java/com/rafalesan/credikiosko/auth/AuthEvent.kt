@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.auth
+package com.rafalesan.credikiosko.auth
 
 sealed class AuthEvent {
     object OpenHome: AuthEvent()

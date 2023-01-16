@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.rafalesan.credikiosko.presentation.auth.signup.SignupAction" />
+        <import type="com.rafalesan.credikiosko.auth.signup.SignupAction" />
         <variable
             name="viewModel"
-            type="com.rafalesan.credikiosko.presentation.auth.signup.SignupViewModel" />
+            type="com.rafalesan.credikiosko.auth.signup.SignupViewModel" />
     </data>
 
     <ScrollView

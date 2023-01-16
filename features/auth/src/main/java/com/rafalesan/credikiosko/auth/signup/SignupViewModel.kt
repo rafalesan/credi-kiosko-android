@@ -1,13 +1,13 @@
-package com.rafalesan.credikiosko.presentation.auth.signup
+package com.rafalesan.credikiosko.auth.signup
 
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.SignupUseCase
 import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator
 import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.*
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
-import com.rafalesan.credikiosko.presentation.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 

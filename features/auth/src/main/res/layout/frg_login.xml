@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="com.rafalesan.credikiosko.presentation.auth.login.LoginAction" />
+        <import type="com.rafalesan.credikiosko.auth.login.LoginAction" />
         <variable
             name="viewModel"
-            type="com.rafalesan.credikiosko.presentation.auth.login.LoginViewModel" />
+            type="com.rafalesan.credikiosko.auth.login.LoginViewModel" />
     </data>
 
     <ScrollView

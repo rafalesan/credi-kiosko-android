@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.auth.signup
+package com.rafalesan.credikiosko.auth.signup
 
 sealed class SignupAction {
     object Signup: SignupAction()

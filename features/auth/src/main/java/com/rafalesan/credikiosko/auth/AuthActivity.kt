@@ -1,15 +1,13 @@
-package com.rafalesan.credikiosko.presentation.auth
+package com.rafalesan.credikiosko.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import com.rafalesan.credikiosko.auth.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
 import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
-import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
-import com.rafalesan.credikiosko.presentation.main.MainActivity
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,7 +45,8 @@ class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
     }
 
     private fun openHome() {
-        val intent = Intent(this, MainActivity::class.java)
+        val classForName = Class.forName(mainActivityNameSpace)
+        val intent = Intent(this, classForName)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                 Intent.FLAG_ACTIVITY_CLEAR_TASK or
                 Intent.FLAG_ACTIVITY_CLEAR_TOP

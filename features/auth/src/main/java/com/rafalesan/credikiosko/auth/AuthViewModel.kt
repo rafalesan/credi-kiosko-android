@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.auth
+package com.rafalesan.credikiosko.auth
 
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.ExistUserSession
@@ -6,7 +6,6 @@ import com.rafalesan.credikiosko.core.commons.domain.entity.Theme
 import com.rafalesan.credikiosko.core.commons.domain.usecases.ChangeThemeUseCase
 import com.rafalesan.credikiosko.core.commons.domain.usecases.GetThemeUseCase
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
-import com.rafalesan.credikiosko.presentation.auth.AuthAction.ChangeTheme
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +26,7 @@ class AuthViewModel(getThemeUseCase: GetThemeUseCase,
 
     fun perform(action: AuthAction) {
         when(action) {
-            is ChangeTheme -> changeTheme(action.lightTheme)
+            is AuthAction.ChangeTheme    -> changeTheme(action.lightTheme)
             AuthAction.SessionValidation -> validateSession()
         }
     }
