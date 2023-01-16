@@ -1,14 +1,14 @@
-package com.rafalesan.credikiosko.presentation.auth.login
+package com.rafalesan.credikiosko.auth.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.rafalesan.credikiosko.auth.R
+import com.rafalesan.credikiosko.auth.databinding.FrgLoginBinding
+import com.rafalesan.credikiosko.auth.mainActivityNameSpace
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
-import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.databinding.FrgLoginBinding
-import com.rafalesan.credikiosko.presentation.main.MainActivity
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,7 +42,8 @@ class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
     }
 
     private fun openHome() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
+        val classForName = Class.forName(mainActivityNameSpace)
+        val intent = Intent(requireContext(), classForName)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                 Intent.FLAG_ACTIVITY_CLEAR_TASK or
                 Intent.FLAG_ACTIVITY_CLEAR_TOP

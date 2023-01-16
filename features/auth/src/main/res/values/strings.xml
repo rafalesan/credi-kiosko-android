@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="under_construction">En construcción</string>
+    <string name="create_an_account">Crear una cuenta</string>
+    <string name="log_in">Iniciar sesión</string>
+    <string name="password">Contraseña</string>
+    <string name="email">Correo</string>
+    <string name="login_description">Ingrese su correo y contraseña para acceder a su\ncuenta, cree una cuenta o inicie con su cuenta de\nGoogle.</string>
+    <string name="val_empty_email">Por favor ingrese su correo</string>
+    <string name="val_invalid_email">Por favor ingrese un correo válido</string>
+    <string name="val_empty_password">Por favor ingrese su contraseña</string>
+    <string name="authenticating">Iniciando sesión</string>
+    <string name="no_internet_connection">Sin conexión a internet</string>
+    <string name="no_internet_connection_description">Al parecer usted no cuenta con conexión a internet. Verifique si su wifi o datos móviles están activados.</string>
+    <string name="message">Mensaje</string>
+    <string name="loading">Cargando</string>
+    <string name="unknown_error_description">Ocurrió un error desconocido</string>
+    <string name="signup_description">Llene el siguiente formulario para crear su cuenta y\ncomience a brindar crédito a sus clientes.</string>
+    <string name="complete_name">Nombre completo</string>
+    <string name="nickname">Nombre de usuario</string>
+    <string name="business_name">Nombre del negocio</string>
+    <string name="repeat_password">Repetir contraseña</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="registering">Registrando</string>
+    <string name="val_empty_full_user_name">Por favor ingrese su nombre completo</string>
+    <string name="val_min_10_chars_full_user_name">El nombre debe tener 10 caracteres como mínimo</string>
+    <string name="val_empty_business_name">Por favor ingrese el nombre de su negocio</string>
+    <string name="val_min_2_chars_business_name">El nombre del negocio debe tener 2 caracteres como mínimo</string>
+    <string name="val_empty_nickname">Por favor ingrese su nombre de usuario</string>
+    <string name="val_min_3_chars_nickname">El nombre de usuario debe tener 3 caracteres como mínimo</string>
+    <string name="val_empty_passwrod_confirmation">Por favor repita su contraseña</string>
+    <string name="val_password_not_equals">Las contraseñas no coinciden</string>
+</resources>

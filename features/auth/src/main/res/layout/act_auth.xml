@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.rafalesan.credikiosko.presentation.auth.AuthAction" />
+        <import type="com.rafalesan.credikiosko.auth.AuthAction" />
         <variable
             name="viewModel"
-            type="com.rafalesan.credikiosko.presentation.auth.AuthViewModel" />
+            type="com.rafalesan.credikiosko.auth.AuthViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

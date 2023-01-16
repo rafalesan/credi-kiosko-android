@@ -1,11 +1,11 @@
-package com.rafalesan.credikiosko.presentation.auth.signup
+package com.rafalesan.credikiosko.auth.signup
 
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import com.rafalesan.credikiosko.auth.R
+import com.rafalesan.credikiosko.auth.databinding.FrgSignupBinding
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
-import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.databinding.FrgSignupBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignupFragment : BaseViewModelFragment<SignupViewModel, FrgSignupBinding>() {

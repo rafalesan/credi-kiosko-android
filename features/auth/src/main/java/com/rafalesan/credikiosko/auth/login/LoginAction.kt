@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.auth.login
+package com.rafalesan.credikiosko.auth.login
 
 sealed class LoginAction {
     object Login: LoginAction()
