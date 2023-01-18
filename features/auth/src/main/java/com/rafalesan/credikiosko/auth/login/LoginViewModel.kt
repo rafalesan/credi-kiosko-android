@@ -8,12 +8,17 @@ import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsVal
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(private val loginUseCase: LoginUseCase) : BaseViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase
+) : BaseViewModel() {
 
     val email = MutableStateFlow("")
     val password = MutableStateFlow("")

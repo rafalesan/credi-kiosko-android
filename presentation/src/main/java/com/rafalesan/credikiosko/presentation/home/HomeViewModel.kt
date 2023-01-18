@@ -4,12 +4,15 @@ import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.home.HomeAction.HomeOptionSelected
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class HomeViewModel : BaseViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : BaseViewModel() {
 
     val homeOptions = getHomeOptions()
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)

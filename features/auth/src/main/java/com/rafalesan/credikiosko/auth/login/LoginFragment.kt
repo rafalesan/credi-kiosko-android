@@ -4,18 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.auth.databinding.FrgLoginBinding
 import com.rafalesan.credikiosko.auth.mainActivityNameSpace
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : BaseViewModelFragment<LoginViewModel, FrgLoginBinding>() {
 
     override val contentViewLayoutId = R.layout.frg_login
-    override val viewModel: LoginViewModel by viewModel()
+    override val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

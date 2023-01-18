@@ -1,6 +1,7 @@
 package com.rafalesan.credikiosko.presentation.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -13,12 +14,13 @@ import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.databinding.ActMainBinding
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<MainViewModel, ActMainBinding>() {
 
     override val contentLayoutId: Int = R.layout.act_main
-    override val viewModel: MainViewModel by viewModel()
+    override val viewModel: MainViewModel by viewModels()
 
     private val appBarConfiguration by lazy { setupAppBarConfiguration() }
     private val navController by lazy { setupNavController() }

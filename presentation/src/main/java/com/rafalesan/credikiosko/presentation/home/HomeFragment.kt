@@ -2,18 +2,20 @@ package com.rafalesan.credikiosko.presentation.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.core.commons.presentation.utils.AutoClearedValue
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.databinding.FrgHomeBinding
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : BaseViewModelFragment<HomeViewModel, FrgHomeBinding>() {
 
     override val contentViewLayoutId = R.layout.frg_home
-    override val viewModel: HomeViewModel by viewModel()
+    override val viewModel: HomeViewModel by viewModels()
 
     private var homeOptionsAdapter by AutoClearedValue<HomeOptionsAdapter>()
 

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 @Suppress("UnstableApiUsage")
@@ -36,9 +38,10 @@ dependencies {
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(AndroidX.navigation.uiKtx)
 
-    implementation(Koin.android)
-
     implementation(JakeWharton.timber)
+
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.compiler)
 
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)

@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 apply(from = "android.gradle")
@@ -56,7 +57,6 @@ android {
 
 dependencies {
 
-    implementation(Koin.android)
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.Retrofit2.converter.moshi)
     implementation(Square.moshi.adapters)
@@ -66,6 +66,9 @@ dependencies {
     implementation(JakeWharton.timber)
 
     implementation(AndroidX.dataStore.preferences)
+
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.compiler)
 
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)

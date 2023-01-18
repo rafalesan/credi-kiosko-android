@@ -11,11 +11,13 @@ pluginManagement {
     }
     val kotlinVersion = properties.getValue("version.kotlin") as String
     val androidGradleVersion = properties.getValue("plugin.android") as String
+    val daggerHiltVersion = properties.getValue("version.google.dagger") as String
 
     plugins {
         id ("com.android.application") version androidGradleVersion apply false
         id ("com.android.library") version androidGradleVersion apply false
         id("org.jetbrains.kotlin.android") version kotlinVersion apply false
+        id("com.google.dagger.hilt.android") version daggerHiltVersion apply false
     }
 }
 
