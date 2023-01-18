@@ -1,8 +1,11 @@
 package com.rafalesan.credikiosko.core.commons.domain.usecases
 
 import com.rafalesan.credikiosko.core.commons.domain.repository.IAccountRepository
+import javax.inject.Inject
 
-class GetThemeUseCase(private val accountRepository: IAccountRepository) {
+class GetThemeUseCase @Inject constructor(
+    private val accountRepository: IAccountRepository
+) {
 
     operator fun invoke() = accountRepository.getTheme()
 

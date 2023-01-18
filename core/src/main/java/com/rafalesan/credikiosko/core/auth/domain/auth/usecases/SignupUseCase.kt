@@ -5,9 +5,12 @@ import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidato
 import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
 import com.rafalesan.credikiosko.core.commons.domain.usecases.SaveUserSessionUseCase
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
+import javax.inject.Inject
 
-class SignupUseCase(private val authRepository: IAuthRepository,
-                    private val saveUserSessionUseCase: SaveUserSessionUseCase) {
+class SignupUseCase @Inject constructor(
+    private val authRepository: IAuthRepository,
+    private val saveUserSessionUseCase: SaveUserSessionUseCase
+) {
 
     suspend operator fun invoke(signupData: SignupData): ResultOf<UserSession, SignupValidator.SignupValidation> {
 

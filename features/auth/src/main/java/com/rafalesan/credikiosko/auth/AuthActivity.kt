@@ -4,17 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.activity.viewModels
 import com.rafalesan.credikiosko.auth.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
 import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
 import com.rafalesan.credikiosko.presentation.utils.ext.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthActivity : BaseActivity<AuthViewModel, ActAuthBinding>() {
 
     override val contentLayoutId: Int = R.layout.act_auth
-    override val viewModel: AuthViewModel by viewModel()
+    override val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
