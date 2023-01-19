@@ -3,7 +3,6 @@ package com.rafalesan.credikiosko.core.auth.data.repository
 import com.rafalesan.credikiosko.core.auth.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.SignupUseCase
-import com.rafalesan.credikiosko.core.commons.data.datasource.local.UserSessionDataSource
 import com.rafalesan.credikiosko.core.commons.data.utils.ApiResultHandler
 import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
@@ -11,11 +10,10 @@ import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
 import com.rafalesan.credikiosko.data.auth.mappers.toLoginRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toSignupRequest
 import com.rafalesan.credikiosko.data.auth.mappers.toUserSession
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 
-class AuthRepository(private val authDataSource: AuthDataSource,
-                     private val userSessionDataSource: UserSessionDataSource) : IAuthRepository {
+class AuthRepository(
+    private val authDataSource: AuthDataSource
+) : IAuthRepository {
 
     override suspend fun login(credentials: LoginUseCase.Credentials): ResultOf<UserSession, Nothing> {
 
@@ -39,11 +37,6 @@ class AuthRepository(private val authDataSource: AuthDataSource,
             ResultOf.Success(userSession)
         }
 
-    }
-
-    override fun existUserSession(): Boolean {
-        val userSession = runBlocking { userSessionDataSource.userSession().first() }
-        return userSession != null
     }
 
 }

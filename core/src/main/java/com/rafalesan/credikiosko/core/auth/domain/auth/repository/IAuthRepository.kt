@@ -9,6 +9,5 @@ interface IAuthRepository {
 
     suspend fun login(credentials: LoginUseCase.Credentials): ResultOf<UserSession, Nothing>
     suspend fun signup(signupData: SignupUseCase.SignupData): ResultOf<UserSession, Nothing>
-    fun existUserSession(): Boolean
 
 }
