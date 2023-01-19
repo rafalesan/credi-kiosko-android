@@ -82,7 +82,7 @@ abstract class BaseViewModelFragment<VM: BaseViewModel, VB: ViewDataBinding> : F
         if(isLoading) {
             progressDialog.show()
         } else {
-            progressDialog.hide()
+            progressDialog.dismiss()
         }
         val descriptionString = getString(description ?: R.string.loading)
         val tvDescription = progressDialog.findViewById<AppCompatTextView>(R.id.tvDescription)
