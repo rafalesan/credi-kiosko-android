@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import com.rafalesan.credikiosko.core.R
+import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
 @Composable
 fun OutlinedTextFieldWithError(
@@ -89,7 +89,7 @@ fun OutlinedTextFieldWithError(
                 text = stringResource(id = errorStringId ?: R.string.empty_string),
                 color = MaterialTheme.colors.error,
                 style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier.padding(start = Dimens.space2x)
             )
         }
     }
