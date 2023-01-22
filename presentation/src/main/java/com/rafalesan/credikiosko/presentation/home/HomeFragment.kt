@@ -5,10 +5,10 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
 import com.rafalesan.credikiosko.core.commons.presentation.utils.AutoClearedValue
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.databinding.FrgHomeBinding
-import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

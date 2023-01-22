@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.utils.ext
+package com.rafalesan.credikiosko.core.commons.presentation.extensions
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
