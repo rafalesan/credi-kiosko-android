@@ -23,7 +23,7 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.frg_login_compose, container, false)
+        val view = inflater.inflate(R.layout.frg_login, container, false)
         val composeView = view.findViewById<ComposeView>(R.id.compose_view)
         val navController = findNavController()
         composeView.apply {
