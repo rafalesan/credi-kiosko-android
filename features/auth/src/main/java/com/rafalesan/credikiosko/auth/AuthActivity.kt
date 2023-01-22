@@ -7,9 +7,9 @@ import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import com.rafalesan.credikiosko.auth.databinding.ActAuthBinding
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
 import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
 import com.rafalesan.credikiosko.presentation.extensions.isSystemInDarkTheme
-import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

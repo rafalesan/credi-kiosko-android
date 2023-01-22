@@ -10,10 +10,10 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
 import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
 import com.rafalesan.credikiosko.presentation.R
 import com.rafalesan.credikiosko.presentation.databinding.ActMainBinding
-import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

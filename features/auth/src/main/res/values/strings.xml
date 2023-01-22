@@ -30,4 +30,7 @@
     <string name="val_min_3_chars_nickname">El nombre de usuario debe tener 3 caracteres como mínimo</string>
     <string name="val_empty_passwrod_confirmation">Por favor repita su contraseña</string>
     <string name="val_password_not_equals">Las contraseñas no coinciden</string>
+    <string name="lock_icon">Icono de candado</string>
+    <string name="hide_password">Ocultar contraseña</string>
+    <string name="show_password">Mostrar contraseña</string>
 </resources>

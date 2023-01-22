@@ -72,8 +72,7 @@ class AuthRepositoryTest {
     }
 
     private fun setupAuthRepository() {
-        authRepository = AuthRepository(authDataSource,
-                                        userSessionDataSource)
+        authRepository = AuthRepository(authDataSource)
     }
 
     @Test

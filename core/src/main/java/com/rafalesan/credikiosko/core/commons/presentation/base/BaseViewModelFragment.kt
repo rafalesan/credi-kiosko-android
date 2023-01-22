@@ -13,10 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rafalesan.credikiosko.core.BR
 import com.rafalesan.credikiosko.core.R
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
 import com.rafalesan.credikiosko.core.commons.presentation.utils.AutoClearedValue
 import com.rafalesan.credikiosko.core.commons.presentation.utils.DialogUtil
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
-import com.rafalesan.credikiosko.presentation.utils.ext.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber

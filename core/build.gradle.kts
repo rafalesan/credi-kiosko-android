@@ -1,3 +1,5 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -22,6 +24,11 @@ android {
 
     buildFeatures {
         dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
 }
 
@@ -51,6 +58,11 @@ dependencies {
 
     implementation(Google.dagger.hilt.android)
     kapt(Google.dagger.hilt.compiler)
+
+    implementation(AndroidX.compose.ui)
+    implementation(AndroidX.compose.material)
+    implementation(AndroidX.compose.material.icons.extended)
+    implementation(AndroidX.compose.ui.toolingPreview)
 
     testImplementation(Testing.junit4)
     testImplementation(Testing.MockK)
