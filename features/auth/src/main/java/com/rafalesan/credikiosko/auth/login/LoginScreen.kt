@@ -191,19 +191,21 @@ fun PasswordInput(viewModel: LoginViewModel) {
         },
         trailingIcon = {
             IconButton(onClick = { hidden.value = !hidden.value }) {
-                val vector = if (hidden.value) {
-                    Icons.Filled.Visibility
+
+                val (icon, contentDescription) = if (hidden.value) {
+                    Pair(
+                        Icons.Filled.Visibility,
+                        stringResource(id = R.string.hide_password)
+                    )
                 } else {
-                    Icons.Filled.VisibilityOff
+                    Pair(
+                        Icons.Filled.VisibilityOff,
+                        stringResource(id = R.string.show_password)
+                    )
                 }
 
-                val contentDescription = if (hidden.value) {
-                    stringResource(id = R.string.hide_password)
-                } else {
-                    stringResource(id = R.string.show_password)
-                }
                 Icon(
-                    imageVector = vector,
+                    imageVector = icon,
                     contentDescription = contentDescription
                 )
             }
