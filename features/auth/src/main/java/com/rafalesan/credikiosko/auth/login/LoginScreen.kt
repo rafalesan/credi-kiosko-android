@@ -31,13 +31,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.auth.mainActivityNameSpace
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.UiStateHandlerComposable
+import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Teal200
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
 import com.rafalesan.credikiosko.core.R as CoreR
@@ -84,8 +84,8 @@ fun AppLogo() {
     Image(
         modifier = Modifier
             .layoutId(AppLogoTag)
-            .padding(horizontal = 64.dp)
-            .padding(top = 32.dp),
+            .padding(horizontal = Dimens.space8x)
+            .padding(top = Dimens.space4x),
         painter = painterResource(id = CoreR.drawable.ic_app),
         contentDescription = stringResource(id = CoreR.string.app_name)
     )
@@ -96,8 +96,8 @@ fun AppName() {
     Text(
         modifier = Modifier
             .layoutId(AppNameTag)
-            .padding(horizontal = 32.dp)
-            .padding(bottom = 16.dp),
+            .padding(horizontal = Dimens.space4x)
+            .padding(bottom = Dimens.space2x),
         text = stringResource(id = CoreR.string.app_name),
         color = MaterialTheme.colors.onSurface,
         style = MaterialTheme.typography.h5,
@@ -111,7 +111,7 @@ fun LoginDescription() {
     Text(
         modifier = Modifier
             .layoutId(LoginDescriptionTag)
-            .padding(bottom = 24.dp),
+            .padding(bottom = Dimens.space3x),
         text = stringResource(id = CoreR.string.login_description),
         color = MaterialTheme.colors.onSurface,
         textAlign = TextAlign.Center
@@ -128,8 +128,8 @@ fun EmailInput(viewModel: LoginViewModel) {
     OutlinedTextFieldWithError(
         modifier = Modifier
             .layoutId(EmailTag)
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp),
+            .padding(horizontal = Dimens.space2x)
+            .padding(bottom = Dimens.space2x),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
@@ -162,8 +162,8 @@ fun PasswordInput(viewModel: LoginViewModel) {
     OutlinedTextFieldWithError(
         modifier = Modifier
             .layoutId(PasswordTag)
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 24.dp),
+            .padding(horizontal = Dimens.space2x)
+            .padding(bottom = Dimens.space3x),
         value = passwordText.value,
         errorStringId = passwordError,
         onValueChange = { viewModel.password.value = it },
@@ -218,9 +218,9 @@ fun LoginButton(viewModel: LoginViewModel) {
     Button(
         modifier = Modifier
             .layoutId(LoginBtnTag)
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp)
-            .height(48.dp),
+            .padding(horizontal = Dimens.space2x)
+            .padding(bottom = Dimens.space2x)
+            .height(Dimens.space6x),
         onClick = {
             viewModel.perform(LoginAction.Login)
         }
@@ -234,9 +234,9 @@ fun CreateAccountButton(viewModel: LoginViewModel) {
     Button(
         modifier = Modifier
             .layoutId(CreateAccountBtnTag)
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 32.dp)
-            .height(48.dp),
+            .padding(horizontal = Dimens.space2x)
+            .padding(bottom = Dimens.space4x)
+            .height(Dimens.space6x),
         colors = ButtonDefaults.buttonColors(backgroundColor = Teal200),
         onClick = {
             viewModel.perform(LoginAction.CreateAccount)

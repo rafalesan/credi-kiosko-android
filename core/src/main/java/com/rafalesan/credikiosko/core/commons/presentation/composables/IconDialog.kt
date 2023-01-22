@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
 @ExperimentalComposeUiApi
 @Composable
@@ -40,8 +40,8 @@ fun IconDialog(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            shape = RoundedCornerShape(8.dp)
+                .padding(horizontal = Dimens.space2x),
+            shape = RoundedCornerShape(Dimens.dialogBorderRadius)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -49,8 +49,8 @@ fun IconDialog(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(top = 16.dp)
-                        .padding(horizontal = 16.dp),
+                        .padding(top = Dimens.space2x)
+                        .padding(horizontal = Dimens.space2x),
                     text = title,
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.h6,
@@ -59,16 +59,16 @@ fun IconDialog(
                 )
                 Image(
                     modifier = Modifier
-                        .size(80.dp)
-                        .padding(top = 16.dp),
+                        .size(Dimens.iconDialogSize)
+                        .padding(top = Dimens.space2x),
                     painter = iconPainter,
                     contentDescription = null,
                     colorFilter = iconColorFilter
                 )
                 Text(
                     modifier = Modifier
-                        .padding(top = 16.dp)
-                        .padding(horizontal = 16.dp),
+                        .padding(top = Dimens.space2x)
+                        .padding(horizontal = Dimens.space2x),
                     text = description,
                     color = MaterialTheme.colors.onSurface,
                     textAlign = TextAlign.Center,
@@ -76,12 +76,11 @@ fun IconDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp, bottom = 8.dp)
-                        .padding(horizontal = 8.dp),
+                        .padding(Dimens.spaceDefault),
                     horizontalArrangement = Arrangement.End,
                 ) {
                     negativeButton?.invoke()
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(Dimens.space12units))
                     positiveButton()
                 }
             }
