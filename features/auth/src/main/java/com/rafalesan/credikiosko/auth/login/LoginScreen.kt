@@ -14,11 +14,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
@@ -28,18 +28,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.auth.mainActivityNameSpace
+import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedPasswordFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.UiStateHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Teal200
-import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
 import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
@@ -68,7 +66,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
         "device_name",
     )
 
-    UiStateHandler(
+    UiStateHandlerComposable(
         viewModel = viewModel
     )
 
@@ -155,11 +153,8 @@ fun PasswordInput(viewModel: LoginViewModel) {
 
     val passwordText = viewModel.password.collectAsState()
     val passwordError = viewModel.formErrors.collectAsState().value["password"]
-    val hidden = remember {
-        mutableStateOf(true)
-    }
 
-    OutlinedTextFieldWithError(
+    OutlinedPasswordFieldWithError(
         modifier = Modifier
             .layoutId(PasswordTag)
             .padding(horizontal = Dimens.space2x)
@@ -178,38 +173,12 @@ fun PasswordInput(viewModel: LoginViewModel) {
                 viewModel.perform(LoginAction.Login)
             }
         ),
-        visualTransformation = if (hidden.value) {
-            PasswordVisualTransformation()
-        } else {
-            VisualTransformation.None
-        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Lock,
                 contentDescription = stringResource(id = R.string.lock_icon)
             )
         },
-        trailingIcon = {
-            IconButton(onClick = { hidden.value = !hidden.value }) {
-
-                val (icon, contentDescription) = if (hidden.value) {
-                    Pair(
-                        Icons.Filled.Visibility,
-                        stringResource(id = R.string.hide_password)
-                    )
-                } else {
-                    Pair(
-                        Icons.Filled.VisibilityOff,
-                        stringResource(id = R.string.show_password)
-                    )
-                }
-
-                Icon(
-                    imageVector = icon,
-                    contentDescription = contentDescription
-                )
-            }
-        }
     )
 }
 
@@ -244,12 +213,6 @@ fun CreateAccountButton(viewModel: LoginViewModel) {
     ) {
         Text(text = stringResource(id = R.string.create_an_account).uppercase())
     }
-}
-
-@Composable
-fun UiStateHandler(viewModel: LoginViewModel) {
-    val uiState = viewModel.uiState.collectAsState(initial = UiState.Idle).value
-    UiStateHandlerComposable(uiState = uiState)
 }
 
 @Composable

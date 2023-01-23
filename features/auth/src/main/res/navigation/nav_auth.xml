@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_auth"
     app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.rafalesan.credikiosko.auth.login.LoginFragment"
-        tools:layout="@layout/frg_login">
+        android:name="com.rafalesan.credikiosko.auth.login.LoginFragment">
 
         <action
             android:id="@+id/action_to_signup_fragment"
@@ -22,7 +20,6 @@
 
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.rafalesan.credikiosko.auth.signup.SignupFragment"
-        tools:layout="@layout/frg_signup" />
+        android:name="com.rafalesan.credikiosko.auth.signup.SignupFragment"/>
 
 </navigation>

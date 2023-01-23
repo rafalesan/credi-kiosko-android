@@ -9,9 +9,9 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import dagger.hilt.android.AndroidEntryPoint
+import com.rafalesan.credikiosko.core.R as CoreR
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -23,8 +23,8 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.frg_login, container, false)
-        val composeView = view.findViewById<ComposeView>(R.id.compose_view)
+        val view = inflater.inflate(CoreR.layout.compose_layout, container, false)
+        val composeView = view.findViewById<ComposeView>(CoreR.id.compose_view)
         val navController = findNavController()
         composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

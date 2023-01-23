@@ -3,6 +3,7 @@ package com.rafalesan.credikiosko.core.commons.presentation.theme
 import androidx.compose.ui.unit.dp
 
 object Dimens {
+    val signUpAppLogoSize = 150.dp
     val spaceDefault = 8.dp
     val space2x = 16.dp
     val space3x = 24.dp
