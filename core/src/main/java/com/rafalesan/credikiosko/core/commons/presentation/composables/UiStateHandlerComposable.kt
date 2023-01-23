@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -15,11 +16,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.rafalesan.credikiosko.core.R
+import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
 import timber.log.Timber
 
 @Composable
-fun UiStateHandlerComposable(uiState: UiState) {
+fun UiStateHandlerComposable(viewModel: BaseViewModel) {
+
+    val uiState = viewModel.uiState.collectAsState(initial = UiState.Idle).value
 
     when (uiState) {
         is UiState.Loading -> Loading(uiStateLoading = uiState)
