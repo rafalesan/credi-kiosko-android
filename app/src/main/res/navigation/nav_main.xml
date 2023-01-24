@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.rafalesan.credikiosko.presentation.home.HomeFragment"
+        android:name="com.rafalesan.credikiosko.home.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/frg_home" />
 
