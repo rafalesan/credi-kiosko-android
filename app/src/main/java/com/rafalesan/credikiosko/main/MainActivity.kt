@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.main
+package com.rafalesan.credikiosko.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -8,12 +8,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.rafalesan.credikiosko.R
 import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
 import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
-import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.databinding.ActMainBinding
+import com.rafalesan.credikiosko.databinding.ActMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

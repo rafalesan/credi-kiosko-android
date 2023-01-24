@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.main
+package com.rafalesan.credikiosko.main
 
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.domain.entity.Theme
@@ -6,7 +6,7 @@ import com.rafalesan.credikiosko.core.commons.domain.usecases.ChangeThemeUseCase
 import com.rafalesan.credikiosko.core.commons.domain.usecases.GetThemeUseCase
 import com.rafalesan.credikiosko.core.commons.domain.usecases.GetUserSessionInfoUseCase
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
-import com.rafalesan.credikiosko.presentation.main.MainAction.ChangeTheme
+import com.rafalesan.credikiosko.main.MainAction.ChangeTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
