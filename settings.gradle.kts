@@ -36,7 +36,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CrediKiosko"
 include(":app")
-include(":presentation")
 include(":core")
 include(":features:auth")
 include(":features:home")

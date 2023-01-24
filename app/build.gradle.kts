@@ -87,6 +87,5 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":features:auth"))
     implementation(project(":features:home"))
-    implementation(project(":presentation"))
 
 }
