@@ -42,7 +42,6 @@
                     android:layout_marginHorizontal="@dimen/space_4x"
                     android:layout_marginTop="@dimen/space_2x"
                     android:layout_marginBottom="@dimen/space_2x"
-                    android:src='@{homeOption.optionIconResId}'
                     tools:srcCompat="@drawable/ic_category"
                     app:tint="?android:textColorPrimary"
                     app:layout_constraintVertical_chainStyle="packed"

@@ -1,51 +1,37 @@
 package com.rafalesan.credikiosko.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
-import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
-import com.rafalesan.credikiosko.core.commons.presentation.utils.AutoClearedValue
-import com.rafalesan.credikiosko.home.databinding.FrgHomeBinding
+import com.rafalesan.credikiosko.core.R
+import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import dagger.hilt.android.AndroidEntryPoint
-import com.rafalesan.credikiosko.core.R as CoreR
 
 @AndroidEntryPoint
-class HomeFragment : BaseViewModelFragment<HomeViewModel, FrgHomeBinding>() {
+class HomeFragment : Fragment() {
 
-    override val contentViewLayoutId = R.layout.frg_home
-    override val viewModel: HomeViewModel by viewModels()
+    val viewModel: HomeViewModel by viewModels()
 
-    private var homeOptionsAdapter by AutoClearedValue<HomeOptionsAdapter>()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setup()
-    }
-
-    override fun onSubscribeToViewModel() {
-        super.onSubscribeToViewModel()
-        viewModel.homeOptions.collect(viewLifecycleOwner) {
-            showHomeOptions(it)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.compose_layout, container, false)
+        val composeView = view.findViewById<ComposeView>(R.id.compose_view)
+        composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                CrediKioskoTheme {
+                    HomeScreen(viewModel)
+                }
+            }
         }
+        return view
     }
-
-    private fun setup() {
-        setupRecyclerView()
-    }
-
-    private fun setupRecyclerView() {
-        homeOptionsAdapter = HomeOptionsAdapter {
-            viewModel.perform(HomeAction.HomeOptionSelected(it))
-        }
-        binding.rvHomeMenu.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.rvHomeMenu.adapter = homeOptionsAdapter
-        binding.rvHomeMenu.addItemDecoration(GridSpacingItemDecoration(2, resources.getDimensionPixelSize(CoreR.dimen.space_2x), true, 0))
-    }
-
-    private fun showHomeOptions(items: List<HomeOption>?) {
-        homeOptionsAdapter.submitList(items)
-    }
-
 }
