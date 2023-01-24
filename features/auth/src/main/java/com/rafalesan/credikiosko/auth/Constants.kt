@@ -1,3 +1,3 @@
 package com.rafalesan.credikiosko.auth
 
-val mainActivityNameSpace = "com.rafalesan.credikiosko.presentation.main.MainActivity"
+const val mainActivityNameSpace = "com.rafalesan.credikiosko.main.MainActivity"

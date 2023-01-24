@@ -65,6 +65,16 @@ dependencies {
     implementation(Chucker.library)
     implementation(JakeWharton.timber)
 
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.appCompat)
+    implementation(Google.android.material)
+
+    implementation(AndroidX.lifecycle.runtime.ktx)
+    implementation(AndroidX.lifecycle.viewModelKtx)
+
+    implementation(AndroidX.navigation.fragmentKtx)
+    implementation(AndroidX.navigation.uiKtx)
+
     implementation(AndroidX.dataStore.preferences)
 
     implementation(Google.dagger.hilt.android)
