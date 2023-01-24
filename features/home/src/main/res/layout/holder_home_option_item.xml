@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="homeOption"
-            type="com.rafalesan.credikiosko.presentation.home.HomeOption" />
+            type="com.rafalesan.credikiosko.home.HomeOption" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

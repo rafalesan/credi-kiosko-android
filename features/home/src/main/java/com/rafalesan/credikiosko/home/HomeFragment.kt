@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.home
+package com.rafalesan.credikiosko.home
 
 import android.os.Bundle
 import android.view.View
@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModelFragment
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
 import com.rafalesan.credikiosko.core.commons.presentation.utils.AutoClearedValue
-import com.rafalesan.credikiosko.presentation.R
-import com.rafalesan.credikiosko.presentation.databinding.FrgHomeBinding
+import com.rafalesan.credikiosko.home.databinding.FrgHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import com.rafalesan.credikiosko.core.R as CoreR
 
 @AndroidEntryPoint
 class HomeFragment : BaseViewModelFragment<HomeViewModel, FrgHomeBinding>() {
@@ -41,7 +41,7 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel, FrgHomeBinding>() {
         }
         binding.rvHomeMenu.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvHomeMenu.adapter = homeOptionsAdapter
-        binding.rvHomeMenu.addItemDecoration(GridSpacingItemDecoration(2, resources.getDimensionPixelSize(R.dimen.space_2x), true, 0))
+        binding.rvHomeMenu.addItemDecoration(GridSpacingItemDecoration(2, resources.getDimensionPixelSize(CoreR.dimen.space_2x), true, 0))
     }
 
     private fun showHomeOptions(items: List<HomeOption>?) {

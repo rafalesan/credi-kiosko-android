@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.presentation.home
+package com.rafalesan.credikiosko.home
 
 import android.graphics.Rect
 import android.view.View

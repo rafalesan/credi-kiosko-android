@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Inicio</string>
+    <string name="products">Productos</string>
+    <string name="customers">Clientes</string>
+    <string name="credits">Créditos</string>
+    <string name="cutoffs">Cortes</string>
+    <string name="logout">Cerrar sesión</string>
+</resources>
