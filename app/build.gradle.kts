@@ -29,8 +29,9 @@ fun getIp(): String {
     return (result ?: run { InetAddress.getLocalHost() } ).hostAddress
 }
 
-@Suppress("UnstableApiUsage")
 android {
+
+    namespace = "com.rafalesan.credikiosko"
 
     buildTypes {
         getByName("release") {
@@ -41,6 +42,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 
     flavorDimensions.add("default")
