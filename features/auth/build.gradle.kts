@@ -7,7 +7,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.rafalesan.credikiosko.auth"
 
@@ -41,6 +40,7 @@ dependencies {
     implementation(AndroidX.lifecycle.runtime.ktx)
     implementation(AndroidX.lifecycle.viewModelKtx)
 
+    implementation(AndroidX.hilt.navigationCompose)
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(AndroidX.navigation.uiKtx)
 

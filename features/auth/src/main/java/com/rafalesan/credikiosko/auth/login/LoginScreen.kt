@@ -12,7 +12,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
@@ -30,7 +34,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.auth.mainActivityNameSpace
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedPasswordFieldWithError
@@ -40,9 +46,39 @@ import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Teal200
 import com.rafalesan.credikiosko.core.R as CoreR
 
+@Deprecated("It should be used LoginScreenNavCompose instead")
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
+) {
 
+    LoginUI(viewModel = viewModel)
+
+    EventHandler(
+        viewModel = viewModel,
+        navController = navController
+    )
+
+}
+
+@Composable
+fun LoginScreenNavCompose(
+    navController: NavHostController,
+    viewModel: LoginViewModel = hiltViewModel()
+) {
+
+    LoginUI(viewModel = viewModel)
+
+    EventHandlerComposeNavigation(
+        viewModel = viewModel,
+        navController = navController
+    )
+
+}
+
+@Composable
+fun LoginUI(viewModel: LoginViewModel) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,12 +105,6 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
     UiStateHandlerComposable(
         viewModel = viewModel
     )
-
-    EventHandler(
-        viewModel = viewModel,
-        navController = navController
-    )
-
 }
 
 @Composable
@@ -227,6 +257,21 @@ fun EventHandler(
             when(event) {
                 LoginEvent.OpenHome -> openHome(context)
                 LoginEvent.OpenSignup -> openSignUp(navController)
+            }
+        }
+    }
+}
+
+@Composable
+fun EventHandlerComposeNavigation(
+    viewModel: LoginViewModel,
+    navController: NavHostController
+) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.event.collect { event ->
+            when (event) {
+                LoginEvent.OpenHome -> navController.navigate("home")
+                LoginEvent.OpenSignup -> navController.navigate("sign_up")
             }
         }
     }
