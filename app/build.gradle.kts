@@ -13,15 +13,19 @@ apply(from = "android.gradle")
 fun getIp(): String {
     var result: InetAddress? = null
     val interfaces = NetworkInterface.getNetworkInterfaces()
+
     while(interfaces.hasMoreElements()) {
-        val addresses = interfaces.nextElement().inetAddresses
-        while(addresses.hasMoreElements()) {
-            val address = addresses.nextElement()
-            if(!address.isLoopbackAddress) {
-                if(address.isSiteLocalAddress) {
-                    return address.hostAddress
-                } else if(result == null) {
-                    result = address
+        val currentInterface = interfaces.nextElement()
+        if (!currentInterface.isVirtual) {
+            val addresses = currentInterface.inetAddresses
+            while (addresses.hasMoreElements()) {
+                val address = addresses.nextElement()
+                if (!address.isLoopbackAddress) {
+                    if (address.isSiteLocalAddress) {
+                        return address.hostAddress
+                    } else if (result == null) {
+                        result = address
+                    }
                 }
             }
         }
@@ -38,6 +42,14 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 
     buildFeatures {
@@ -67,6 +79,7 @@ dependencies {
     implementation(Chucker.library)
     implementation(JakeWharton.timber)
 
+    implementation(AndroidX.activity.compose)
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)
@@ -76,6 +89,8 @@ dependencies {
 
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(AndroidX.navigation.uiKtx)
+
+    implementation(AndroidX.navigation.compose)
 
     implementation(AndroidX.dataStore.preferences)
 
