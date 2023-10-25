@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedPasswordFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
@@ -35,9 +36,25 @@ import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHand
 import com.rafalesan.credikiosko.core.commons.presentation.composables.UiStateHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
+@Deprecated("It should be used SignUpScreenNavCompose instead")
 @Composable
 fun SignUpScreen(viewModel: SignupViewModel) {
 
+    SignUpUi(viewModel = viewModel)
+
+}
+
+@Composable
+fun SignUpScreenNavCompose(
+    viewModel: SignupViewModel = hiltViewModel()
+) {
+    SignUpUi(viewModel = viewModel)
+}
+
+@Composable
+fun SignUpUi(
+    viewModel: SignupViewModel
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,7 +84,6 @@ fun SignUpScreen(viewModel: SignupViewModel) {
     )
 
     ToastHandlerComposable(viewModel = viewModel)
-
 }
 
 @Composable
