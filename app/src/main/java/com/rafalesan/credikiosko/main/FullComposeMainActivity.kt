@@ -11,8 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rafalesan.credikiosko.auth.login.LoginScreenNavCompose
 import com.rafalesan.credikiosko.auth.signup.SignUpScreenNavCompose
-import com.rafalesan.credikiosko.core.commons.presentation.composables.UnderConstruction
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
+import com.rafalesan.credikiosko.home.HomeScreenNavCompose
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +42,7 @@ class FullComposeMainActivity : ComponentActivity() {
                     }
 
                     composable("home") {
-                        UnderConstruction()
+                        HomeScreenNavCompose()
                     }
 
                 }

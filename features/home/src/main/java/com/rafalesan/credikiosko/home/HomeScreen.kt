@@ -14,12 +14,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
+@Deprecated("It should be used HomeScreenNavCompose instead")
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
+    HomeUI(viewModel = viewModel)
+}
 
+@Composable
+fun HomeScreenNavCompose(
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    HomeUI(viewModel = viewModel)
+}
+
+@Composable
+fun HomeUI(viewModel: HomeViewModel) {
     val homeOptions = viewModel.homeOptions.collectAsState().value
 
     LazyVerticalGrid(
@@ -37,7 +50,6 @@ fun HomeScreen(viewModel: HomeViewModel) {
     }
 
     ToastHandlerComposable(viewModel = viewModel)
-
 }
 
 @Composable
