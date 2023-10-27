@@ -79,6 +79,7 @@ dependencies {
     implementation(Chucker.library)
     implementation(JakeWharton.timber)
 
+    implementation(AndroidX.hilt.navigationCompose)
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)

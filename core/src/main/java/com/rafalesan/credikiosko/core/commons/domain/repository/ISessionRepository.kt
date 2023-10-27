@@ -12,4 +12,6 @@ interface ISessionRepository {
     suspend fun changeTheme(lightTheme: Boolean)
     fun existUserSession(): Boolean
 
+    fun existUserSessionFlow(): Flow<Boolean>
+
 }
