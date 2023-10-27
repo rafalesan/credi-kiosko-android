@@ -7,7 +7,6 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.rafalesan.credikiosko.home"
     compileSdk = 33
@@ -43,6 +42,7 @@ dependencies {
     implementation(AndroidX.lifecycle.runtime.ktx)
     implementation(AndroidX.lifecycle.viewModelKtx)
 
+    implementation(AndroidX.hilt.navigationCompose)
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(AndroidX.navigation.uiKtx)
 
