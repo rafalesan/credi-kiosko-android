@@ -2,6 +2,7 @@ package com.rafalesan.credikiosko.auth
 
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.ExistUserSession
+import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.ExistUserSessionFlowUseCase
 import com.rafalesan.credikiosko.core.commons.domain.entity.Theme
 import com.rafalesan.credikiosko.core.commons.domain.usecases.ChangeThemeUseCase
 import com.rafalesan.credikiosko.core.commons.domain.usecases.GetThemeUseCase
@@ -19,12 +20,20 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     getThemeUseCase: GetThemeUseCase,
     private val setThemeUseCase: ChangeThemeUseCase,
-    private val existUserSession: ExistUserSession
+    private val existUserSession: ExistUserSession,
+    existUserSessionFlowUseCase: ExistUserSessionFlowUseCase
 ) : BaseViewModel() {
 
     val theme: StateFlow<Theme?> = getThemeUseCase().stateIn(viewModelScope,
                                                              SharingStarted.Eagerly,
                                                              null)
+
+    private val _existsUserSession = existUserSessionFlowUseCase()
+    val existUserSessionFlow = _existsUserSession.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = false
+    )
 
     private val _event = Channel<AuthEvent>(Channel.BUFFERED)
     val event = _event.receiveAsFlow()

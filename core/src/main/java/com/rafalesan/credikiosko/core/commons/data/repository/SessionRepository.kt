@@ -33,4 +33,9 @@ class SessionRepository(private val userSessionDataSource: UserSessionDataSource
         return userSession != null
     }
 
+    override fun existUserSessionFlow(): Flow<Boolean> {
+        return userSessionDataSource
+            .userSession()
+            .map { it != null }
+    }
 }
