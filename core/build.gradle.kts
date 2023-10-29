@@ -7,7 +7,6 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.rafalesan.credikiosko.core"
     defaultConfig {
@@ -60,7 +59,7 @@ dependencies {
     kapt(Google.dagger.hilt.compiler)
 
     implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.material)
+    implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.compose.ui.toolingPreview)
 

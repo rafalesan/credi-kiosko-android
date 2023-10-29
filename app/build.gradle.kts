@@ -84,6 +84,7 @@ dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)
+    implementation(AndroidX.compose.material3)
 
     implementation(AndroidX.lifecycle.runtime.ktx)
     implementation(AndroidX.lifecycle.viewModelKtx)
