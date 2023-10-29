@@ -52,7 +52,7 @@ dependencies {
     kapt(Google.dagger.hilt.compiler)
 
     implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.material)
+    implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.constraintLayout.compose)

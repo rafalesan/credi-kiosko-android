@@ -12,6 +12,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -23,6 +31,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutlinedTextFieldWithError(
     modifier: Modifier = Modifier,
@@ -37,7 +46,7 @@ fun OutlinedTextFieldWithError(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = {
         if (errorStringId != null)
-            Icon(Icons.Filled.Error, "error", tint = MaterialTheme.colors.error)
+            Icon(Icons.Filled.Error, "error", tint = MaterialTheme.colorScheme.error)
     },
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -87,8 +96,8 @@ fun OutlinedTextFieldWithError(
         ) {
             Text(
                 text = stringResource(id = errorStringId ?: R.string.empty_string),
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = Dimens.space2x)
             )
         }

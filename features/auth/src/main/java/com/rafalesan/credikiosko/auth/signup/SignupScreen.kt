@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -106,8 +106,8 @@ fun AppName() {
             .padding(horizontal = Dimens.space4x)
             .padding(bottom = Dimens.space2x),
         text = stringResource(id = R.string.app_name),
-        color = MaterialTheme.colors.onSurface,
-        style = MaterialTheme.typography.h6,
+        color = MaterialTheme.colorScheme.onSurface,
+        style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center
     )
@@ -120,7 +120,7 @@ fun SignUpDescription() {
             .layoutId(SignUpViewTag.SignUpDescription)
             .padding(bottom = Dimens.space2x),
         text = stringResource(id = R.string.signup_description),
-        color = MaterialTheme.colors.onSurface,
+        color = MaterialTheme.colorScheme.onSurface,
         textAlign = TextAlign.Center
     )
 }
@@ -259,7 +259,7 @@ fun BaseSignUpPasswordInput(
         errorStringId = errorId,
         onValueChange = onValueChange,
         label = { Text(text = stringResource(id = labelStringRes)) },
-        textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
         singleLine = true,
         leadingIcon = {
             Icon(
@@ -295,7 +295,7 @@ fun BaseSignUpInput(
         errorStringId = errorId,
         onValueChange = onValueChange,
         label = { Text(text = stringResource(id = labelStringRes)) },
-        textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
         singleLine = true,
         leadingIcon = {
             Icon(

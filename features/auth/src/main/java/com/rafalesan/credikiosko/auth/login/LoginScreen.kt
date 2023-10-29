@@ -12,14 +12,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -127,8 +127,8 @@ fun AppName() {
             .padding(horizontal = Dimens.space4x)
             .padding(bottom = Dimens.space2x),
         text = stringResource(id = CoreR.string.app_name),
-        color = MaterialTheme.colors.onSurface,
-        style = MaterialTheme.typography.h5,
+        color = MaterialTheme.colorScheme.onSurface,
+        style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center
     )
@@ -141,7 +141,7 @@ fun LoginDescription() {
             .layoutId(LoginDescriptionTag)
             .padding(bottom = Dimens.space3x),
         text = stringResource(id = CoreR.string.login_description),
-        color = MaterialTheme.colors.onSurface,
+        color = MaterialTheme.colorScheme.onSurface,
         textAlign = TextAlign.Center
     )
 
@@ -166,7 +166,7 @@ fun EmailInput(viewModel: LoginViewModel) {
         errorStringId = emailError,
         onValueChange = { viewModel.email.value = it },
         label = { Text(text = stringResource(id = R.string.email)) },
-        textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
         singleLine = true,
         leadingIcon = {
             Icon(
@@ -193,7 +193,7 @@ fun PasswordInput(viewModel: LoginViewModel) {
         errorStringId = passwordError,
         onValueChange = { viewModel.password.value = it },
         label = { Text(text = stringResource(id = R.string.password)) },
-        textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Go
@@ -236,7 +236,7 @@ fun CreateAccountButton(viewModel: LoginViewModel) {
             .padding(horizontal = Dimens.space2x)
             .padding(bottom = Dimens.space4x)
             .height(Dimens.space6x),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Teal200),
+        colors = ButtonDefaults.buttonColors(containerColor = Teal200),
         onClick = {
             viewModel.perform(LoginAction.CreateAccount)
         }
