@@ -99,6 +99,8 @@ dependencies {
     implementation(Google.dagger.hilt.android)
     kapt(Google.dagger.hilt.compiler)
 
+    implementation(AndroidX.compose.ui.toolingPreview)
+    implementation(AndroidX.compose.ui.tooling)
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
