@@ -3,6 +3,8 @@ package com.rafalesan.credikiosko.core.commons.presentation.theme
 import androidx.compose.ui.unit.dp
 
 object Dimens {
+    val space1Unit = 1.dp
+    val space2Unit = 2.dp
     val signUpAppLogoSize = 150.dp
     val spaceDefault = 8.dp
     val space2x = 16.dp
@@ -13,4 +15,5 @@ object Dimens {
     val space12units = 12.dp
     val dialogBorderRadius = 8.dp
     val iconDialogSize = 80.dp
+    val drawerWidth = 280.dp
 }
