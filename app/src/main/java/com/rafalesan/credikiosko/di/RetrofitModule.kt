@@ -68,8 +68,9 @@ class RetrofitModule {
                 .addInterceptor(tokenInterceptor)
 
         if(BuildConfig.DEBUG) {
-            okHttpBuilder.addNetworkInterceptor(logging)
-                    .addInterceptor(chuckerInterceptor)
+            okHttpBuilder
+                .addInterceptor(logging)
+                .addInterceptor(chuckerInterceptor)
         }
 
         return okHttpBuilder.build()
