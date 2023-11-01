@@ -1,4 +1,4 @@
-import java.net.InetAddress
+import java.net.Inet4Address
 import java.net.NetworkInterface
 
 plugins {
@@ -11,27 +11,23 @@ plugins {
 apply(from = "android.gradle")
 
 fun getIp(): String {
-    var result: InetAddress? = null
-    val interfaces = NetworkInterface.getNetworkInterfaces()
-
-    while(interfaces.hasMoreElements()) {
-        val currentInterface = interfaces.nextElement()
-        if (!currentInterface.isVirtual) {
-            val addresses = currentInterface.inetAddresses
-            while (addresses.hasMoreElements()) {
-                val address = addresses.nextElement()
-                if (!address.isLoopbackAddress) {
-                    if (address.isSiteLocalAddress) {
-                        return address.hostAddress
-                    } else if (result == null) {
-                        result = address
-                    }
+    val ip4s = mutableListOf<String>()
+    NetworkInterface.getNetworkInterfaces()
+        .toList()
+        .filter { it.isUp && !it.isLoopback && !it.isVirtual && !it.name.contains("bridge") }
+        .forEach {
+            it.inetAddresses
+                .toList()
+                .filter { inetAddress ->
+                    !inetAddress.isLoopbackAddress && inetAddress is Inet4Address
                 }
-            }
+                .forEach { inetAddress ->
+                    ip4s.add(inetAddress.hostAddress)
+                }
         }
-    }
-    return (result ?: run { InetAddress.getLocalHost() } ).hostAddress
+    return ip4s.first()
 }
+
 
 android {
 
