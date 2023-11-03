@@ -17,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.rafalesan.credikiosko.auth.AuthViewModel
 import com.rafalesan.credikiosko.auth.login.LoginScreenNavCompose
@@ -44,13 +46,24 @@ class FullComposeMainActivity : ComponentActivity() {
                         if (existUserSession) {
                             "home"
                         } else {
-                            "login"
+                            "auth"
                         }
+                    }
+                }
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val drawerGesturesEnabled by remember {
+                    derivedStateOf {
+                        val currentRoute = navBackStackEntry?.destination?.route
+                        if (currentRoute == "login" || currentRoute == "register") {
+                            return@derivedStateOf false
+                        }
+                        true
                     }
                 }
 
                 ModalNavigationDrawer(
                     drawerState = drawerState,
+                    gesturesEnabled = drawerGesturesEnabled,
                     drawerContent = { DrawerContent() }
                 ) {
                     NavHost(
@@ -62,13 +75,19 @@ class FullComposeMainActivity : ComponentActivity() {
                         popExitTransition = { fadeOut(animationSpec = tween(200)) }
                     ) {
 
-                        composable("login") {
-                            LoginScreenNavCompose(navController)
+                        navigation(
+                            route = "auth",
+                            startDestination = "login"
+                        ) {
+                            composable("login") {
+                                LoginScreenNavCompose(navController)
+                            }
+
+                            composable("sign_up") {
+                                SignUpScreenNavCompose()
+                            }
                         }
 
-                        composable("sign_up") {
-                            SignUpScreenNavCompose()
-                        }
 
                         composable("home") {
                             HomeScreenNavCompose()
