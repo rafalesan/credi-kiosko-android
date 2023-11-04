@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.rafalesan.credikiosko.R
+import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
 @Preview
