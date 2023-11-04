@@ -1,20 +1,31 @@
 package com.rafalesan.credikiosko.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
@@ -33,20 +44,60 @@ fun HomeScreenNavCompose(
 
 @Composable
 fun HomeUI(viewModel: HomeViewModel) {
-    val homeOptions = viewModel.homeOptions.collectAsState().value
+    val homeOptions by viewModel.homeOptions.collectAsState()
+    val userSessionInfo by viewModel.userSessionInfo.collectAsState()
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(Dimens.space2x),
-        verticalArrangement = Arrangement.spacedBy(Dimens.space2x),
-        horizontalArrangement = Arrangement.spacedBy(Dimens.space2x)
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize(),
+        constraintSet = homeScreenConstraintSet
     ) {
-        items(items = homeOptions) { homeOption ->
-            HomeOptionItem(
-                homeOption = homeOption,
-                viewModel = viewModel
-            )
+
+        Text(
+            modifier = Modifier
+                .layoutId(WelcomeLabel),
+            text = stringResource(id = R.string.welcome_x, userSessionInfo.name),
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            style = MaterialTheme.typography.headlineMedium
+        )
+
+        Text(
+            modifier = Modifier
+                .layoutId(BusinessLabel),
+            text = userSessionInfo.business.name,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Image(
+            modifier = Modifier
+                .layoutId(ProfilePhoto)
+                .size(Dimens.space8x)
+                .clip(CircleShape)
+                .border(Dimens.space2Unit, Color.Gray, CircleShape),
+            painter = painterResource(id = R.drawable.ic_empty_profile_photo),
+            contentDescription = stringResource(id = R.string.user_profile_avatar),
+            contentScale = ContentScale.Crop,
+
+        )
+
+        LazyVerticalGrid(
+            modifier = Modifier
+                .layoutId(OptionsList),
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(Dimens.space2x),
+            verticalArrangement = Arrangement.spacedBy(Dimens.space2x),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.space2x)
+        ) {
+            items(items = homeOptions) { homeOption ->
+                HomeOptionItem(
+                    homeOption = homeOption,
+                    viewModel = viewModel
+                )
+            }
         }
+
+
     }
 
     ToastHandlerComposable(viewModel = viewModel)
@@ -54,8 +105,8 @@ fun HomeUI(viewModel: HomeViewModel) {
 
 @Composable
 fun HomeOptionItem(homeOption: HomeOption, viewModel: HomeViewModel) {
-    
-    Card (
+
+    Card(
         modifier = Modifier
             .aspectRatio(1.0f)
             .fillMaxSize()
@@ -90,5 +141,5 @@ fun HomeOptionItem(homeOption: HomeOption, viewModel: HomeViewModel) {
             )
         }
     }
-    
+
 }
