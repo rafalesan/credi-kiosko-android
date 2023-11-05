@@ -55,7 +55,7 @@ fun LoginScreen(
 
     LoginUI(viewModel = viewModel)
 
-    EventHandler(
+    ActionHandler(
         viewModel = viewModel,
         navController = navController
     )
@@ -200,7 +200,7 @@ fun PasswordInput(viewModel: LoginViewModel) {
         ),
         keyboardActions = KeyboardActions(
             onGo = {
-                viewModel.perform(LoginAction.Login)
+                viewModel.perform(LoginEvent.Login)
             }
         ),
         leadingIcon = {
@@ -221,7 +221,7 @@ fun LoginButton(viewModel: LoginViewModel) {
             .padding(bottom = Dimens.space2x)
             .height(Dimens.space6x),
         onClick = {
-            viewModel.perform(LoginAction.Login)
+            viewModel.perform(LoginEvent.Login)
         }
     ) {
         Text(text = stringResource(id = R.string.log_in).uppercase())
@@ -238,7 +238,7 @@ fun CreateAccountButton(viewModel: LoginViewModel) {
             .height(Dimens.space6x),
         colors = ButtonDefaults.buttonColors(containerColor = Teal200),
         onClick = {
-            viewModel.perform(LoginAction.CreateAccount)
+            viewModel.perform(LoginEvent.CreateAccount)
         }
     ) {
         Text(text = stringResource(id = R.string.create_an_account).uppercase())
@@ -246,17 +246,17 @@ fun CreateAccountButton(viewModel: LoginViewModel) {
 }
 
 @Composable
-fun EventHandler(
+fun ActionHandler(
     viewModel: LoginViewModel,
     navController: NavController
 ) {
     val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.event.collect { event ->
-            when(event) {
-                LoginEvent.OpenHome -> openHome(context)
-                LoginEvent.OpenSignup -> openSignUp(navController)
+        viewModel.action.collect { action ->
+            when(action) {
+                LoginAction.OpenHome -> openHome(context)
+                LoginAction.OpenSignup -> openSignUp(navController)
             }
         }
     }
@@ -268,10 +268,10 @@ fun EventHandlerComposeNavigation(
     navController: NavHostController
 ) {
     LaunchedEffect(key1 = Unit) {
-        viewModel.event.collect { event ->
+        viewModel.action.collect { event ->
             when (event) {
-                LoginEvent.OpenHome -> navController.navigate("home")
-                LoginEvent.OpenSignup -> navController.navigate("sign_up")
+                LoginAction.OpenHome -> navController.navigate("home")
+                LoginAction.OpenSignup -> navController.navigate("sign_up")
             }
         }
     }
