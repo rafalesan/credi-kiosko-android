@@ -9,12 +9,15 @@ import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.domain.usecases.GetUserSessionInfoUseCase
 import com.rafalesan.credikiosko.core.commons.emptyUserSession
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
-import com.rafalesan.credikiosko.home.HomeAction.HomeOptionSelected
+import com.rafalesan.credikiosko.home.HomeEvent.HomeOptionSelected
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,23 +34,32 @@ class HomeViewModel @Inject constructor(
             emptyUserSession
         )
 
-    fun perform(action: HomeAction) {
+    private val _action = Channel<HomeAction>(Channel.BUFFERED)
+    val action = _action.receiveAsFlow()
+
+    fun perform(action: HomeEvent) {
         when(action) {
             is HomeOptionSelected -> handleHomeOptionSelected(action.homeOption)
         }
     }
 
     private fun handleHomeOptionSelected(homeOption: HomeOption) {
-        homeOption.actionIdRes ?: run {
+        homeOption.destination ?: run {
             toast("En construcción")
             return
+        }
+        viewModelScope.launch {
+            _action.send(
+                HomeAction.NavigateTo(homeOption.destination)
+            )
         }
     }
     private fun getHomeOptions2(): List<HomeOption> {
         return mutableListOf(
             HomeOption(
                 R.string.products,
-                Icons.Filled.Category
+                Icons.Filled.Category,
+                "products"
             ),
             HomeOption(
                 R.string.customers,

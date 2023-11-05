@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
@@ -37,13 +39,22 @@ fun HomeScreen(viewModel: HomeViewModel) {
 
 @Composable
 fun HomeScreenNavCompose(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
-    HomeUI(viewModel = viewModel)
+    HomeUI(
+        viewModel = viewModel
+    )
+    ActionHandler(
+        viewModel = viewModel,
+        navController = navController
+    )
 }
 
 @Composable
-fun HomeUI(viewModel: HomeViewModel) {
+fun HomeUI(
+    viewModel: HomeViewModel
+) {
     val homeOptions by viewModel.homeOptions.collectAsState()
     val userSessionInfo by viewModel.userSessionInfo.collectAsState()
 
@@ -112,7 +123,7 @@ fun HomeOptionItem(homeOption: HomeOption, viewModel: HomeViewModel) {
             .fillMaxSize()
             .clickable {
                 viewModel.perform(
-                    HomeAction.HomeOptionSelected(homeOption)
+                    HomeEvent.HomeOptionSelected(homeOption)
                 )
             }
     ) {
@@ -142,4 +153,19 @@ fun HomeOptionItem(homeOption: HomeOption, viewModel: HomeViewModel) {
         }
     }
 
+}
+
+@Composable
+fun ActionHandler(
+    viewModel: HomeViewModel,
+    navController: NavHostController
+) {
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.action.collect { action ->
+            when(action) {
+                is HomeAction.NavigateTo -> navController.navigate(action.route)
+            }
+        }
+    }
 }

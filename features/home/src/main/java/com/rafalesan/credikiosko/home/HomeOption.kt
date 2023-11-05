@@ -6,4 +6,5 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 data class HomeOption(@StringRes val optionNameResId: Int,
                       val iconVector: ImageVector,
+                      val destination: String? = null,
                       @IdRes val actionIdRes: Int? = null)
