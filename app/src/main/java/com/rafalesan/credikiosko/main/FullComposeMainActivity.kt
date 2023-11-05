@@ -25,6 +25,7 @@ import com.rafalesan.credikiosko.auth.login.LoginScreenNavCompose
 import com.rafalesan.credikiosko.auth.signup.SignUpScreenNavCompose
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.home.HomeScreenNavCompose
+import com.rafalesan.products.presentation.products_list.ProductsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -90,7 +91,11 @@ class FullComposeMainActivity : ComponentActivity() {
 
 
                         composable("home") {
-                            HomeScreenNavCompose()
+                            HomeScreenNavCompose(navController = navController)
+                        }
+
+                        composable("products") {
+                            ProductsScreen()
                         }
 
                     }

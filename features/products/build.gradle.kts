@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rafalesan.credikiosko.home"
+    namespace = "com.rafalesan.products"
 
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
@@ -23,8 +23,8 @@ android {
             )
         }
     }
+
     buildFeatures {
-        dataBinding = true
         compose = true
     }
 
@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)
