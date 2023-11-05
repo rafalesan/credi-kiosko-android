@@ -4,7 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator
-import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator.CredentialValidation.*
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator.CredentialValidation.EMPTY_DEVICE_NAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator.CredentialValidation.EMPTY_EMAIL
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator.CredentialValidation.EMPTY_PASSWORD
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.CredentialsValidator.CredentialValidation.INVALID_EMAIL
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
@@ -25,19 +28,19 @@ class LoginViewModel @Inject constructor(
     var deviceName: String? = null
     val formErrors = MutableStateFlow(mutableMapOf<String, Int>())
 
-    private val _event = Channel<LoginEvent>(Channel.BUFFERED)
-    val event = _event.receiveAsFlow()
+    private val _action = Channel<LoginAction>(Channel.BUFFERED)
+    val action = _action.receiveAsFlow()
 
-    fun perform(action: LoginAction){
-        when(action) {
-            LoginAction.Login         -> login()
-            LoginAction.CreateAccount -> createAccount()
+    fun perform(event: LoginEvent){
+        when(event) {
+            LoginEvent.Login         -> login()
+            LoginEvent.CreateAccount -> createAccount()
         }
     }
 
     private fun createAccount() {
         viewModelScope.launch {
-            _event.send(LoginEvent.OpenSignup)
+            _action.send(LoginAction.OpenSignup)
         }
     }
 
@@ -60,7 +63,7 @@ class LoginViewModel @Inject constructor(
 
             when(result) {
                 is ResultOf.Success     -> {
-                    _event.send(LoginEvent.OpenHome)
+                    _action.send(LoginAction.OpenHome)
                 }
                 is ResultOf.InvalidData -> {
                     handleInvalidDataResult(result)
