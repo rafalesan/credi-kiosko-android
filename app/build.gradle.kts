@@ -1,3 +1,4 @@
+import de.fayard.refreshVersions.core.versionFor
 import java.net.Inet4Address
 import java.net.NetworkInterface
 
@@ -45,7 +46,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
 
     buildFeatures {
