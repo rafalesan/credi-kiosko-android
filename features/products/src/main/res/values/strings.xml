@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="products">Productos</string>
+    <string name="new_product">Nuevo Producto</string>
+    <string name="create_new_product">Crear nuevo producto</string>
+    <string name="price_x">Precio: C$ %s</string>
+</resources>
