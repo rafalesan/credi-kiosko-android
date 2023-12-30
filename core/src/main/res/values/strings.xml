@@ -45,4 +45,5 @@
     <string name="show_password">Mostrar contraseña</string>
     <string name="welcome_x">Bienvenido %s</string>
     <string name="user_profile_avatar">Avatar del perfil del usuario</string>
+    <string name="navigate_back">Navegar atrás</string>
 </resources>

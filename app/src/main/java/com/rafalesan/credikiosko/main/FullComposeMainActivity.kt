@@ -95,7 +95,7 @@ class FullComposeMainActivity : ComponentActivity() {
                         }
 
                         composable("products") {
-                            ProductsScreen()
+                            ProductsScreen(navController = navController)
                         }
 
                     }
