@@ -1,14 +1,27 @@
 package com.rafalesan.products.presentation.products_list
 
+import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.products.domain.entity.Product
+import com.rafalesan.products.domain.usecase.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-
+    private val getProductsUseCase: GetProductsUseCase
 ) : BaseViewModel() {
+
+    private val _productList = MutableStateFlow<List<Product>>(listOf())
+    val productList = _productList.asStateFlow()
+
+    init {
+        fetchProducts()
+    }
 
     fun perform(productsEvent: ProductsEvent) {
         when (productsEvent) {
@@ -22,7 +35,22 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun handleShowProductEvent(product: Product) {
+        toast("Show ${product.name} under construction")
+    }
 
+    private fun fetchProducts() {
+        viewModelScope.launch {
+            val result = getProductsUseCase.invoke()
+            when (result) {
+                is ResultOf.Success -> handleSuccessFetchProduct(result)
+                is ResultOf.Failure -> TODO()
+                is ResultOf.InvalidData -> TODO()
+            }
+        }
+    }
+
+    private fun handleSuccessFetchProduct(result: ResultOf.Success<List<Product>>) {
+        _productList.value = result.value
     }
 
 }
