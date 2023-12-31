@@ -21,7 +21,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -34,7 +37,9 @@ import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.products.R
+import com.rafalesan.products.data.repository.ProductRepository
 import com.rafalesan.products.domain.entity.Product
+import com.rafalesan.products.domain.usecase.GetProductsUseCase
 import com.rafalesan.credikiosko.core.R as CoreR
 
 @Preview
@@ -42,7 +47,7 @@ import com.rafalesan.credikiosko.core.R as CoreR
 fun ProductsPreview() {
     ProductsUI(
         navController = NavHostController(LocalContext.current),
-        viewModel = ProductsViewModel()
+        viewModel = ProductsViewModel(GetProductsUseCase(ProductRepository()))
     )
 }
 
@@ -66,6 +71,12 @@ fun ProductsUI(
     Scaffold(
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSecondary
+                ),
                 title = {
                     Text(stringResource(id = R.string.products))
                 },
@@ -86,14 +97,16 @@ fun ProductsUI(
         }
     ) { innerPadding ->
 
+        val productList: List<Product> by viewModel.productList.collectAsState()
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
             contentPadding = innerPadding
         ) {
-            items(productsListMock, key = { it.id }) { product ->
+            items(productList, key = { it.id }) { product ->
                 ProductItem(product)
-                Divider(color = Color.Gray, thickness = 1.dp)
+                Divider(color = Color.LightGray, thickness = 1.dp)
             }
         }
     }
@@ -136,26 +149,3 @@ fun ProductItem(product: Product) {
         )
     }
 }
-
-internal val productsListMock = listOf(
-    Product(
-        1,
-        "Taza de café",
-        "7"
-    ),
-    Product(
-        2,
-        "Taza de café",
-        "7"
-    ),
-    Product(
-        3,
-        "Taza de café",
-        "7"
-    ),
-    Product(
-        4,
-        "Taza de café",
-        "7"
-    ),
-)
