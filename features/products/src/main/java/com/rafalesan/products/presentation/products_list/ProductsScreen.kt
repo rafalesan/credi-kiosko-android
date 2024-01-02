@@ -27,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,19 +36,8 @@ import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.products.R
-import com.rafalesan.products.data.repository.ProductRepository
 import com.rafalesan.products.domain.entity.Product
-import com.rafalesan.products.domain.usecase.GetProductsUseCase
 import com.rafalesan.credikiosko.core.R as CoreR
-
-@Preview
-@Composable
-fun ProductsPreview() {
-    ProductsUI(
-        navController = NavHostController(LocalContext.current),
-        viewModel = ProductsViewModel(GetProductsUseCase(ProductRepository()))
-    )
-}
 
 @Composable
 fun ProductsScreen(

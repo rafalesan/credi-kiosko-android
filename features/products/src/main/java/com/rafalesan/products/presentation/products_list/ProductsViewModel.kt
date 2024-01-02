@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,10 +41,11 @@ class ProductsViewModel @Inject constructor(
 
     private fun fetchProducts() {
         viewModelScope.launch {
+            //TODO: ADD LOADING
             val result = getProductsUseCase.invoke()
             when (result) {
                 is ResultOf.Success -> handleSuccessFetchProduct(result)
-                is ResultOf.Failure -> TODO()
+                is ResultOf.Failure -> handleFailure(result)
                 is ResultOf.InvalidData -> TODO()
             }
         }
@@ -51,6 +53,23 @@ class ProductsViewModel @Inject constructor(
 
     private fun handleSuccessFetchProduct(result: ResultOf.Success<List<Product>>) {
         _productList.value = result.value
+    }
+
+    private fun handleFailure(resultFailure: ResultOf.Failure) {
+        when (resultFailure) {
+            is ResultOf.Failure.ApiFailure -> {
+                Timber.e(resultFailure.message)
+            }
+            ResultOf.Failure.ApiNotAvailable -> {
+                Timber.e("ApiNotAvailable")
+            }
+            ResultOf.Failure.NoInternet -> {
+                Timber.e("NoInternet")
+            }
+            ResultOf.Failure.UnknownFailure -> {
+                Timber.e("UnknownFailure")
+            }
+        }
     }
 
 }

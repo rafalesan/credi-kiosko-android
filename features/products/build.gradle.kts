@@ -58,6 +58,10 @@ dependencies {
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.constraintLayout.compose)
 
+    implementation(Square.Retrofit2.retrofit)
+    implementation(Square.moshi)
+    kapt(Square.moshi.kotlinCodegen)
+
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)

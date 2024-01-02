@@ -3,13 +3,13 @@ package com.rafalesan.credikiosko.core.auth.data.repository
 import com.rafalesan.credikiosko.core.auth.data.mappers.toLoginRequest
 import com.rafalesan.credikiosko.core.auth.data.mappers.toSignupRequest
 import com.rafalesan.credikiosko.core.auth.data.mappers.toUserSession
+import com.rafalesan.credikiosko.core.auth.data.remote.AuthDataSource
 import com.rafalesan.credikiosko.core.auth.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.SignupUseCase
 import com.rafalesan.credikiosko.core.commons.data.utils.ApiResultHandler
 import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
-import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
 
 class AuthRepository(
     private val authDataSource: AuthDataSource

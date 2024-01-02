@@ -1,5 +1,6 @@
 package com.rafalesan.products.di
 
+import com.rafalesan.products.data.datasource.ProductRemoteDataSource
 import com.rafalesan.products.data.repository.ProductRepository
 import com.rafalesan.products.domain.repository.IProductRepository
 import dagger.Module
@@ -14,8 +15,10 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideProductRepository(): IProductRepository {
-        return ProductRepository()
+    fun provideProductRepository(
+        productRemoteDataSource: ProductRemoteDataSource
+    ): IProductRepository {
+        return ProductRepository(productRemoteDataSource)
     }
 
 }

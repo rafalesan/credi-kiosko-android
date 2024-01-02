@@ -2,11 +2,11 @@ package com.rafalesan.credikiosko.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.rafalesan.credikiosko.core.auth.data.remote.AuthDataSource
+import com.rafalesan.credikiosko.core.auth.data.remote.IAuthApi
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.UserPreferenceDataSource
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.UserSessionDataSource
 import com.rafalesan.credikiosko.core.commons.data.utils.IApiHandler
-import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
-import com.rafalesan.credikiosko.data.auth.datasource.remote.IAuthApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

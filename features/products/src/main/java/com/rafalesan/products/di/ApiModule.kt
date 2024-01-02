@@ -1,6 +1,6 @@
-package com.rafalesan.credikiosko.di
+package com.rafalesan.products.di
 
-import com.rafalesan.credikiosko.core.auth.data.remote.IAuthApi
+import com.rafalesan.products.data.datasource.IProductApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +14,8 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideAuthApi(retrofit: Retrofit) : IAuthApi {
-        return retrofit.create(IAuthApi::class.java)
+    fun provideProductApi(retrofit: Retrofit): IProductApi {
+        return retrofit.create(IProductApi::class.java)
     }
 
 }
