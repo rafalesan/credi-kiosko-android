@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.common.truth.Truth.assertWithMessage
+import com.rafalesan.credikiosko.core.auth.data.remote.AuthDataSource
+import com.rafalesan.credikiosko.core.auth.data.remote.IAuthApi
 import com.rafalesan.credikiosko.core.auth.domain.auth.repository.IAuthRepository
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.LoginUseCase
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.SignupUseCase
@@ -14,8 +16,6 @@ import com.rafalesan.credikiosko.core.commons.data.utils.ConnectivityHelper
 import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.testextensions.enqueue
-import com.rafalesan.credikiosko.data.auth.datasource.remote.AuthDataSource
-import com.rafalesan.credikiosko.data.auth.datasource.remote.IAuthApi
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
