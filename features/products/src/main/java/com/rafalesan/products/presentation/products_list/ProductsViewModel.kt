@@ -1,23 +1,26 @@
 package com.rafalesan.products.presentation.products_list
 
 import androidx.lifecycle.viewModelScope
-import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.products.domain.entity.Product
+import com.rafalesan.products.domain.usecase.GetPagingProductUseCase
 import com.rafalesan.products.domain.usecase.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val getProductsUseCase: GetProductsUseCase
+    private val getProductsUseCase: GetProductsUseCase,
+    private val getPagingProductUseCase: GetPagingProductUseCase
 ) : BaseViewModel() {
 
-    private val _productList = MutableStateFlow<List<Product>>(listOf())
+    private val _productList = MutableStateFlow<PagingData<Product>>(PagingData.empty())
     val productList = _productList.asStateFlow()
 
     init {
@@ -41,34 +44,14 @@ class ProductsViewModel @Inject constructor(
 
     private fun fetchProducts() {
         viewModelScope.launch {
-            //TODO: ADD LOADING
-            val result = getProductsUseCase.invoke()
-            when (result) {
-                is ResultOf.Success -> handleSuccessFetchProduct(result)
-                is ResultOf.Failure -> handleFailure(result)
-                is ResultOf.InvalidData -> TODO()
-            }
-        }
-    }
 
-    private fun handleSuccessFetchProduct(result: ResultOf.Success<List<Product>>) {
-        _productList.value = result.value
-    }
+            getPagingProductUseCase()
+                .distinctUntilChanged()
+                .cachedIn(viewModelScope)
+                .collect {
+                    _productList.value = it
+                }
 
-    private fun handleFailure(resultFailure: ResultOf.Failure) {
-        when (resultFailure) {
-            is ResultOf.Failure.ApiFailure -> {
-                Timber.e(resultFailure.message)
-            }
-            ResultOf.Failure.ApiNotAvailable -> {
-                Timber.e("ApiNotAvailable")
-            }
-            ResultOf.Failure.NoInternet -> {
-                Timber.e("NoInternet")
-            }
-            ResultOf.Failure.UnknownFailure -> {
-                Timber.e("UnknownFailure")
-            }
         }
     }
 

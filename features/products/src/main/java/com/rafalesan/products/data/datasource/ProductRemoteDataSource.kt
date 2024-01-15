@@ -11,10 +11,9 @@ class ProductRemoteDataSource @Inject constructor(
     private val apiHandler: IApiHandler
 ) {
 
-    //TODO: ADD PAGE ARGUMENT
-    suspend fun requestProducts(): ApiResult<PaginatedResponse<ProductDto>> {
+    suspend fun requestProducts(page: Int = 1): ApiResult<PaginatedResponse<ProductDto>> {
         return apiHandler.performApiCall {
-            productApi.requestProducts()
+            productApi.requestProducts(page)
         }
     }
 
