@@ -4,11 +4,13 @@ import com.rafalesan.credikiosko.core.commons.data.base.PaginatedResponse
 import com.rafalesan.products.data.dto.ProductDto
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface IProductApi {
-
-    //TODO: ADD PAGE ARGUMENT
     @GET("products")
-    suspend fun requestProducts(): Response<PaginatedResponse<ProductDto>>
+    suspend fun requestProducts(
+        @Query("page")
+        page: Int
+    ): Response<PaginatedResponse<ProductDto>>
 
 }

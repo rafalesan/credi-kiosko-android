@@ -62,6 +62,11 @@ dependencies {
     implementation(Square.moshi)
     kapt(Square.moshi.kotlinCodegen)
 
+    implementation(AndroidX.paging.runtimeKtx)
+    implementation(AndroidX.paging.compose)
+
+    implementation(KotlinX.coroutines.android)
+
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)

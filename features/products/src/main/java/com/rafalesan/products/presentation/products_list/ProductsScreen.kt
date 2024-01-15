@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -23,8 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -33,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.products.R
@@ -85,15 +84,15 @@ fun ProductsUI(
         }
     ) { innerPadding ->
 
-        val productList: List<Product> by viewModel.productList.collectAsState()
+        val productList: LazyPagingItems<Product> = viewModel.productList.collectAsLazyPagingItems()
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
             contentPadding = innerPadding
         ) {
-            items(productList, key = { it.id }) { product ->
-                ProductItem(product)
+            items(productList.itemCount) { index ->
+                ProductItem(productList[index]!!)
                 Divider(color = Color.LightGray, thickness = 1.dp)
             }
         }
