@@ -23,7 +23,7 @@ class ProductPagingSource(
                 LoadResult.Page(
                     data = response.data,
                     prevKey = if (currentPage == 1) null else currentPage - 1,
-                    nextKey = if (response.data.isEmpty()) null else response.currentPage + 1
+                    nextKey = if (response.nextPageUrl == null) null else response.currentPage + 1
                 )
             }
         }
