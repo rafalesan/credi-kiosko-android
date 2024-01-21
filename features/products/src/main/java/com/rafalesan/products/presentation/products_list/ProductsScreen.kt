@@ -2,15 +2,19 @@
 
 package com.rafalesan.products.presentation.products_list
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -22,14 +26,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
@@ -84,16 +91,75 @@ fun ProductsUI(
         }
     ) { innerPadding ->
 
-        val productList: LazyPagingItems<Product> = viewModel.productList.collectAsLazyPagingItems()
+        val productPagingList: LazyPagingItems<Product> = viewModel.productList.collectAsLazyPagingItems()
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize(),
-            contentPadding = innerPadding
+                .fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding()),
+            contentPadding = PaddingValues(bottom = Dimens.space10x)
         ) {
-            items(productList.itemCount) { index ->
-                ProductItem(productList[index]!!)
+            items(productPagingList.itemCount) { index ->
+                ProductItem(productPagingList[index]!!)
                 Divider(color = Color.LightGray, thickness = 1.dp)
+            }
+            with (productPagingList) {
+
+                when {
+                    loadState.refresh is LoadState.Loading -> {
+                        item {
+                            Box(
+                                modifier = Modifier.fillParentMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.width(64.dp)
+                                        .align(Alignment.Center),
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                                )
+                            }
+                        }
+                    }
+                    loadState.refresh is LoadState.Error -> {
+                        val error = loadState.refresh as LoadState.Error
+                        item {
+                            Text(
+                                modifier = Modifier.fillMaxSize(),
+                                textAlign = TextAlign.Center,
+                                text = error.error.localizedMessage
+                                    ?: stringResource(id = CoreR.string.unknown_error_description)
+                            )
+                        }
+                    }
+                    loadState.append is LoadState.Loading -> {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(vertical = Dimens.space2x),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                                )
+                            }
+                        }
+                    }
+                    loadState.append is LoadState.Error -> {
+                        val error = loadState.append as LoadState.Error
+                        item {
+                            Text(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(vertical = Dimens.space2x),
+                                textAlign = TextAlign.Center,
+                                text = error.error.localizedMessage
+                                    ?: stringResource(id = CoreR.string.unknown_error_description)
+                            )
+                        }
+                    }
+                }
+
             }
         }
     }

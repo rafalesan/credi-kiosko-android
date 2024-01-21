@@ -12,6 +12,7 @@ object Dimens {
     val space4x = 32.dp
     val space6x = 48.dp
     val space8x = 64.dp
+    val space10x = 80.dp
     val space12units = 12.dp
     val dialogBorderRadius = 8.dp
     val iconDialogSize = 80.dp
