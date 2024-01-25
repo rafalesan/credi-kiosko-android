@@ -19,3 +19,5 @@ val emptyUserSession = UserSession(
     "",
     emptyBusiness
 )
+
+const val emptyString = ""

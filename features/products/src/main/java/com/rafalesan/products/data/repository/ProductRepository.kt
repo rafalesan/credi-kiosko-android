@@ -18,6 +18,7 @@ class ProductRepository(
     private val productRemoteDataSource: ProductRemoteDataSource,
 ) : IProductRepository {
 
+    @Deprecated("Use GetPagingProductUseCase instead")
     override suspend fun requestProducts(): ResultOf<List<Product>, Nothing> {
 
         val apiResult = productRemoteDataSource.requestProducts()

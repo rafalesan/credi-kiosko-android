@@ -6,6 +6,7 @@ import com.rafalesan.products.domain.entity.Product
 import kotlinx.coroutines.flow.Flow
 
 interface IProductRepository {
+    @Deprecated("Use GetPagingProductUseCase instead")
     suspend fun requestProducts(): ResultOf<List<Product>, Nothing>
     suspend fun requestProductsPaged(): Flow<PagingData<Product>>
 }
