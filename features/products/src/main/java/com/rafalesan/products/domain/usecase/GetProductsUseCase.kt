@@ -5,6 +5,7 @@ import com.rafalesan.products.domain.entity.Product
 import com.rafalesan.products.domain.repository.IProductRepository
 import javax.inject.Inject
 
+@Deprecated("Use GetPagingProductUseCase instead")
 class GetProductsUseCase @Inject constructor(
     private val productRepository: IProductRepository
 ) {

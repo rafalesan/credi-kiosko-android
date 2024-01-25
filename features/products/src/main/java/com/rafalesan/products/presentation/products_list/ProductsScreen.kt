@@ -2,6 +2,7 @@
 
 package com.rafalesan.products.presentation.products_list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,6 +53,10 @@ fun ProductsScreen(
     viewModel: ProductsViewModel = hiltViewModel()
 ) {
     ProductsUI(
+        viewModel = viewModel,
+        navController = navController
+    )
+    ActionHandler(
         viewModel = viewModel,
         navController = navController
     )
@@ -100,7 +106,10 @@ fun ProductsUI(
             contentPadding = PaddingValues(bottom = Dimens.space10x)
         ) {
             items(productPagingList.itemCount) { index ->
-                ProductItem(productPagingList[index]!!)
+                ProductItem(
+                    productPagingList[index]!!,
+                    onClick = { viewModel.perform(ProductsEvent.ShowProduct(it)) }
+                )
                 Divider(color = Color.LightGray, thickness = 1.dp)
             }
             with (productPagingList) {
@@ -113,7 +122,8 @@ fun ProductsUI(
                                 contentAlignment = Alignment.Center
                             ) {
                                 CircularProgressIndicator(
-                                    modifier = Modifier.width(64.dp)
+                                    modifier = Modifier
+                                        .width(64.dp)
                                         .align(Alignment.Center),
                                     color = MaterialTheme.colorScheme.secondary,
                                     trackColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -135,7 +145,8 @@ fun ProductsUI(
                     loadState.append is LoadState.Loading -> {
                         item {
                             Box(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
                                     .padding(vertical = Dimens.space2x),
                                 contentAlignment = Alignment.Center
                             ) {
@@ -150,7 +161,8 @@ fun ProductsUI(
                         val error = loadState.append as LoadState.Error
                         item {
                             Text(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
                                     .padding(vertical = Dimens.space2x),
                                 textAlign = TextAlign.Center,
                                 text = error.error.localizedMessage
@@ -174,14 +186,18 @@ fun ProductItemPreview() {
             "Taza de café",
             "7"
         )
-    )
+    ) {}
 }
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(
+    product: Product,
+    onClick: (Product) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick(product) }
     ) {
         Text(
             modifier = Modifier
@@ -200,5 +216,30 @@ fun ProductItem(product: Product) {
                 product.price
             )
         )
+    }
+}
+
+@Composable
+fun ActionHandler(
+    viewModel: ProductsViewModel,
+    navController: NavHostController
+) {
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.action.collect { action ->
+            when(action) {
+                is ProductsAction.ShowProductForm -> {
+                    var route = "product_form"
+
+                    action.product?.let {
+                        route += "?product_id=${it.id}" +
+                            "?product_name=${it.name}" +
+                            "?product_price=${it.price}"
+                    }
+
+                    navController.navigate(route)
+                }
+            }
+        }
     }
 }
