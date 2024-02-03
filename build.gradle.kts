@@ -7,6 +7,7 @@ plugins {
     id ("com.android.library") apply false
     id ("org.jetbrains.kotlin.android") apply false
     id("com.google.dagger.hilt.android") apply false
+    id("com.google.devtools.ksp") version "1.9.22-1.0.17" apply false
 }
 //https://www.droidcon.com/2022/03/11/reducing-gradle-boilerplate-in-multi-module-android-projects/
 fun BaseExtension.baseConfig() {

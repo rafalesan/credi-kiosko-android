@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -19,6 +20,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                           "proguard-rules.pro")
         }
+    }
+
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
 
     buildFeatures {
@@ -62,6 +67,11 @@ dependencies {
     implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.compose.ui.toolingPreview)
+
+    implementation(AndroidX.room.runtime)
+    implementation(AndroidX.room.ktx)
+    implementation(AndroidX.room.paging)
+    ksp(AndroidX.room.compiler)
 
     testImplementation(Testing.junit4)
     testImplementation(Testing.MockK)
