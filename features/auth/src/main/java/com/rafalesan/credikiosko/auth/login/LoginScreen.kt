@@ -3,7 +3,6 @@ package com.rafalesan.credikiosko.auth.login
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.auth.mainActivityNameSpace
+import com.rafalesan.credikiosko.core.commons.presentation.composables.AppLogo
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedPasswordFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.UiStateHandlerComposable
@@ -87,7 +86,12 @@ fun LoginUI(viewModel: LoginViewModel) {
         constraintSet = screenConstraintSet
     ) {
 
-        AppLogo()
+        AppLogo(
+            modifier = Modifier
+                .layoutId(AppLogoTag)
+                .padding(horizontal = Dimens.space8x)
+                .padding(top = Dimens.space4x),
+        )
         AppName()
         LoginDescription()
         EmailInput(viewModel)
@@ -104,18 +108,6 @@ fun LoginUI(viewModel: LoginViewModel) {
 
     UiStateHandlerComposable(
         viewModel = viewModel
-    )
-}
-
-@Composable
-fun AppLogo() {
-    Image(
-        modifier = Modifier
-            .layoutId(AppLogoTag)
-            .padding(horizontal = Dimens.space8x)
-            .padding(top = Dimens.space4x),
-        painter = painterResource(id = CoreR.drawable.ic_app),
-        contentDescription = stringResource(id = CoreR.string.app_name)
     )
 }
 

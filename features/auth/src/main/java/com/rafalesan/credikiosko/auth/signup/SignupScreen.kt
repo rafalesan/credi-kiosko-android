@@ -2,13 +2,20 @@ package com.rafalesan.credikiosko.auth.signup
 
 import android.provider.Settings
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.PersonOutline
+import androidx.compose.material.icons.outlined.Store
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rafalesan.credikiosko.core.R
+import com.rafalesan.credikiosko.core.commons.presentation.composables.AppLogo
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedPasswordFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
@@ -62,7 +69,12 @@ fun SignUpUi(
             .verticalScroll(rememberScrollState()),
         constraintSet = signUpConstraintSet
     ) {
-        AppLogo()
+        AppLogo(
+            modifier = Modifier
+                .layoutId(SignUpViewTag.AppLogo)
+                .width(Dimens.signUpAppLogoSize)
+                .padding(top = Dimens.space2x),
+        )
         AppName()
         SignUpDescription()
         CompleteNameInput(viewModel = viewModel)
@@ -84,18 +96,6 @@ fun SignUpUi(
     )
 
     ToastHandlerComposable(viewModel = viewModel)
-}
-
-@Composable
-fun AppLogo() {
-    Image(
-        modifier = Modifier
-            .layoutId(SignUpViewTag.AppLogo)
-            .width(Dimens.signUpAppLogoSize)
-            .padding(top = Dimens.space2x),
-        painter = painterResource(id = R.drawable.ic_app),
-        contentDescription = stringResource(id = R.string.app_name)
-    )
 }
 
 @Composable
