@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_to_credikiosko">Bienvenido a CrediKiosko</string>
+    <string name="welcome_description">Ingrese el nombre de su kiosko para comenzar a llevar el control de sus productos y clientes</string>
+    <string name="kiosk_name">Nombre del Kiosko</string>
+    <string name="kiosk">Kiosko</string>
+    <string name="continue_text">Continuar</string>
+</resources>
