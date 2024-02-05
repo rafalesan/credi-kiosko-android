@@ -16,6 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -30,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.presentation.composables.AppLogo
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
+import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Teal200
 import com.rafalesan.credikiosko.onboarding.R
@@ -39,17 +44,44 @@ fun WelcomeScreen(
     navController: NavHostController,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
-    WelcomeUI()
+
+    val viewState = viewModel.viewState.collectAsState()
+
+    WelcomeUI(
+        viewState,
+        onBusinessNameChanged = {
+            viewModel.perform(WelcomeEvent.SetBusinessName(it))
+        },
+        onContinuePressed = {
+            viewModel.perform(WelcomeEvent.ConfirmBusinessName)
+        }
+    )
+
+    ActionHandlerComposable(
+        navController = navController,
+        viewModel = viewModel
+    )
+    ToastHandlerComposable(viewModel = viewModel)
 }
 
 @Preview
 @Composable
 fun WelcomeUIPreview() {
-    WelcomeUI()
+    WelcomeUI(
+        viewState = remember {
+            mutableStateOf(WelcomeState())
+        },
+        {},
+        {}
+    )
 }
 
 @Composable
-fun WelcomeUI() {
+fun WelcomeUI(
+    viewState: State<WelcomeState>,
+    onBusinessNameChanged: (String) -> Unit,
+    onContinuePressed: () -> Unit
+) {
 
     Surface(
         modifier = Modifier
@@ -85,20 +117,26 @@ fun WelcomeUI() {
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
             )
-            BusinessNameInput()
-            ContinueButton()
+            BusinessNameInput(
+                viewState,
+                onBusinessNameChanged
+            )
+            ContinueButton(onContinuePressed)
         }
     }
 
 }
 
 @Composable
-fun BusinessNameInput() {
+fun BusinessNameInput(
+    viewState: State<WelcomeState>,
+    onBusinessNameChanged: (String) -> Unit
+) {
     val businessNameText = remember {
-        mutableStateOf("")
+        derivedStateOf { viewState.value.businessName }
     }
     val businessNameError = remember {
-        mutableStateOf(null)
+        derivedStateOf { viewState.value.businessInputError }
     }
 
     OutlinedTextFieldWithError(
@@ -111,7 +149,7 @@ fun BusinessNameInput() {
         ),
         value = businessNameText.value,
         errorStringId = businessNameError.value,
-        onValueChange = { businessNameText.value = it },
+        onValueChange = onBusinessNameChanged,
         label = { Text(text = stringResource(id = R.string.kiosk_name)) },
         textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
         singleLine = true,
@@ -125,7 +163,7 @@ fun BusinessNameInput() {
 }
 
 @Composable
-fun ContinueButton() {
+fun ContinueButton(onContinuePressed: () -> Unit) {
     Button(
         modifier = Modifier
             .layoutId(ContinueButtonTag)
@@ -133,10 +171,32 @@ fun ContinueButton() {
             .padding(top = Dimens.space4x, bottom = Dimens.space4x)
             .height(Dimens.space6x),
         colors = ButtonDefaults.buttonColors(containerColor = Teal200),
-        onClick = {
-            //TODO
-        }
+        onClick = onContinuePressed
     ) {
         Text(text = stringResource(id = R.string.continue_text).uppercase())
+    }
+}
+
+@Composable
+fun ActionHandlerComposable(
+    navController: NavHostController,
+    viewModel: WelcomeViewModel
+) {
+    LaunchedEffect(Unit) {
+        viewModel.action.collect { event ->
+            when (event) {
+                WelcomeAction.OpenHome -> {
+                    openHome(navController)
+                }
+            }
+        }
+    }
+}
+
+private fun openHome(
+    navController: NavHostController
+) {
+    navController.navigate("home") {
+        this.popUpTo(0)
     }
 }
