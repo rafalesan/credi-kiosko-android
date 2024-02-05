@@ -5,4 +5,5 @@
     <string name="kiosk_name">Nombre del Kiosko</string>
     <string name="kiosk">Kiosko</string>
     <string name="continue_text">Continuar</string>
+    <string name="empty_business_name_validation_desc">Debe ingresar el nombre de su kiosko o negocio para continuar</string>
 </resources>
