@@ -1,6 +1,8 @@
 package com.rafalesan.credikiosko.main
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
@@ -8,6 +10,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,8 +27,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FullComposeMainActivity : ComponentActivity() {
 
+    private var keepSplashOnScreen = true
+    private val splashScreenDuration = 2000L
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        installSplashScreen().setKeepOnScreenCondition { keepSplashOnScreen }
+        Handler(Looper.getMainLooper()).postDelayed({ keepSplashOnScreen = false }, splashScreenDuration)
+
         super.onCreate(savedInstanceState)
+
         setContent {
             CrediKioskoTheme {
                 val navController = rememberNavController()

@@ -19,6 +19,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.CrediKiosko.NoActionBar</item>
+    </style>
+
     <style name="Theme.CrediKiosko.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
 
     <style name="Theme.CrediKiosko.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>

@@ -14,4 +14,7 @@ interface BusinessDao {
     @Insert
     suspend fun insertBusiness(business: BusinessEntity)
 
+    @Query("SELECT EXISTS(SELECT * FROM businesses)")
+    suspend fun existsBusiness(): Boolean
+
 }
