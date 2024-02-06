@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
-import com.rafalesan.credikiosko.home.HomeScreenNavCompose
+import com.rafalesan.credikiosko.home.presentation.HomeScreenNavCompose
 import com.rafalesan.credikiosko.onboarding.presentation.WelcomeScreen
 import com.rafalesan.products.presentation.product_form.ProductFormScreen
 import com.rafalesan.products.presentation.products_list.ProductsScreen

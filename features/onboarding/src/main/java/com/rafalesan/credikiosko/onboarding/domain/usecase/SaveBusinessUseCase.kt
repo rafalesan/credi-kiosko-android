@@ -1,7 +1,7 @@
 package com.rafalesan.credikiosko.onboarding.domain.usecase
 
+import com.rafalesan.credikiosko.core.commons.domain.repository.IBusinessRepository
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
-import com.rafalesan.credikiosko.onboarding.domain.repository.IBusinessRepository
 import com.rafalesan.credikiosko.onboarding.domain.validator.BusinessInputValidator
 import javax.inject.Inject
 

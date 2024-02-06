@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.home
+package com.rafalesan.credikiosko.home.presentation
 
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
