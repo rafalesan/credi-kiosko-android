@@ -18,4 +18,8 @@ class BusinessRepository(
         return businessEntity.toDomain()
     }
 
+    override suspend fun existsBusiness(): Boolean {
+        return businessLocalDataSource.existsBusiness()
+    }
+
 }

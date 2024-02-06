@@ -1,6 +1,7 @@
 package com.rafalesan.credikiosko.onboarding.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.domain.usecases.ExistBusinessUseCase
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.onboarding.domain.usecase.SaveBusinessUseCase
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
-    private val saveBusinessUseCase: SaveBusinessUseCase
+    private val saveBusinessUseCase: SaveBusinessUseCase,
+    private val existBusinessUseCase: ExistBusinessUseCase
 ): BaseViewModel() {
 
     private val _viewState = MutableStateFlow(WelcomeState())
@@ -33,6 +35,17 @@ class WelcomeViewModel @Inject constructor(
                 it.copy(businessName = event.businessName)
             }
             WelcomeEvent.ConfirmBusinessName -> confirmBusinessName()
+            WelcomeEvent.CheckIfBusinessExists -> checkIfBusinessExists()
+        }
+    }
+
+    private fun checkIfBusinessExists() {
+        viewModelScope.launch {
+
+            if (existBusinessUseCase()) {
+                _action.send(WelcomeAction.OpenHome)
+            }
+
         }
     }
 

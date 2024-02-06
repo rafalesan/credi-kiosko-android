@@ -68,6 +68,8 @@ dependencies {
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.compose.ui.toolingPreview)
 
+    implementation(AndroidX.core.splashscreen)
+
     implementation(AndroidX.room.runtime)
     implementation(AndroidX.room.ktx)
     implementation(AndroidX.room.paging)

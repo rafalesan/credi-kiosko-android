@@ -18,4 +18,8 @@ class BusinessLocalDataSource @Inject constructor(
         return businessDao.getBusiness()
     }
 
+    suspend fun existsBusiness(): Boolean {
+        return businessDao.existsBusiness()
+    }
+
 }

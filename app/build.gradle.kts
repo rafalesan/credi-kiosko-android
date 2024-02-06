@@ -96,6 +96,8 @@ dependencies {
     implementation(Google.dagger.hilt.android)
     kapt(Google.dagger.hilt.compiler)
 
+    implementation(AndroidX.core.splashscreen)
+
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.compose.ui.tooling)
     testImplementation(Testing.junit4)
