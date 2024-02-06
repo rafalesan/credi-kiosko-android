@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.onboarding.data.datasource
+package com.rafalesan.credikiosko.core.commons.data.datasource.local
 
 import com.rafalesan.credikiosko.core.room.dao.BusinessDao
 import com.rafalesan.credikiosko.core.room.entity.BusinessEntity
@@ -12,6 +12,10 @@ class BusinessLocalDataSource @Inject constructor(
         businessDao.insertBusiness(
             BusinessEntity(name = businessName)
         )
+    }
+
+    suspend fun getBusiness(): BusinessEntity {
+        return businessDao.getBusiness()
     }
 
 }

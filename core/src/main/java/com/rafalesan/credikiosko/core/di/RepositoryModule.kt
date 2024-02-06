@@ -1,8 +1,8 @@
-package com.rafalesan.credikiosko.onboarding.di
+package com.rafalesan.credikiosko.core.di
 
-import com.rafalesan.credikiosko.onboarding.data.datasource.BusinessLocalDataSource
-import com.rafalesan.credikiosko.onboarding.data.repository.BusinessRepository
-import com.rafalesan.credikiosko.onboarding.domain.repository.IBusinessRepository
+import com.rafalesan.credikiosko.core.commons.data.datasource.local.BusinessLocalDataSource
+import com.rafalesan.credikiosko.core.commons.data.repository.BusinessRepository
+import com.rafalesan.credikiosko.core.commons.domain.repository.IBusinessRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

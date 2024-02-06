@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class BusinessData(
     @Json(name = "id")
-    val id: Int,
+    val id: Long,
     @Json(name = "name")
     val name: String,
     @Json(name = "email")

@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.home
+package com.rafalesan.credikiosko.home.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
