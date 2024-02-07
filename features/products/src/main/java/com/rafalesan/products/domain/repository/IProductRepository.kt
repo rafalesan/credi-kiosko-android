@@ -9,4 +9,6 @@ interface IProductRepository {
     @Deprecated("Use GetPagingProductUseCase instead")
     suspend fun requestProducts(): ResultOf<List<Product>, Nothing>
     suspend fun requestProductsPaged(): Flow<PagingData<Product>>
+
+    fun getLocalProductsPaged(): Flow<PagingData<Product>>
 }

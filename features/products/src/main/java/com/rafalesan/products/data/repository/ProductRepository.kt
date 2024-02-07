@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.rafalesan.credikiosko.core.commons.data.utils.ApiResultHandler
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
+import com.rafalesan.products.data.datasource.ProductLocalDataSource
 import com.rafalesan.products.data.datasource.ProductPagingSource
 import com.rafalesan.products.data.datasource.ProductRemoteDataSource
 import com.rafalesan.products.data.mappers.toProductDomain
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.map
 
 class ProductRepository(
     private val productRemoteDataSource: ProductRemoteDataSource,
+    private val productLocalDataSource: ProductLocalDataSource
 ) : IProductRepository {
 
     @Deprecated("Use GetPagingProductUseCase instead")
@@ -43,6 +45,18 @@ class ProductRepository(
                 pagingData.map {
                     it.toProductDomain()
                 }
+            }
+    }
+
+    override fun getLocalProductsPaged(): Flow<PagingData<Product>> {
+        return Pager(
+            config = PagingConfig(pageSize = 15, prefetchDistance = 2),
+            pagingSourceFactory = {
+                productLocalDataSource.getProductsPaged()
+            }
+        ).flow
+            .map { pagingData ->
+                pagingData.map { it.toProductDomain() }
             }
     }
 
