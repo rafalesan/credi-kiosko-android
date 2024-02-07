@@ -5,7 +5,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.products.domain.entity.Product
-import com.rafalesan.products.domain.usecase.GetPagingProductUseCase
+import com.rafalesan.products.domain.usecase.GetLocalProductsPagedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val getPagingProductUseCase: GetPagingProductUseCase
+    private val getLocalProductsPagedUseCase: GetLocalProductsPagedUseCase
 ) : BaseViewModel() {
 
     private val _productList = MutableStateFlow<PagingData<Product>>(PagingData.empty())
@@ -27,7 +27,7 @@ class ProductsViewModel @Inject constructor(
     val action = _action.receiveAsFlow()
 
     init {
-        fetchProducts()
+        fetchLocalProducts()
     }
 
     fun perform(productsEvent: ProductsEvent) {
@@ -49,10 +49,10 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun fetchProducts() {
+    private fun fetchLocalProducts() {
         viewModelScope.launch {
 
-            getPagingProductUseCase()
+            getLocalProductsPagedUseCase()
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
                 .collect {

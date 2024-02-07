@@ -28,6 +28,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -98,6 +101,9 @@ fun ProductsUI(
     ) { innerPadding ->
 
         val productPagingList: LazyPagingItems<Product> = viewModel.productList.collectAsLazyPagingItems()
+        val isEmptyProductList by remember {
+            derivedStateOf { productPagingList.itemCount == 0 }
+        }
 
         LazyColumn(
             modifier = Modifier
@@ -112,6 +118,21 @@ fun ProductsUI(
                 )
                 Divider(color = Color.LightGray, thickness = 1.dp)
             }
+
+            if (isEmptyProductList) {
+                item {
+                    Box(
+                        modifier = Modifier.fillParentMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = stringResource(id = R.string.empty_product_list_desc)
+                        )
+                    }
+                }
+            }
+
             with (productPagingList) {
 
                 when {
