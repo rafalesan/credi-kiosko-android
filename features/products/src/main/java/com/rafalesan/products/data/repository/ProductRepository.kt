@@ -10,6 +10,7 @@ import com.rafalesan.products.data.datasource.ProductLocalDataSource
 import com.rafalesan.products.data.datasource.ProductPagingSource
 import com.rafalesan.products.data.datasource.ProductRemoteDataSource
 import com.rafalesan.products.data.mappers.toProductDomain
+import com.rafalesan.products.data.mappers.toProductEntity
 import com.rafalesan.products.domain.entity.Product
 import com.rafalesan.products.domain.repository.IProductRepository
 import kotlinx.coroutines.flow.Flow
@@ -58,6 +59,10 @@ class ProductRepository(
             .map { pagingData ->
                 pagingData.map { it.toProductDomain() }
             }
+    }
+
+    override suspend fun saveProduct(product: Product) {
+        productLocalDataSource.saveProduct(product.toProductEntity())
     }
 
 }

@@ -21,3 +21,4 @@ val emptyUserSession = UserSession(
 )
 
 const val emptyString = ""
+const val zeroLong = 0L

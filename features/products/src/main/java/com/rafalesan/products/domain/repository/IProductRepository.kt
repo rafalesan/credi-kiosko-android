@@ -11,4 +11,7 @@ interface IProductRepository {
     suspend fun requestProductsPaged(): Flow<PagingData<Product>>
 
     fun getLocalProductsPaged(): Flow<PagingData<Product>>
+
+    suspend fun saveProduct(product: Product)
+
 }

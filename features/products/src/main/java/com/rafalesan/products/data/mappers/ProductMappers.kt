@@ -19,3 +19,11 @@ fun ProductEntity.toProductDomain(): Product {
         price
     )
 }
+
+fun Product.toProductEntity(): ProductEntity {
+    return ProductEntity(
+        id,
+        name,
+        price
+    )
+}

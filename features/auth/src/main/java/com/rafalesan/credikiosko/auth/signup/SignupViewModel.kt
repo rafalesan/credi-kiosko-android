@@ -4,13 +4,25 @@ import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.auth.R
 import com.rafalesan.credikiosko.core.auth.domain.auth.usecases.SignupUseCase
 import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator
-import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.*
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.EMPTY_BUSINESS_NAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.EMPTY_DEVICE_NAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.EMPTY_EMAIL
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.EMPTY_NAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.EMPTY_NICKNAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.EMPTY_PASSWORD
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.EMPTY_PASSWORD_CONFIRMATION
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.INVALID_EMAIL
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.MIN_10_CHARS_NAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.MIN_2_CHARS_BUSINESS_NAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.MIN_3_CHARS_NICKNAME
+import com.rafalesan.credikiosko.core.auth.domain.auth.validators.SignupValidator.SignupValidation.PASSWORDS_NOT_EQUALS
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -92,7 +104,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun handleResultFailure(resultFailure: ResultOf.Failure) = viewModelScope.launch {
+    private fun handleResultFailure(resultFailure: ResultOf.Failure<*>) = viewModelScope.launch {
         when(resultFailure) {
             is ResultOf.Failure.ApiFailure   -> {
                 _uiState.send(UiState.ApiError(resultFailure.message))
@@ -101,6 +113,7 @@ class SignupViewModel @Inject constructor(
             ResultOf.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
             ResultOf.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
             ResultOf.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
+            is ResultOf.Failure.InvalidData -> { Timber.e("Operation not supported: $resultFailure") }
         }
     }
 
