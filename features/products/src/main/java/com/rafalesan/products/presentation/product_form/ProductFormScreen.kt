@@ -10,6 +10,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -27,7 +29,9 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,7 +42,9 @@ import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
+import com.rafalesan.credikiosko.core.commons.presentation.theme.Red400
 import com.rafalesan.products.R
+import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
 fun ProductFormScreen(
@@ -61,6 +67,9 @@ fun ProductFormScreen(
         },
         onSaveProductPressed = {
             viewModel.perform(ProductFormEvent.SaveProduct)
+        },
+        onDeleteProductPressed = {
+            viewModel.perform(ProductFormEvent.DeleteProduct)
         }
     )
 
@@ -76,7 +85,8 @@ fun ProductFormScreen(
 @Composable
 fun ProductFormUIPreview() {
     ProductFormUI(
-        viewState = remember { mutableStateOf(ProductFormState()) },
+        viewState = remember { mutableStateOf(ProductFormState(isNewProduct = false)) },
+        {},
         {},
         {},
         {},
@@ -91,6 +101,7 @@ fun ProductFormUI(
     onProductNameChange: (String) -> Unit,
     onProductPriceChange: (String) -> Unit,
     onSaveProductPressed: () -> Unit,
+    onDeleteProductPressed: () -> Unit
 ) {
 
     Scaffold(
@@ -154,7 +165,13 @@ fun ProductFormUI(
 
             ProductNameInput(viewState, onProductNameChange)
             ProductPriceInput(viewState, onProductPriceChange)
-
+            if (!viewState.value.isNewProduct) {
+                DeleteButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+                    onDeleteProductPressed
+                )
+            }
         }
 
     }
@@ -224,6 +241,23 @@ fun ProductPriceInput(
         onValueChange = onProductPriceChange
     )
 
+}
+
+@Composable
+fun DeleteButton(
+    modifier: Modifier = Modifier,
+    onDeletePressed: () -> Unit
+) {
+    Button(
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(containerColor = Red400),
+        onClick = onDeletePressed
+    ) {
+        Text(
+            text = stringResource(id = CoreR.string.delete).uppercase(),
+            color = Color.White
+        )
+    }
 }
 
 @Composable

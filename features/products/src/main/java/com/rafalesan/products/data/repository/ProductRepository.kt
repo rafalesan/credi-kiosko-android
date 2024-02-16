@@ -65,4 +65,7 @@ class ProductRepository(
         productLocalDataSource.saveProduct(product.toProductEntity())
     }
 
+    override suspend fun deleteProduct(product: Product) {
+        productLocalDataSource.deleteProduct(product.toProductEntity())
+    }
 }
