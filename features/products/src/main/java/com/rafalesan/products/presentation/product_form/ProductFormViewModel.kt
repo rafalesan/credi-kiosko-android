@@ -7,6 +7,7 @@ import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.zeroLong
 import com.rafalesan.products.domain.entity.Product
+import com.rafalesan.products.domain.usecase.DeleteProductUseCase
 import com.rafalesan.products.domain.usecase.SaveProductUseCase
 import com.rafalesan.products.domain.validator.ProductValidator
 import com.rafalesan.products.domain.validator.ProductValidator.ProductInputValidation.EMPTY_PRODUCT_NAME
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductFormViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val saveProductUseCase: SaveProductUseCase
+    private val saveProductUseCase: SaveProductUseCase,
+    private val deleteProductUseCase: DeleteProductUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableStateFlow(ProductFormState())
@@ -57,6 +59,15 @@ class ProductFormViewModel @Inject constructor(
             }
 
             ProductFormEvent.SaveProduct -> saveProduct()
+            ProductFormEvent.DeleteProduct -> deleteProduct()
+        }
+    }
+
+    private fun deleteProduct() {
+        viewModelScope.launch {
+            val product = buildProductFromViewState()
+            deleteProductUseCase(product)
+            goBackToProductList()
         }
     }
 

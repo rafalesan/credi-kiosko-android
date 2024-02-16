@@ -14,4 +14,6 @@ interface IProductRepository {
 
     suspend fun saveProduct(product: Product)
 
+    suspend fun deleteProduct(product: Product)
+
 }
