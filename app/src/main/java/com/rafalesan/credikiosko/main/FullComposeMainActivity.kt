@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
+import com.rafalesan.credikiosko.customers.presentation.customers_list.CustomersScreen
 import com.rafalesan.credikiosko.home.presentation.HomeScreenNavCompose
 import com.rafalesan.credikiosko.onboarding.presentation.WelcomeScreen
 import com.rafalesan.products.presentation.product_form.ProductFormScreen
@@ -81,6 +82,10 @@ class FullComposeMainActivity : ComponentActivity() {
                         )
                     ) {
                         ProductFormScreen(navController = navController)
+                    }
+
+                    composable("customers") {
+                        CustomersScreen(navController = navController)
                     }
 
                 }

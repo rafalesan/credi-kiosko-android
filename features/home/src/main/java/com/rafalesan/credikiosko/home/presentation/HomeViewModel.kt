@@ -65,7 +65,8 @@ class HomeViewModel @Inject constructor(
             ),
             HomeOption(
                 R.string.customers,
-                Icons.Filled.Groups2
+                Icons.Filled.Groups2,
+                "customers"
             )
         )
     }

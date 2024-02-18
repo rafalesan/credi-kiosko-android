@@ -109,5 +109,6 @@ dependencies {
     implementation(project(":features:onboarding"))
     implementation(project(":features:home"))
     implementation(project(":features:products"))
+    implementation(project(":features:customers"))
 
 }
