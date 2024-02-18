@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,7 +35,7 @@ import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 fun OutlinedTextFieldWithError(
     modifier: Modifier = Modifier,
     value: String,
-    errorStringId: Int?,
+    errorStringId: Int? = null,
     onValueChange: ((String) -> Unit),
     enabled: Boolean = true,
     readOnly: Boolean = false,

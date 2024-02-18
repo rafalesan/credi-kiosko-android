@@ -6,4 +6,9 @@
     <string name="nickname_x">Sobrenombre: %s</string>
     <string name="no_nickname">Sin sobrenombre</string>
     <string name="empty_customer_list_desc">Aún no ha agregado clientes</string>
+    <string name="modify_customer">Modificar Cliente</string>
+    <string name="editing_customer_x">Editando cliente: %s</string>
+    <string name="save_customer">Guardar Cliente</string>
+    <string name="customer_name">Nombre del cliente</string>
+    <string name="alias_or_nickname">Alias o sobrenombre</string>
 </resources>

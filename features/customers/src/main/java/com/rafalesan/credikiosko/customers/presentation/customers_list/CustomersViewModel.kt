@@ -7,9 +7,11 @@ import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.customers.domain.entity.Customer
 import com.rafalesan.credikiosko.customers.domain.usecase.GetLocalCustomersPagedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +22,9 @@ class CustomersViewModel @Inject constructor(
 
     private val _customerList = MutableStateFlow<PagingData<Customer>>(PagingData.empty())
     val customerList = _customerList.asStateFlow()
+
+    private val _action = Channel<CustomersAction>(Channel.BUFFERED)
+    val action = _action.receiveAsFlow()
 
     init {
         fetchLocalCustomers()
@@ -33,11 +38,15 @@ class CustomersViewModel @Inject constructor(
     }
 
     private fun handleShowCustomerEvent(customer: Customer) {
-        toast("En construcción")
+        viewModelScope.launch {
+            _action.send(CustomersAction.ShowCustomerForm(customer))
+        }
     }
 
     private fun handleCreateNewCustomerEvent() {
-        toast("En construcción")
+        viewModelScope.launch {
+            _action.send(CustomersAction.ShowCustomerForm())
+        }
     }
 
     private fun fetchLocalCustomers() {
