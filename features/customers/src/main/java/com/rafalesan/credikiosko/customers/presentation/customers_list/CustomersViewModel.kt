@@ -1,16 +1,21 @@
 package com.rafalesan.credikiosko.customers.presentation.customers_list
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.customers.domain.entity.Customer
+import com.rafalesan.credikiosko.customers.domain.usecase.GetLocalCustomersPagedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CustomersViewModel @Inject constructor(
-
+    private val getLocalCustomersPagedUseCase: GetLocalCustomersPagedUseCase
 ) : BaseViewModel() {
 
     private val _customerList = MutableStateFlow<PagingData<Customer>>(PagingData.empty())
@@ -36,13 +41,16 @@ class CustomersViewModel @Inject constructor(
     }
 
     private fun fetchLocalCustomers() {
-        _customerList.value = PagingData.from(
-            listOf(
-                Customer(1, "Rafael Antonio Alegría Sánchez", "Pito"),
-                Customer(2, "Gloria María Sánchez Muñoz", "Doña Gloria"),
-                Customer(3, "Darling Lorena Alegría Sánchez", "Tierna")
-            )
-        )
+        viewModelScope.launch {
+
+            getLocalCustomersPagedUseCase()
+                .distinctUntilChanged()
+                .cachedIn(viewModelScope)
+                .collect {
+                    _customerList.value = it
+                }
+
+        }
     }
 
 }
