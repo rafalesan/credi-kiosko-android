@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_new_customer">Crear Nuevo Cliente</string>
+    <string name="customers">Clientes</string>
+    <string name="new_customer">Nuevo Cliente</string>
+    <string name="nickname_x">Sobrenombre: %s</string>
+    <string name="no_nickname">Sin sobrenombre</string>
+    <string name="empty_customer_list_desc">Aún no ha agregado clientes</string>
+</resources>
