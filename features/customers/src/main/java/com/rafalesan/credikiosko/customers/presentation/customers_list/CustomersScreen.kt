@@ -35,10 +35,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.customers.R
 import com.rafalesan.credikiosko.customers.domain.entity.Customer
@@ -48,13 +50,18 @@ import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
 fun CustomersScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: CustomersViewModel = hiltViewModel()
 ) {
 
     CustomersUI(
-        customersPagingListFlow = getMockCustomersFlow(),
-        onBackPressed = { navController.navigateUp() }
+        customersPagingListFlow = viewModel.customerList,
+        onBackPressed = { navController.navigateUp() },
+        onNewCustomerPressed = { viewModel.perform(CustomersEvent.CreateNewCustomer) },
+        onCustomerPressed = { viewModel.perform(CustomersEvent.ShowCustomer(it)) }
     )
+
+    ToastHandlerComposable(viewModel = viewModel)
 
 }
 
