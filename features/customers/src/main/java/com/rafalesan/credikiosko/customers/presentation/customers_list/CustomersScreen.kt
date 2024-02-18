@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -62,6 +63,11 @@ fun CustomersScreen(
     )
 
     ToastHandlerComposable(viewModel = viewModel)
+
+    ActionHandler(
+        viewModel,
+        navController
+    )
 
 }
 
@@ -171,17 +177,47 @@ fun CustomerItem(
             fontWeight = FontWeight.Bold
         )
 
-        val nickname = customer.nickname ?: stringResource(id = R.string.no_nickname)
+        val nickname = if(customer.nickname.isNullOrBlank()) {
+            stringResource(id = R.string.no_nickname)
+        } else {
+            stringResource(
+                id = R.string.nickname_x,
+                customer.nickname
+            )
+        }
 
         Text(
             modifier = Modifier
                 .padding(horizontal = Dimens.space2x)
                 .padding(top = Dimens.spaceDefault, bottom = Dimens.space2x),
-            text = stringResource(
-                id = R.string.nickname_x,
-                nickname
-            )
+            text = nickname
         )
+    }
+}
+
+@Composable
+fun ActionHandler(
+    viewModel: CustomersViewModel,
+    navController: NavHostController
+) {
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.action.collect { action ->
+            when (action) {
+                is CustomersAction.ShowCustomerForm -> {
+                    var route = "customer_form"
+
+                    action.customer?.let {
+                        route += "?customer_id=${it.id}" +
+                            "?customer_name=${it.name}" +
+                            "?customer_nickname=${it.nickname}" +
+                            "?customer_email=${it.email}"
+                    }
+
+                    navController.navigate(route)
+                }
+            }
+        }
     }
 }
 
@@ -189,7 +225,7 @@ private fun getMockCustomersFlow(): Flow<PagingData<Customer>> {
     return flowOf(
         PagingData.from(
             listOf(
-                Customer(1, "Rafael Antonio Alegría Sánchez", "Pito"),
+                Customer(1, "Rafael Antonio Alegría Sánchez", ""),
                 Customer(2, "Gloria María Sánchez Muñoz", "Doña Gloria"),
                 Customer(3, "Darling Lorena Alegría Sánchez", "Tierna")
             )

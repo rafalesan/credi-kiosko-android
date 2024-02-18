@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
+import com.rafalesan.credikiosko.customers.presentation.customer_form.CustomerFormScreen
 import com.rafalesan.credikiosko.customers.presentation.customers_list.CustomersScreen
 import com.rafalesan.credikiosko.home.presentation.HomeScreenNavCompose
 import com.rafalesan.credikiosko.onboarding.presentation.WelcomeScreen
@@ -42,6 +43,8 @@ class FullComposeMainActivity : ComponentActivity() {
             CrediKioskoTheme {
                 val navController = rememberNavController()
 
+
+                //TODO: BUILD A STRONG TYPED NAVIGATION
                 NavHost(
                     navController = navController,
                     startDestination = "welcome",
@@ -86,6 +89,35 @@ class FullComposeMainActivity : ComponentActivity() {
 
                     composable("customers") {
                         CustomersScreen(navController = navController)
+                    }
+                    
+                    composable(
+                        "customer_form?" +
+                            "customer_id={customer_id}?" +
+                            "customer_name={customer_name}?" +
+                            "customer_nickname={customer_nickname}?" +
+                            "customer_email={customer_email}",
+                        arguments = listOf(
+                            navArgument("customer_id") {
+                                nullable = true
+                                defaultValue = null
+                                type = NavType.StringType
+                            },
+                            navArgument("customer_name") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                            navArgument("customer_nickname") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                            navArgument("customer_email") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                        )
+                    ) {
+                        CustomerFormScreen(navController = navController)
                     }
 
                 }
