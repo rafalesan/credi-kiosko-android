@@ -42,26 +42,8 @@ import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
-@Deprecated("It should be used HomeScreenNavCompose instead")
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
-
-    val viewState = viewModel.viewState.collectAsState()
-
-    HomeUI(
-        viewState = viewState,
-        onOptionPressed = { homeOption ->
-            viewModel.perform(
-                HomeEvent.HomeOptionSelected(homeOption)
-            )
-        }
-    )
-
-    ToastHandlerComposable(viewModel = viewModel)
-}
-
-@Composable
-fun HomeScreenNavCompose(
+fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navController: NavHostController
 ) {

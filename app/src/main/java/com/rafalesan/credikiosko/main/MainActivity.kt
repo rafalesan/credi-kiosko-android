@@ -1,86 +1,129 @@
 package com.rafalesan.credikiosko.main
 
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.rafalesan.credikiosko.R
-import com.rafalesan.credikiosko.core.commons.domain.entity.UserSession
-import com.rafalesan.credikiosko.core.commons.presentation.base.BaseActivity
-import com.rafalesan.credikiosko.core.commons.presentation.extensions.collect
-import com.rafalesan.credikiosko.core.commons.presentation.utils.ThemeUtil
-import com.rafalesan.credikiosko.databinding.ActMainBinding
+import android.os.Handler
+import android.os.Looper
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.rafalesan.credikiosko.core.commons.emptyString
+import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
+import com.rafalesan.credikiosko.customers.presentation.customer_form.CustomerFormScreen
+import com.rafalesan.credikiosko.customers.presentation.customers_list.CustomersScreen
+import com.rafalesan.credikiosko.home.presentation.HomeScreen
+import com.rafalesan.credikiosko.onboarding.presentation.WelcomeScreen
+import com.rafalesan.products.presentation.product_form.ProductFormScreen
+import com.rafalesan.products.presentation.products_list.ProductsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<MainViewModel, ActMainBinding>() {
+class MainActivity : ComponentActivity() {
 
-    override val contentLayoutId: Int = R.layout.act_main
-    override val viewModel: MainViewModel by viewModels()
-
-    private val appBarConfiguration by lazy { setupAppBarConfiguration() }
-    private val navController by lazy { setupNavController() }
-    private val navHeaderView by lazy { binding.navigationView.getHeaderView(0) }
+    private var keepSplashOnScreen = true
+    private val splashScreenDuration = 2000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        installSplashScreen().setKeepOnScreenCondition { keepSplashOnScreen }
+        Handler(Looper.getMainLooper()).postDelayed({ keepSplashOnScreen = false }, splashScreenDuration)
+
         super.onCreate(savedInstanceState)
-        setup()
-    }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-    }
+        setContent {
+            CrediKioskoTheme {
+                val navController = rememberNavController()
 
-    override fun onSubscribeViewModel() {
-        super.onSubscribeViewModel()
-        viewModel.userSession.collect(this) { userSession ->
-            showUserInfoFrom(userSession)
-        }
-        viewModel.theme.collect(this) {
-            viewModel.theme.collect(this) { theme ->
-                ThemeUtil.setTheme(this, theme, navHeaderView.findViewById(R.id.ivTheme)) { isDarkTheme ->
-                    viewModel.perform(MainAction.ChangeTheme(isDarkTheme))
+
+                //TODO: BUILD A STRONG TYPED NAVIGATION
+                NavHost(
+                    navController = navController,
+                    startDestination = "welcome",
+                    enterTransition = { fadeIn(animationSpec = tween()) },
+                    exitTransition = { ExitTransition.None },
+                    popEnterTransition = { EnterTransition.None },
+                    popExitTransition = { fadeOut(animationSpec = tween()) }
+                ) {
+
+                    composable("welcome") {
+                        WelcomeScreen(navController)
+                    }
+
+                    composable("home") {
+                        HomeScreen(navController = navController)
+                    }
+
+                    composable("products") {
+                        ProductsScreen(navController = navController)
+                    }
+
+                    composable(
+                        "product_form?product_id={product_id}?product_name={product_name}?product_price={product_price}",
+                        arguments = listOf(
+                            navArgument("product_id") {
+                                nullable = true
+                                defaultValue = null
+                                type = NavType.StringType
+                            },
+                            navArgument("product_name") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                            navArgument("product_price") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                        )
+                    ) {
+                        ProductFormScreen(navController = navController)
+                    }
+
+                    composable("customers") {
+                        CustomersScreen(navController = navController)
+                    }
+                    
+                    composable(
+                        "customer_form?" +
+                            "customer_id={customer_id}?" +
+                            "customer_name={customer_name}?" +
+                            "customer_nickname={customer_nickname}?" +
+                            "customer_email={customer_email}",
+                        arguments = listOf(
+                            navArgument("customer_id") {
+                                nullable = true
+                                defaultValue = null
+                                type = NavType.StringType
+                            },
+                            navArgument("customer_name") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                            navArgument("customer_nickname") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                            navArgument("customer_email") {
+                                defaultValue = emptyString
+                                type = NavType.StringType
+                            },
+                        )
+                    ) {
+                        CustomerFormScreen(navController = navController)
+                    }
+
                 }
+
             }
         }
-    }
-
-    private fun setup() {
-        setupToolbar()
-        setupDrawer()
-    }
-
-    private fun setupToolbar() {
-        setSupportActionBar(binding.includeContent.findViewById(R.id.toolbar))
-    }
-
-    private fun setupDrawer() {
-        setupActionBarWithNavController(navController, appBarConfiguration)
-    }
-
-    private fun setupAppBarConfiguration(): AppBarConfiguration {
-        return AppBarConfiguration.Builder(R.id.homeFragment)
-                .setOpenableLayout(binding.drawerLayout)
-                .build()
-    }
-
-    private fun setupNavController(): NavController {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainNavHost) as NavHostFragment
-        return navHostFragment.navController
-    }
-
-    private fun showUserInfoFrom(userSession: UserSession?) {
-        userSession ?: return
-        //TODO: THINK THE BEST WAY TO GET BUSINESS NAME AND SHOW IT. IS IT GOOD IDEA TO RETRIEVE BUSINESS NAME IN LOGIN?
-        //TODO: THERE IS NO WAY TO HAVE A PROFILE PHOTO IN BACKEND. DO WE NEED THIS? THE APP SHOWS A PROFILE PHOTO PLACEHOLDER
-        val tvUserLogged = navHeaderView.findViewById<AppCompatTextView>(R.id.tvUserLogged)
-        val tvUserEmail = navHeaderView.findViewById<AppCompatTextView>(R.id.tvUserEmail)
-        tvUserLogged.text = userSession.name
-        tvUserEmail.text = userSession.email
     }
 
 }
