@@ -20,7 +20,7 @@ class LoginUseCase @Inject constructor(
             CredentialsValidator.validateDeviceName(credentials.deviceName))
 
         if (validations.isNotEmpty()) {
-            return ResultOf.InvalidData(validations)
+            return ResultOf.Failure.InvalidData(validations)
         }
 
         val result = authRepository.login(credentials)

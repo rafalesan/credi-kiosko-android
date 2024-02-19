@@ -59,7 +59,7 @@ class WelcomeViewModel @Inject constructor(
                 is ResultOf.Success -> {
                     _action.send(WelcomeAction.OpenHome)
                 }
-                is ResultOf.InvalidData -> {
+                is ResultOf.Failure.InvalidData -> {
                     handleInvalidDataResult(result)
                 }
                 else -> {
@@ -71,7 +71,7 @@ class WelcomeViewModel @Inject constructor(
     }
 
     private fun handleInvalidDataResult(
-        result: ResultOf.InvalidData<BusinessInputValidator.BusinessInputValidation>
+        result: ResultOf.Failure.InvalidData<BusinessInputValidator.BusinessInputValidation>
     ) {
         result.validations.forEach { validation ->
             when (validation) {
