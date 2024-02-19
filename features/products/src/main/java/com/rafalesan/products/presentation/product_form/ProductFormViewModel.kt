@@ -74,6 +74,7 @@ class ProductFormViewModel @Inject constructor(
     private fun saveProduct() {
 
         viewModelScope.launch {
+            clearInputValidations()
             val product = buildProductFromViewState()
             val result = saveProductUseCase(product)
 
@@ -85,6 +86,15 @@ class ProductFormViewModel @Inject constructor(
 
         }
 
+    }
+
+    private fun clearInputValidations() {
+        _viewState.update {
+            it.copy(
+                productNameError = null,
+                productPriceError = null
+            )
+        }
     }
 
     private fun goBackToProductList() {
