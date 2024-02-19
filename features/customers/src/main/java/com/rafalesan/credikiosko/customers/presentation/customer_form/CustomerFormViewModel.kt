@@ -2,12 +2,16 @@ package com.rafalesan.credikiosko.customers.presentation.customer_form
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.zeroLong
 import com.rafalesan.credikiosko.customers.domain.entity.Customer
 import com.rafalesan.credikiosko.customers.domain.usecase.DeleteCustomerUseCase
 import com.rafalesan.credikiosko.customers.domain.usecase.SaveCustomerUseCase
+import com.rafalesan.credikiosko.customers.domain.validator.CustomerInputsValidator
+import com.rafalesan.credikiosko.customers.domain.validator.CustomerInputsValidator.CustomerInputValidation.EMPTY_CUSTOMER_NAME
+import com.rafalesan.credikiosko.customers.domain.validator.CustomerInputsValidator.CustomerInputValidation.INVALID_CUSTOMER_EMAIL
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,9 +70,29 @@ class CustomerFormViewModel @Inject constructor(
 
     private fun handleSaveCustomer() {
         viewModelScope.launch {
+            clearInputValidations()
             val customer = buildCustomerFromViewState()
-            saveCustomerUseCase.invoke(customer)
-            _action.send(CustomerFormAction.ReturnToCustomerList)
+            val result = saveCustomerUseCase.invoke(customer)
+
+            when (result) {
+                is ResultOf.Success -> goBackToCustomerList()
+                is ResultOf.Failure.InvalidData -> handleInvalidData(result.validations)
+                else -> { Timber.e("Operation not supported: $result") }
+            }
+
+        }
+    }
+
+    private fun handleInvalidData(validations: List<CustomerInputsValidator.CustomerInputValidation>) {
+        validations.forEach {  validation ->
+            when (validation) {
+                EMPTY_CUSTOMER_NAME -> _viewState.update {
+                    it.copy(customerNameError = validation.errorResId)
+                }
+                INVALID_CUSTOMER_EMAIL -> _viewState.update {
+                    it.copy(customerEmailError = validation.errorResId)
+                }
+            }
         }
     }
 
@@ -75,8 +100,21 @@ class CustomerFormViewModel @Inject constructor(
         viewModelScope.launch {
             val customer = buildCustomerFromViewState()
             deleteCustomerUseCase.invoke(customer)
-            _action.send(CustomerFormAction.ReturnToCustomerList)
+            goBackToCustomerList()
         }
+    }
+
+    private fun clearInputValidations() {
+        _viewState.update {
+            it.copy(
+                customerNameError = null,
+                customerEmailError = null
+            )
+        }
+    }
+
+    private suspend fun goBackToCustomerList() {
+        _action.send(CustomerFormAction.ReturnToCustomerList)
     }
 
     private fun buildCustomerFromViewState(): Customer {
