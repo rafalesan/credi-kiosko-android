@@ -3,9 +3,6 @@ package com.rafalesan.credikiosko.core.commons.domain.utils
 sealed class ResultOf<out L, out R> {
     class Success<out L>(val value: L): ResultOf<L, Nothing>()
 
-    @Deprecated("It must be used Failure.InvalidData instead")
-    class InvalidData<out R>(val validations: List<R>): ResultOf<Nothing, R>()
-
     sealed class Failure<out R> : ResultOf<Nothing, R>() {
         class InvalidData<out R>(val validations: List<R>) : Failure<R>()
         class ApiFailure(val message: String = "",

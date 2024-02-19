@@ -22,7 +22,6 @@ import com.rafalesan.credikiosko.core.commons.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,9 +66,6 @@ class SignupViewModel @Inject constructor(
                 is ResultOf.Success     -> {
                     toast(result.value.name)
                 }
-                is ResultOf.InvalidData -> {
-                    handleInvalidDataResult(result)
-                }
                 is ResultOf.Failure     -> {
                     handleResultFailure(result)
                 }
@@ -77,8 +73,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun handleInvalidDataResult(invalidDataResult: ResultOf.InvalidData<SignupValidator.SignupValidation>) {
-        val validations = invalidDataResult.validations
+    private fun handleInvalidDataResult(validations: List<SignupValidator.SignupValidation>) {
         val errorsMap = mutableMapOf<String, Int>()
         validations.forEach { validation ->
             when(validation) {
@@ -104,7 +99,9 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun handleResultFailure(resultFailure: ResultOf.Failure<*>) = viewModelScope.launch {
+    private fun handleResultFailure(
+        resultFailure: ResultOf.Failure<SignupValidator.SignupValidation>
+    ) = viewModelScope.launch {
         when(resultFailure) {
             is ResultOf.Failure.ApiFailure   -> {
                 _uiState.send(UiState.ApiError(resultFailure.message))
@@ -113,7 +110,7 @@ class SignupViewModel @Inject constructor(
             ResultOf.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
             ResultOf.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
             ResultOf.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
-            is ResultOf.Failure.InvalidData -> { Timber.e("Operation not supported: $resultFailure") }
+            is ResultOf.Failure.InvalidData -> handleInvalidDataResult(resultFailure.validations)
         }
     }
 

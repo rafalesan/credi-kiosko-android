@@ -16,7 +16,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,9 +65,6 @@ class LoginViewModel @Inject constructor(
                 is ResultOf.Success     -> {
                     _action.send(LoginAction.OpenHome)
                 }
-                is ResultOf.InvalidData -> {
-                    handleInvalidDataResult(result)
-                }
                 is ResultOf.Failure     -> {
                     handleResultFailure(result)
                 }
@@ -78,8 +74,7 @@ class LoginViewModel @Inject constructor(
 
     }
 
-    private fun handleInvalidDataResult(invalidDataResult: ResultOf.InvalidData<CredentialsValidator.CredentialValidation>) {
-        val validations = invalidDataResult.validations
+    private fun handleInvalidDataResult(validations: List<CredentialsValidator.CredentialValidation>) {
         val errorsMap = mutableMapOf<String, Int>()
         validations.forEach { validation ->
             when(validation) {
@@ -94,13 +89,15 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun handleResultFailure(resultFailure: ResultOf.Failure<*>) = viewModelScope.launch {
+    private fun handleResultFailure(
+        resultFailure: ResultOf.Failure<CredentialsValidator.CredentialValidation>
+    ) = viewModelScope.launch {
         when(resultFailure) {
             is ResultOf.Failure.ApiFailure   -> _uiState.send(UiState.ApiError(resultFailure.message))
             ResultOf.Failure.ApiNotAvailable -> _uiState.send(UiState.ApiNotAvailable)
             ResultOf.Failure.NoInternet      -> _uiState.send(UiState.NoInternet)
             ResultOf.Failure.UnknownFailure  -> _uiState.send(UiState.UnknownError)
-            is ResultOf.Failure.InvalidData -> { Timber.e("Operation not supported: $resultFailure") }
+            is ResultOf.Failure.InvalidData -> handleInvalidDataResult(resultFailure.validations)
         }
     }
 

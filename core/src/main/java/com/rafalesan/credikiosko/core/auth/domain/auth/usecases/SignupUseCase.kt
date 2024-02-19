@@ -24,7 +24,7 @@ class SignupUseCase @Inject constructor(
             SignupValidator.validateDeviceName(signupData.deviceName))
 
         if(validations.isNotEmpty()) {
-            return ResultOf.InvalidData(validations)
+            return ResultOf.Failure.InvalidData(validations)
         }
 
         val result = authRepository.signup(signupData)
