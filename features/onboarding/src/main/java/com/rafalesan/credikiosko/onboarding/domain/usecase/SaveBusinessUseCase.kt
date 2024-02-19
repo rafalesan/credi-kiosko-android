@@ -18,7 +18,7 @@ class SaveBusinessUseCase @Inject constructor(
         )
 
         if (validations.isNotEmpty()) {
-            return ResultOf.InvalidData(validations)
+            return ResultOf.Failure.InvalidData(validations)
         }
 
         businessRepository.saveBusiness(businessName)

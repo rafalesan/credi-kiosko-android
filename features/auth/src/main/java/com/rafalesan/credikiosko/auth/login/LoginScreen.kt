@@ -1,7 +1,5 @@
 package com.rafalesan.credikiosko.auth.login
 
-import android.content.Context
-import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,10 +31,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.auth.R
-import com.rafalesan.credikiosko.auth.mainActivityNameSpace
 import com.rafalesan.credikiosko.core.commons.presentation.composables.AppLogo
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedPasswordFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
@@ -45,31 +41,15 @@ import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Teal200
 import com.rafalesan.credikiosko.core.R as CoreR
 
-@Deprecated("It should be used LoginScreenNavCompose instead")
 @Composable
 fun LoginScreen(
-    navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
-) {
-
-    LoginUI(viewModel = viewModel)
-
-    ActionHandler(
-        viewModel = viewModel,
-        navController = navController
-    )
-
-}
-
-@Composable
-fun LoginScreenNavCompose(
     navController: NavHostController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
 
     LoginUI(viewModel = viewModel)
 
-    EventHandlerComposeNavigation(
+    ActionHandler(
         viewModel = viewModel,
         navController = navController
     )
@@ -240,23 +220,6 @@ fun CreateAccountButton(viewModel: LoginViewModel) {
 @Composable
 fun ActionHandler(
     viewModel: LoginViewModel,
-    navController: NavController
-) {
-    val context = LocalContext.current
-
-    LaunchedEffect(key1 = Unit) {
-        viewModel.action.collect { action ->
-            when(action) {
-                LoginAction.OpenHome -> openHome(context)
-                LoginAction.OpenSignup -> openSignUp(navController)
-            }
-        }
-    }
-}
-
-@Composable
-fun EventHandlerComposeNavigation(
-    viewModel: LoginViewModel,
     navController: NavHostController
 ) {
     LaunchedEffect(key1 = Unit) {
@@ -267,17 +230,4 @@ fun EventHandlerComposeNavigation(
             }
         }
     }
-}
-
-private fun openHome(context: Context) {
-    val classForName = Class.forName(mainActivityNameSpace)
-    val intent = Intent(context, classForName)
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-            Intent.FLAG_ACTIVITY_CLEAR_TASK or
-            Intent.FLAG_ACTIVITY_CLEAR_TOP
-    context.startActivity(intent)
-}
-
-private fun openSignUp(navController: NavController) {
-    navController.navigate(R.id.action_to_signup_fragment)
 }

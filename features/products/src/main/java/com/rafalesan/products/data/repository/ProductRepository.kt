@@ -4,8 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.rafalesan.credikiosko.core.commons.data.utils.ApiResultHandler
-import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.products.data.datasource.ProductLocalDataSource
 import com.rafalesan.products.data.datasource.ProductPagingSource
 import com.rafalesan.products.data.datasource.ProductRemoteDataSource
@@ -20,19 +18,6 @@ class ProductRepository(
     private val productRemoteDataSource: ProductRemoteDataSource,
     private val productLocalDataSource: ProductLocalDataSource
 ) : IProductRepository {
-
-    @Deprecated("Use GetPagingProductUseCase instead")
-    override suspend fun requestProducts(): ResultOf<List<Product>, Nothing> {
-
-        val apiResult = productRemoteDataSource.requestProducts()
-
-        return ApiResultHandler.handle(apiResult) { response ->
-            val productsDomain = response.data
-                .map { it.toProductDomain() }
-            ResultOf.Success(productsDomain)
-        }
-
-    }
 
     override suspend fun requestProductsPaged(): Flow<PagingData<Product>> {
         return Pager(
