@@ -9,6 +9,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 apply(from = "android.gradle")
@@ -120,6 +122,11 @@ dependencies {
 
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.compose.ui.tooling)
+
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.analytics)
+    implementation(Firebase.crashlytics)
+
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit.ktx)
     androidTestImplementation(AndroidX.test.espresso.core)
