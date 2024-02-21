@@ -1,6 +1,8 @@
 import de.fayard.refreshVersions.core.versionFor
+import java.io.FileInputStream
 import java.net.Inet4Address
 import java.net.NetworkInterface
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -34,10 +36,24 @@ android {
 
     namespace = "com.rafalesan.credikiosko"
 
+    val releaseKeystorePropertiesFile = rootProject.file("local.properties")
+    val releaseKeystoreProperties = Properties()
+    releaseKeystoreProperties.load(FileInputStream(releaseKeystorePropertiesFile))
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(releaseKeystoreProperties.getValue("storeFile"))
+            storePassword = releaseKeystoreProperties.getValue("storePassword") as String
+            keyAlias = releaseKeystoreProperties.getValue("keyAlias") as String
+            keyPassword = releaseKeystoreProperties.getValue("keyPassword") as String
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -61,6 +77,10 @@ android {
             dimension = "default"
             applicationIdSuffix = ".dev"
             buildConfigField("String", "API_BASE_URL", "\"http://${getIp()}/api/\"")
+        }
+        create("production") {
+            dimension = "default"
+            buildConfigField("String", "API_BASE_URL", "\"http://rafalesan.com/credikiosko/api/\"")
         }
     }
 
