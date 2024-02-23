@@ -7,11 +7,13 @@ import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 sealed class Tag
 internal data object WelcomeLabel: Tag()
 internal data object OptionsList: Tag()
+internal data object VersionLabel: Tag()
 
 internal val homeScreenConstraintSet = ConstraintSet {
 
     val welcomeLabel = createRefFor(WelcomeLabel)
     val optionsList = createRefFor(OptionsList)
+    val versionLabel = createRefFor(VersionLabel)
 
     constrain(welcomeLabel) {
         top.linkTo(parent.top, margin = Dimens.space2x)
@@ -26,6 +28,11 @@ internal val homeScreenConstraintSet = ConstraintSet {
         bottom.linkTo(parent.bottom)
         start.linkTo(parent.start)
         end.linkTo(parent.end)
+    }
+
+    constrain(versionLabel) {
+        end.linkTo(parent.end, margin = Dimens.spaceDefault)
+        bottom.linkTo(parent.bottom, margin = Dimens.spaceDefault)
     }
 
 }

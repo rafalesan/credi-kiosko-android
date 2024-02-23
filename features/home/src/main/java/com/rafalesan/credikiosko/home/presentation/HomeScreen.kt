@@ -105,6 +105,10 @@ fun HomeUI(
         derivedStateOf { viewState.value.businessName }
     }
 
+    val appVersion by remember {
+        derivedStateOf { viewState.value.appVersion }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -139,6 +143,12 @@ fun HomeUI(
                 }
             }
 
+            Text(
+                modifier = Modifier
+                    .layoutId(VersionLabel),
+                text = appVersion,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
         }
     }
