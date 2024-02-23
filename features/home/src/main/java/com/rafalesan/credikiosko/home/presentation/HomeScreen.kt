@@ -38,9 +38,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
+import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
 fun HomeScreen(
@@ -121,8 +121,8 @@ fun HomeUI(
 
             Text(
                 modifier = Modifier
-                    .layoutId(WelcomeLabel),
-                text = stringResource(id = R.string.welcome_to_x, businessName),
+                    .layoutId(BusinessNameLabel),
+                text = businessName,
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
@@ -142,6 +142,13 @@ fun HomeUI(
                     )
                 }
             }
+
+            Text(
+                modifier = Modifier
+                    .layoutId(CrediKioskoLabel),
+                text = stringResource(id = CoreR.string.app_name),
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
             Text(
                 modifier = Modifier
