@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Groups2
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.data.build_config_provider.BuildConfigFieldsProvider
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.home.R
 import com.rafalesan.credikiosko.home.domain.usecase.GetBusinessUseCase
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val buildConfigFieldsProvider: BuildConfigFieldsProvider,
     private val getBusinessUseCase: GetBusinessUseCase
 ) : BaseViewModel() {
 
@@ -33,7 +35,8 @@ class HomeViewModel @Inject constructor(
             _viewState.update {
                 it.copy(
                     homeOptions = buildHomeOptions(),
-                    businessName = getBusinessUseCase().name
+                    businessName = getBusinessUseCase().name,
+                    appVersion = buildAppVersion()
                 )
             }
         }
@@ -69,6 +72,13 @@ class HomeViewModel @Inject constructor(
                 "customers"
             )
         )
+    }
+
+    private fun buildAppVersion(): String {
+        val versionName = buildConfigFieldsProvider.get().versionName
+        val versionCode = buildConfigFieldsProvider.get().versionCode
+
+        return "$versionName ($versionCode)"
     }
 
 }
