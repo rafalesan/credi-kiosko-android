@@ -8,6 +8,7 @@ android {
         versionName findProperty("versionName")
         testInstrumentationRunner findProperty("testInstrumentationRunner")
         vectorDrawables.useSupportLibrary = true
+        setProperty("archivesBaseName", "CrediKiosko-v${versionName}(${versionCode})")
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
