@@ -22,8 +22,8 @@ import com.rafalesan.credikiosko.customers.presentation.customer_form.CustomerFo
 import com.rafalesan.credikiosko.customers.presentation.customers_list.CustomersScreen
 import com.rafalesan.credikiosko.home.presentation.HomeScreen
 import com.rafalesan.credikiosko.onboarding.presentation.WelcomeScreen
-import com.rafalesan.products.presentation.product_form.ProductFormScreen
-import com.rafalesan.products.presentation.products_list.ProductsScreen
+import com.rafalesan.credikiosko.products.presentation.product_form.ProductFormScreen
+import com.rafalesan.credikiosko.products.presentation.products_list.ProductsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
