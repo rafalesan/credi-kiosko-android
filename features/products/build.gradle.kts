@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rafalesan.products"
+    namespace = "com.rafalesan.credikiosko.products"
 
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
