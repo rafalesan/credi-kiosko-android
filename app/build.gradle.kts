@@ -137,5 +137,6 @@ dependencies {
     implementation(project(":features:home"))
     implementation(project(":features:products"))
     implementation(project(":features:customers"))
+    implementation(project(":features:credits"))
 
 }
