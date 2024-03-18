@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.rafalesan.credikiosko.core.room.AppDatabase
 import com.rafalesan.credikiosko.core.room.dao.BusinessDao
+import com.rafalesan.credikiosko.core.room.dao.CreditDao
 import com.rafalesan.credikiosko.core.room.dao.CustomerDao
 import com.rafalesan.credikiosko.core.room.dao.ProductDao
 import dagger.Module
@@ -44,6 +45,11 @@ class RoomDatabaseModule {
     @Provides
     fun provideCustomerDao(appDatabase: AppDatabase): CustomerDao {
         return appDatabase.customerDao()
+    }
+
+    @Provides
+    fun provideCreditDao(appDatabase: AppDatabase): CreditDao {
+        return appDatabase.creditDao()
     }
 
 }
