@@ -2,6 +2,7 @@ package com.rafalesan.credikiosko.home.presentation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Groups2
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.data.build_config_provider.BuildConfigFieldsProvider
@@ -70,6 +71,11 @@ class HomeViewModel @Inject constructor(
                 R.string.customers,
                 Icons.Filled.Groups2,
                 "customers"
+            ),
+            HomeOption(
+                R.string.credits,
+                Icons.Filled.CreditCard,
+                "credits"
             )
         )
     }
