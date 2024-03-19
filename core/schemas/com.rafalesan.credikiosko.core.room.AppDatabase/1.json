@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "551226e88dc81a427825f23521bf6198",
+    "identityHash": "bcb3b29da794ca432c4da303ca5cf74f",
     "entities": [
       {
         "tableName": "businesses",
@@ -141,7 +141,26 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_credits_businessId",
+            "unique": false,
+            "columnNames": [
+              "businessId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_credits_businessId` ON `${TABLE_NAME}` (`businessId`)"
+          },
+          {
+            "name": "index_credits_customerId",
+            "unique": false,
+            "columnNames": [
+              "customerId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_credits_customerId` ON `${TABLE_NAME}` (`customerId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "businesses",
@@ -220,7 +239,26 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_credit_product_creditId",
+            "unique": false,
+            "columnNames": [
+              "creditId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_credit_product_creditId` ON `${TABLE_NAME}` (`creditId`)"
+          },
+          {
+            "name": "index_credit_product_productId",
+            "unique": false,
+            "columnNames": [
+              "productId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_credit_product_productId` ON `${TABLE_NAME}` (`productId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "credits",
@@ -250,7 +288,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '551226e88dc81a427825f23521bf6198')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bcb3b29da794ca432c4da303ca5cf74f')"
     ]
   }
 }
