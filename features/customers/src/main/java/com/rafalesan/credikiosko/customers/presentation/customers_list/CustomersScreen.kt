@@ -177,14 +177,15 @@ fun CustomerItem(
             fontWeight = FontWeight.Bold
         )
 
-        val nickname = if(customer.nickname.isNullOrBlank()) {
-            stringResource(id = R.string.no_nickname)
-        } else {
-            stringResource(
+        val nickname = customer.nickname?.let {
+            if (it.isBlank()) {
+                return@let stringResource(id = R.string.no_nickname)
+            }
+            return@let stringResource(
                 id = R.string.nickname_x,
-                customer.nickname
+                it
             )
-        }
+        } ?: stringResource(id = R.string.no_nickname)
 
         Text(
             modifier = Modifier
