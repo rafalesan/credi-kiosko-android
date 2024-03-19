@@ -2,10 +2,15 @@ package com.rafalesan.credikiosko.core.room.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "credit_product",
+    indices = [
+        Index(value = ["creditId"]),
+        Index(value = ["productId"])
+    ],
     foreignKeys = [
         ForeignKey(
             entity = CreditEntity::class,
