@@ -3,7 +3,7 @@ package com.rafalesan.credikiosko.core.room.entity
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class CreditWithCustomerAndProducts(
+data class CreditWithCustomerAndProductsEntity(
     @Embedded val credit: CreditEntity,
     @Relation(
         parentColumn = "customerId",

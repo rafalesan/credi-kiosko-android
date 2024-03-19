@@ -2,11 +2,11 @@ package com.rafalesan.credikiosko.customers.presentation.customer_form
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.zeroLong
-import com.rafalesan.credikiosko.customers.domain.entity.Customer
 import com.rafalesan.credikiosko.customers.domain.usecase.DeleteCustomerUseCase
 import com.rafalesan.credikiosko.customers.domain.usecase.SaveCustomerUseCase
 import com.rafalesan.credikiosko.customers.domain.validator.CustomerInputsValidator

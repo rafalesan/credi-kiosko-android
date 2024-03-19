@@ -3,8 +3,8 @@ package com.rafalesan.credikiosko.customers.presentation.customers_list
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
-import com.rafalesan.credikiosko.customers.domain.entity.Customer
 import com.rafalesan.credikiosko.customers.domain.usecase.GetLocalCustomersPagedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

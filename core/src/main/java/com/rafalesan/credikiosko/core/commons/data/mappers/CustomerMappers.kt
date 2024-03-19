@@ -1,7 +1,7 @@
-package com.rafalesan.credikiosko.customers.data.mappers
+package com.rafalesan.credikiosko.core.commons.data.mappers
 
+import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.room.entity.CustomerEntity
-import com.rafalesan.credikiosko.customers.domain.entity.Customer
 
 fun CustomerEntity.toCustomerDomain(): Customer {
     return Customer(

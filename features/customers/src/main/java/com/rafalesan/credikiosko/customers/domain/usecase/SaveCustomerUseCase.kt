@@ -1,7 +1,7 @@
 package com.rafalesan.credikiosko.customers.domain.usecase
 
+import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
-import com.rafalesan.credikiosko.customers.domain.entity.Customer
 import com.rafalesan.credikiosko.customers.domain.repository.ICustomerRepository
 import com.rafalesan.credikiosko.customers.domain.validator.CustomerInputsValidator
 import javax.inject.Inject
