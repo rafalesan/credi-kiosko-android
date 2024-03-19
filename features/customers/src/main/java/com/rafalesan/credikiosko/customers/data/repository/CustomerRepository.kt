@@ -4,10 +4,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.rafalesan.credikiosko.core.commons.data.mappers.toCustomerDomain
+import com.rafalesan.credikiosko.core.commons.data.mappers.toCustomerEntity
+import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.customers.data.datasource.CustomerLocalDataSource
-import com.rafalesan.credikiosko.customers.data.mappers.toCustomerDomain
-import com.rafalesan.credikiosko.customers.data.mappers.toCustomerEntity
-import com.rafalesan.credikiosko.customers.domain.entity.Customer
 import com.rafalesan.credikiosko.customers.domain.repository.ICustomerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.customers.domain.entity
+package com.rafalesan.credikiosko.core.commons.domain.entity
 
 data class Customer(
     val id: Long,
