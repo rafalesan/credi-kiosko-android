@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_credit">Nuevo Préstamo</string>
+    <string name="create_new_credit">Crear nuevo crédito</string>
+    <string name="empty_credit_list_desc">Aún no ha agregado créditos</string>
+    <string name="date_x">Fecha: %s</string>
+    <string name="time_x">Hora: %s</string>
+    <string name="total_x">Total: C$ %s</string>
+</resources>
