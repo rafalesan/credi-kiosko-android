@@ -17,8 +17,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                          "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -34,9 +36,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
+
+    coreLibraryDesugaring(Android.tools.desugarJdkLibs)
 
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.OkHttp3.okHttp)
