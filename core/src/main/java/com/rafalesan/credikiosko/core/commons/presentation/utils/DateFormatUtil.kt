@@ -12,7 +12,7 @@ object DateFormatUtil {
         val localDateTime = getLocalDateTimeFromBackendPattern(dateString)
         val justLocalDate = localDateTime.toLocalDate()
         val dateFormatter = DateTimeFormatter
-            .ofLocalizedDate(FormatStyle.SHORT)
+            .ofLocalizedDate(FormatStyle.LONG)
         return justLocalDate.format(dateFormatter)
     }
 
@@ -20,7 +20,7 @@ object DateFormatUtil {
         val localDateTime = getLocalDateTimeFromBackendPattern(dateString)
         val justLocalTime = localDateTime.toLocalTime()
         val localizedTimeFormatter = DateTimeFormatter
-            .ofLocalizedTime(FormatStyle.MEDIUM)
+            .ofPattern("hh:mm a")
         return justLocalTime.format(localizedTimeFormatter)
     }
 
