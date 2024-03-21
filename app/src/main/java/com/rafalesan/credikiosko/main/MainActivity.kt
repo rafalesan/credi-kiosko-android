@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
+import com.rafalesan.credikiosko.credits.presentation.credit_form.CreditFormScreen
 import com.rafalesan.credikiosko.credits.presentation.credits_list.CreditsScreen
 import com.rafalesan.credikiosko.customers.presentation.customer_form.CustomerFormScreen
 import com.rafalesan.credikiosko.customers.presentation.customers_list.CustomersScreen
@@ -123,6 +124,10 @@ class MainActivity : ComponentActivity() {
 
                     composable("credits") {
                         CreditsScreen(navController = navController)
+                    }
+
+                    composable("credit_form") {
+                        CreditFormScreen(navController = navController)
                     }
 
                 }

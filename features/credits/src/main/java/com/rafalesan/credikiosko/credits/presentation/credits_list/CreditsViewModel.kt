@@ -8,9 +8,11 @@ import com.rafalesan.credikiosko.credits.domain.entity.Credit
 import com.rafalesan.credikiosko.credits.domain.entity.CreditWithCustomerAndProducts
 import com.rafalesan.credikiosko.credits.domain.usecase.GetLocalCreditsPagedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +23,9 @@ class CreditsViewModel @Inject constructor(
 
     private val _creditList = MutableStateFlow<PagingData<CreditWithCustomerAndProducts>>(PagingData.empty())
     val creditList = _creditList.asStateFlow()
+
+    private val _action = Channel<CreditsAction>(Channel.BUFFERED)
+    val action = _action.receiveAsFlow()
 
     init {
         fetchLocalCredits()
@@ -38,7 +43,9 @@ class CreditsViewModel @Inject constructor(
     }
 
     private fun handleCreateNewCreditEvent() {
-        toast("En construcción")
+        viewModelScope.launch {
+            _action.send(CreditsAction.ShowCreditForm)
+        }
     }
 
     private fun fetchLocalCredits() {

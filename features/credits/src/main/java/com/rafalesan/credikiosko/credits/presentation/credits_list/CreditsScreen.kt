@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -62,6 +63,11 @@ fun CreditsScreen(
         onBackPressed = { navController.navigateUp() },
         onNewCreditPressed = { viewModel.perform(CreditsEvent.CreateNewCredit) },
         onCreditPressed = { viewModel.perform(CreditsEvent.ShowCredit(it)) }
+    )
+
+    ActionHandler(
+        navController = navController,
+        viewModel = viewModel
     )
 
     ToastHandlerComposable(viewModel = viewModel)
@@ -195,6 +201,24 @@ fun CreditItem(
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold
         )
+    }
+
+}
+
+@Composable
+fun ActionHandler(
+    navController: NavHostController,
+    viewModel: CreditsViewModel
+) {
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.action.collect { action ->
+            when (action) {
+                CreditsAction.ShowCreditForm -> {
+                    navController.navigate("credit_form")
+                }
+            }
+        }
     }
 
 }
