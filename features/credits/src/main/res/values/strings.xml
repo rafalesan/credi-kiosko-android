@@ -6,4 +6,16 @@
     <string name="date_x">Fecha: %s</string>
     <string name="time_x">Hora: %s</string>
     <string name="total_x">Total: C$ %s</string>
+    <string name="lend">Prestar</string>
+    <string name="customer">Cliente</string>
+    <string name="no_customer_selected">No ha seleccionado un cliente</string>
+    <string name="empty_product_lines_list_desc">Aún no ha agregado productos a este préstamo</string>
+    <string name="add_product">Agregar Producto</string>
+    <string name="delete_product_line">Borrar línea de producto</string>
+    <string name="edit_product_line">Editar línea de producto</string>
+    <string name="quantity_x">Cantidad: %s</string>
+    <string name="unit_price_x">Precio/U: C$ %s</string>
+    <string name="quantity">Cantidad:</string>
+    <string name="unit_price">Precio/U:</string>
+    <string name="cordoba_symbol_x">C$ %s</string>
 </resources>
