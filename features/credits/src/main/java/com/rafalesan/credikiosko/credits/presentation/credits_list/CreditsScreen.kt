@@ -133,7 +133,9 @@ fun CreditsUI(
             contentPadding = PaddingValues(bottom = Dimens.space10x)
         ) {
 
-            items(creditPagingList.itemCount) { index ->
+            items(
+                creditPagingList.itemCount
+            ) { index ->
                 CreditItem(
                     creditPagingList[index]!!,
                     onItemPressed = onCreditPressed

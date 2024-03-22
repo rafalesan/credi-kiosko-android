@@ -10,6 +10,7 @@ object Dimens {
     val space2x = 16.dp
     val space3x = 24.dp
     val space4x = 32.dp
+    val space5x = 40.dp
     val space6x = 48.dp
     val space8x = 64.dp
     val space10x = 80.dp
