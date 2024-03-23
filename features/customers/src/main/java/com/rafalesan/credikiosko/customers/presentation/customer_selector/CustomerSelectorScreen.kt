@@ -1,19 +1,16 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.rafalesan.credikiosko.customers.presentation.customers_list
+package com.rafalesan.credikiosko.customers.presentation.customer_selector
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,50 +34,52 @@ import androidx.navigation.NavHostController
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.rafalesan.credikiosko.core.commons.customerNavResultKey
 import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.popBackStackWithResult
+import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.customers.R
 import com.rafalesan.credikiosko.customers.presentation.composables.CustomerItem
+import com.rafalesan.credikiosko.customers.presentation.customers_list.getMockCustomersFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
-fun CustomersScreen(
-    navController: NavHostController,
-    viewModel: CustomersViewModel = hiltViewModel()
+fun CustomerSelectorScreen(
+    navHostController: NavHostController,
+    viewModel: CustomerSelectorViewModel = hiltViewModel()
 ) {
 
-    CustomersUI(
+    CustomerSelectorUI(
         customersPagingListFlow = viewModel.customerList,
-        onBackPressed = { navController.navigateUp() },
-        onNewCustomerPressed = { viewModel.perform(CustomersEvent.CreateNewCustomer) },
-        onCustomerPressed = { viewModel.perform(CustomersEvent.ShowCustomer(it)) }
+        onBackPressed = { navHostController.navigateUp() },
+        onCustomerPressed = { viewModel.perform(CustomerSelectorEvent.CustomerSelected(it)) }
+    )
+
+    ActionHandler(
+        navHostController,
+        viewModel
     )
 
     ToastHandlerComposable(viewModel = viewModel)
-
-    ActionHandler(
-        viewModel,
-        navController
-    )
 
 }
 
 @Preview
 @Composable
-fun CustomersUIPreview() {
-    CustomersUI(
-        customersPagingListFlow = getMockCustomersFlow()
-    )
+fun CustomerSelectorUIPreview() {
+    CrediKioskoTheme {
+        CustomerSelectorUI(
+            customersPagingListFlow = getMockCustomersFlow()
+        )
+    }
 }
 
 @Composable
-fun CustomersUI(
+fun CustomerSelectorUI(
     customersPagingListFlow: Flow<PagingData<Customer>>,
-    onBackPressed: (() -> Unit) = {},
-    onNewCustomerPressed: (() -> Unit) = {},
+    onBackPressed: () -> Unit = {},
     onCustomerPressed: ((Customer) -> Unit) = {}
 ) {
 
@@ -94,23 +93,18 @@ fun CustomersUI(
                     actionIconContentColor = MaterialTheme.colorScheme.onSecondary
                 ),
                 title = {
-                    Text(stringResource(id = R.string.customers))
+                    Text(stringResource(id = R.string.select_the_customer))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.Filled.ArrowBack, stringResource(id = CoreR.string.navigate_back))
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            stringResource(id = com.rafalesan.credikiosko.core.R.string.navigate_back)
+                        )
                     }
                 }
             )
         },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = onNewCustomerPressed,
-                icon = { Icon(Icons.Filled.Add, stringResource(id = R.string.create_new_customer)) },
-                text = { Text(stringResource(id = R.string.new_customer)) },
-                shape = RoundedCornerShape(16.dp),
-            )
-        }
     ) { innerPadding ->
 
         val customerPagingList: LazyPagingItems<Customer> =
@@ -121,9 +115,9 @@ fun CustomersUI(
         }
 
         LazyColumn(
-           modifier = Modifier
-               .fillMaxSize()
-               .padding(top = innerPadding.calculateTopPadding()),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding()),
             contentPadding = PaddingValues(bottom = Dimens.space10x)
         ) {
 
@@ -152,43 +146,25 @@ fun CustomersUI(
         }
 
     }
-
 }
 
 @Composable
 fun ActionHandler(
-    viewModel: CustomersViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: CustomerSelectorViewModel,
 ) {
 
     LaunchedEffect(key1 = Unit) {
         viewModel.action.collect { action ->
             when (action) {
-                is CustomersAction.ShowCustomerForm -> {
-                    var route = "customer_form"
-
-                    action.customer?.let {
-                        route += "?customer_id=${it.id}" +
-                            "?customer_name=${it.name}" +
-                            "?customer_nickname=${it.nickname}" +
-                            "?customer_email=${it.email}"
-                    }
-
-                    navController.navigate(route)
+                is CustomerSelectorAction.ReturnCustomer -> {
+                    navController.popBackStackWithResult(
+                        customerNavResultKey,
+                        action.customer
+                    )
                 }
             }
         }
     }
-}
 
-fun getMockCustomersFlow(): Flow<PagingData<Customer>> {
-    return flowOf(
-        PagingData.from(
-            listOf(
-                Customer(1, "Rafael Antonio Alegría Sánchez", ""),
-                Customer(2, "Gloria María Sánchez Muñoz", "Doña Gloria"),
-                Customer(3, "Darling Lorena Alegría Sánchez", "Tierna")
-            )
-        )
-    )
 }
