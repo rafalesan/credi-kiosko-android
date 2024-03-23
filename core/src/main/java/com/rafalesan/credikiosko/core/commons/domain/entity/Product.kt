@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.products.domain.entity
+package com.rafalesan.credikiosko.core.commons.domain.entity
 
 data class Product(
     val id: Long,

@@ -1,10 +1,11 @@
-package com.rafalesan.credikiosko.products.presentation.products_list
+package com.rafalesan.credikiosko.products.presentation.product_selector
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.rafalesan.credikiosko.core.commons.domain.entity.Product
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
+import com.rafalesan.credikiosko.core.commons.presentation.mappers.toProductParcelable
 import com.rafalesan.credikiosko.products.domain.usecase.GetLocalProductsPagedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -16,36 +17,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(
+class ProductSelectorViewModel @Inject constructor(
     private val getLocalProductsPagedUseCase: GetLocalProductsPagedUseCase
 ) : BaseViewModel() {
 
     private val _productList = MutableStateFlow<PagingData<Product>>(PagingData.empty())
     val productList = _productList.asStateFlow()
 
-    private val _action = Channel<ProductsAction>(Channel.BUFFERED)
+    private val _action = Channel<ProductSelectorAction>(Channel.BUFFERED)
     val action = _action.receiveAsFlow()
 
     init {
         fetchLocalProducts()
     }
 
-    fun perform(productsEvent: ProductsEvent) {
-        when (productsEvent) {
-            ProductsEvent.CreateNewProduct -> handleCreateNewProductEvent()
-            is ProductsEvent.ShowProduct -> handleShowProductEvent(productsEvent.product)
+    fun perform(event: ProductSelectorEvent) {
+        when (event) {
+            is ProductSelectorEvent.ProductSelected -> handleProductSelectedEvent(event.product)
         }
     }
 
-    private fun handleCreateNewProductEvent() {
+    private fun handleProductSelectedEvent(product: Product) {
         viewModelScope.launch {
-            _action.send(ProductsAction.ShowProductForm())
-        }
-    }
-
-    private fun handleShowProductEvent(product: Product) {
-        viewModelScope.launch {
-            _action.send(ProductsAction.ShowProductForm(product))
+            _action.send(ProductSelectorAction.ReturnProduct(product.toProductParcelable()))
         }
     }
 

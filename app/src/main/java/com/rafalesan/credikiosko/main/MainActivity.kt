@@ -26,6 +26,7 @@ import com.rafalesan.credikiosko.customers.presentation.customers_list.Customers
 import com.rafalesan.credikiosko.home.presentation.HomeScreen
 import com.rafalesan.credikiosko.onboarding.presentation.WelcomeScreen
 import com.rafalesan.credikiosko.products.presentation.product_form.ProductFormScreen
+import com.rafalesan.credikiosko.products.presentation.product_selector.ProductSelectorScreen
 import com.rafalesan.credikiosko.products.presentation.products_list.ProductsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -88,6 +89,10 @@ class MainActivity : ComponentActivity() {
                         )
                     ) {
                         ProductFormScreen(navController = navController)
+                    }
+
+                    composable("product_selector") {
+                        ProductSelectorScreen(navController = navController)
                     }
 
                     composable("customers") {

@@ -1,6 +1,6 @@
 package com.rafalesan.credikiosko.products.domain.usecase
 
-import com.rafalesan.credikiosko.products.domain.entity.Product
+import com.rafalesan.credikiosko.core.commons.domain.entity.Product
 import com.rafalesan.credikiosko.products.domain.repository.IProductRepository
 import javax.inject.Inject
 

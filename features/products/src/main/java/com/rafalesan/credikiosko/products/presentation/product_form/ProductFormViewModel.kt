@@ -2,11 +2,11 @@ package com.rafalesan.credikiosko.products.presentation.product_form
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.domain.entity.Product
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.zeroLong
-import com.rafalesan.credikiosko.products.domain.entity.Product
 import com.rafalesan.credikiosko.products.domain.usecase.DeleteProductUseCase
 import com.rafalesan.credikiosko.products.domain.usecase.SaveProductUseCase
 import com.rafalesan.credikiosko.products.domain.validator.ProductValidator
