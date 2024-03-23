@@ -85,7 +85,7 @@ fun CreditFormScreen(
         onCreateCredit = { viewModel.perform(CreditFormEvent.CreateCredit) },
     )
 
-    HandleNavigationBackResults(
+    NavigationBackResultsHandler(
         navController = navController,
         viewModel = viewModel
     )
@@ -419,7 +419,7 @@ fun ActionHandler(
 }
 
 @Composable
-fun HandleNavigationBackResults(
+fun NavigationBackResultsHandler(
     navController: NavHostController,
     viewModel: CreditFormViewModel
 ) {
