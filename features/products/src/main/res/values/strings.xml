@@ -12,4 +12,5 @@
     <string name="empty_product_list_desc">Aún no ha agregado productos</string>
     <string name="empty_product_name_validation_desc">Debe ingresar el nombre del producto</string>
     <string name="empty_product_price_validation_desc">Debe ingresar el precio del producto</string>
+    <string name="select_the_product">Seleccione el producto</string>
 </resources>

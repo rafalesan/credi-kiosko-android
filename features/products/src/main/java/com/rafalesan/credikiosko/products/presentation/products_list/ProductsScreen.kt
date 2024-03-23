@@ -2,9 +2,7 @@
 
 package com.rafalesan.credikiosko.products.presentation.products_list
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,10 +41,11 @@ import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.rafalesan.credikiosko.core.commons.domain.entity.Product
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.products.R
-import com.rafalesan.credikiosko.products.domain.entity.Product
+import com.rafalesan.credikiosko.products.presentation.composables.ProductItem
 import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
@@ -208,36 +206,6 @@ fun ProductItemPreview() {
             "7"
         )
     ) {}
-}
-
-@Composable
-fun ProductItem(
-    product: Product,
-    onClick: (Product) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick(product) }
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(horizontal = Dimens.space2x)
-                .padding(top = Dimens.space2x),
-            text = product.name,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            modifier = Modifier
-                .padding(horizontal = Dimens.space2x)
-                .padding(top = Dimens.spaceDefault, bottom = Dimens.space2x),
-            text = stringResource(
-                id = R.string.price_x,
-                product.price
-            )
-        )
-    }
 }
 
 @Composable
