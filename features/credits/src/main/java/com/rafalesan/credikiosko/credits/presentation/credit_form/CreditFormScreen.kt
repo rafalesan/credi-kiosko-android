@@ -409,6 +409,9 @@ fun ActionHandler(
                 CreditFormAction.ShowCustomerSelector -> {
                     navController.navigate("customer_selector")
                 }
+                CreditFormAction.ShowCreditProductForm -> {
+                    navController.navigate("credit_product_form")
+                }
             }
         }
     }
