@@ -41,6 +41,7 @@ import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedT
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.products.R
+import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
 fun ProductFormScreen(
@@ -138,7 +139,7 @@ fun ProductFormUI(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.Filled.ArrowBack, stringResource(id = com.rafalesan.credikiosko.core.R.string.navigate_back))
+                        Icon(Icons.Filled.ArrowBack, stringResource(id = CoreR.string.navigate_back))
                     }
                 }
             )
@@ -228,7 +229,7 @@ fun ProductPriceInput(
             .padding(horizontal = Dimens.space2x)
             .padding(bottom = Dimens.space2x),
         value = productPriceText.value,
-        label = { Text(text = stringResource(id = R.string.product_price)) },
+        label = { Text(text = stringResource(id = CoreR.string.product_price)) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
             imeAction = ImeAction.Done

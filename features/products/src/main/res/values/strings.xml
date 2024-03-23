@@ -6,7 +6,6 @@
     <string name="price_x">Precio: C$ %s</string>
     <string name="save_product">Guardar Producto</string>
     <string name="product_name">Nombre del producto</string>
-    <string name="product_price">Precio del producto</string>
     <string name="modify_product">Modificar producto</string>
     <string name="editing_product_x">Editando producto: %s</string>
     <string name="empty_product_list_desc">Aún no ha agregado productos</string>

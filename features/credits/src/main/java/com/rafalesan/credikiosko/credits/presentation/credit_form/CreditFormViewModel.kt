@@ -70,7 +70,9 @@ class CreditFormViewModel @Inject constructor(
     }
 
     private fun handleAddProductLineEvent() {
-        toast("En Contrucción")
+        viewModelScope.launch {
+            _action.send(CreditFormAction.ShowCreditProductForm)
+        }
     }
 
 }
