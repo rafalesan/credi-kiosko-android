@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -53,10 +54,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.rafalesan.credikiosko.core.commons.customerNavResultKey
 import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetweenTextUI
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.CollectNavigationBackResult
+import com.rafalesan.credikiosko.core.commons.presentation.models.CustomerParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.credits.R
@@ -79,6 +83,16 @@ fun CreditFormScreen(
         onEditProductLinePressed = { viewModel.perform(CreditFormEvent.EditProductLine(it)) },
         onAddProductLinePressed = { viewModel.perform(CreditFormEvent.AddProductLine) },
         onCreateCredit = { viewModel.perform(CreditFormEvent.CreateCredit) },
+    )
+
+    HandleNavigationBackResults(
+        navController = navController,
+        viewModel = viewModel
+    )
+
+    ActionHandler(
+        navController = navController,
+        viewModel = viewModel
     )
 
     ToastHandlerComposable(viewModel = viewModel)
@@ -219,8 +233,13 @@ fun CustomerSelectorInput(
 
     val customerNameSelectedText by remember {
         derivedStateOf {
-            viewState.value.customerSelected?.nickname ?:
-            viewState.value.customerSelected?.name
+            val nickname = viewState.value.customerSelected?.nickname
+
+            if (nickname.isNullOrBlank()) {
+                viewState.value.customerSelected?.name
+            } else {
+                nickname
+            }
         }
     }
 
@@ -375,6 +394,40 @@ fun AddProductLineButton(
             )
         }
     }
+
+}
+
+@Composable
+fun ActionHandler(
+    navController: NavHostController,
+    viewModel: CreditFormViewModel
+) {
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.action.collect { action ->
+            when (action) {
+                CreditFormAction.ShowCustomerSelector -> {
+                    navController.navigate("customer_selector")
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun HandleNavigationBackResults(
+    navController: NavHostController,
+    viewModel: CreditFormViewModel
+) {
+
+    navController.CollectNavigationBackResult(
+        key = customerNavResultKey,
+        initialValue = CustomerParcelable(),
+        resultCallback = { customerBackResult ->
+            viewModel.perform(CreditFormEvent.SetCustomer(customerBackResult))
+        }
+    )
 
 }
 
