@@ -65,7 +65,7 @@ fun CreditProductFormScreen(
         onProductsQuantityChanged = { viewModel.perform(CreditProductFormEvent.ProductsQuantityChanged(it)) }
     )
 
-    HandleNavigationBackResults(
+    NavigationBackResultsHandler(
         navController = navHostController,
         viewModel = viewModel
     )
@@ -305,7 +305,7 @@ fun ActionHandler(
 }
 
 @Composable
-fun HandleNavigationBackResults(
+fun NavigationBackResultsHandler(
     navController: NavHostController,
     viewModel: CreditProductFormViewModel
 ) {
