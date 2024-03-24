@@ -3,6 +3,7 @@ package com.rafalesan.credikiosko.credits.presentation.credit_product_form
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.mappers.toProductDomain
+import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.models.ProductParcelable
 import com.rafalesan.credikiosko.core.commons.zeroLong
 import com.rafalesan.credikiosko.credits.domain.usecase.CalculateProductLineTotalUseCase
@@ -32,6 +33,15 @@ class CreditProductFormViewModel @Inject constructor(
             is CreditProductFormEvent.SetProduct -> handleSetProductEvent(event.product)
             is CreditProductFormEvent.ProductPriceChanged -> handleProductPriceChangedEvent(event.productPrice)
             is CreditProductFormEvent.ProductsQuantityChanged -> handleProductsQuantityChangedEvent(event.productsQuantity)
+            CreditProductFormEvent.AddCreditProductLine -> handleAddCreditProductLine()
+        }
+    }
+
+    private fun handleAddCreditProductLine() {
+        //TODO: VALIDATE INPUTS
+        viewModelScope.launch {
+            val creditProduct = buildCreditProductParcelableFromViewState()
+            _action.send(CreditProductFormAction.ReturnCreditProductLine(creditProduct))
         }
     }
 
@@ -82,6 +92,18 @@ class CreditProductFormViewModel @Inject constructor(
         )
         _viewState.update {
             it.copy(totalAmount = total)
+        }
+    }
+
+    private fun buildCreditProductParcelableFromViewState(): CreditProductParcelable {
+        return with(viewState.value) {
+            CreditProductParcelable(
+                productId = productSelected!!.id,
+                productName = productSelected.name,
+                productPrice = productPrice!!,
+                quantity = productsQuantity,
+                total = totalAmount
+            )
         }
     }
 

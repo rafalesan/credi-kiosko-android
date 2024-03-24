@@ -40,10 +40,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.rafalesan.credikiosko.core.commons.creditProductNavResultKey
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.CollectNavigationBackResult
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.popBackStackWithResult
 import com.rafalesan.credikiosko.core.commons.presentation.models.ProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
@@ -62,7 +64,8 @@ fun CreditProductFormScreen(
         onBackPressed = { navHostController.navigateUp() },
         onProductSelectorPressed = { viewModel.perform(CreditProductFormEvent.ProductSelectorPressed) },
         onProductPriceChanged = { viewModel.perform(CreditProductFormEvent.ProductPriceChanged(it)) },
-        onProductsQuantityChanged = { viewModel.perform(CreditProductFormEvent.ProductsQuantityChanged(it)) }
+        onProductsQuantityChanged = { viewModel.perform(CreditProductFormEvent.ProductsQuantityChanged(it)) },
+        onAddCreditProduct = { viewModel.perform(CreditProductFormEvent.AddCreditProductLine) }
     )
 
     NavigationBackResultsHandler(
@@ -84,7 +87,11 @@ fun CreditProductFormScreen(
 fun CreditProductFormUIPreview() {
     CrediKioskoTheme {
         CreditProductFormUI(
-            viewState = remember { mutableStateOf(CreditProductFormViewState(totalAmount = "100.00")) }
+            viewState = remember {
+                mutableStateOf(
+                    CreditProductFormViewState(totalAmount = "100.00")
+                )
+            }
         )
     }
 }
@@ -297,6 +304,13 @@ fun ActionHandler(
             when (action) {
                 CreditProductFormAction.ShowProductSelector -> {
                     navController.navigate("product_selector")
+                }
+
+                is CreditProductFormAction.ReturnCreditProductLine -> {
+                    navController.popBackStackWithResult(
+                        creditProductNavResultKey,
+                        action.creditProduct
+                    )
                 }
             }
         }

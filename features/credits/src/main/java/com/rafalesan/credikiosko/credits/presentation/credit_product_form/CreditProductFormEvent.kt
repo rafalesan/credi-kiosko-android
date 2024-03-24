@@ -7,4 +7,5 @@ sealed class CreditProductFormEvent {
     class ProductPriceChanged(val productPrice: String): CreditProductFormEvent()
     class ProductsQuantityChanged(val productsQuantity: String): CreditProductFormEvent()
     class SetProduct(val product: ProductParcelable): CreditProductFormEvent()
+    data object AddCreditProductLine : CreditProductFormEvent()
 }

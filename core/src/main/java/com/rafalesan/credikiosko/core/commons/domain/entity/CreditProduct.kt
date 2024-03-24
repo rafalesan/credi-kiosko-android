@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.credits.domain.entity
+package com.rafalesan.credikiosko.core.commons.domain.entity
 
 data class CreditProduct(
     val id: Long = 0,

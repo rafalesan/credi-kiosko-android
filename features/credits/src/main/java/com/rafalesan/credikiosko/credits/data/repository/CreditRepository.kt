@@ -5,13 +5,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.BusinessLocalDataSource
+import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.credits.data.datasource.CreditLocalDataSource
 import com.rafalesan.credikiosko.credits.data.mappers.toCreditEntity
 import com.rafalesan.credikiosko.credits.data.mappers.toCreditProductEntity
 import com.rafalesan.credikiosko.credits.data.mappers.toCreditWithCustomerAndProductsDomain
 import com.rafalesan.credikiosko.credits.domain.entity.Credit
-import com.rafalesan.credikiosko.credits.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.credits.domain.entity.CreditWithCustomerAndProducts
 import com.rafalesan.credikiosko.credits.domain.repository.ICreditRepository
 import kotlinx.coroutines.flow.Flow
