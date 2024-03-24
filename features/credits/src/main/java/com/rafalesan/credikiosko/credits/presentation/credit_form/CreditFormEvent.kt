@@ -1,7 +1,8 @@
 package com.rafalesan.credikiosko.credits.presentation.credit_form
 
+import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
+import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.models.CustomerParcelable
-import com.rafalesan.credikiosko.credits.domain.entity.CreditProduct
 
 sealed class CreditFormEvent {
 
@@ -11,5 +12,5 @@ sealed class CreditFormEvent {
     class EditProductLine(val creditProduct: CreditProduct): CreditFormEvent()
     data object AddProductLine : CreditFormEvent()
     class SetCustomer(val customer: CustomerParcelable): CreditFormEvent()
-
+    class AddCreditProduct(val creditProduct: CreditProductParcelable): CreditFormEvent()
 }

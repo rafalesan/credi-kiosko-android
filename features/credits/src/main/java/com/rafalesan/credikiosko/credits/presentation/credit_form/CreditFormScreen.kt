@@ -54,17 +54,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.rafalesan.credikiosko.core.commons.creditProductNavResultKey
 import com.rafalesan.credikiosko.core.commons.customerNavResultKey
+import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetweenTextUI
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.CollectNavigationBackResult
+import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.models.CustomerParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.credits.R
-import com.rafalesan.credikiosko.credits.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
@@ -429,6 +431,14 @@ fun NavigationBackResultsHandler(
         initialValue = CustomerParcelable(),
         resultCallback = { customerBackResult ->
             viewModel.perform(CreditFormEvent.SetCustomer(customerBackResult))
+        }
+    )
+
+    navController.CollectNavigationBackResult(
+        key = creditProductNavResultKey,
+        initialValue = CreditProductParcelable(),
+        resultCallback = { creditProductBackResult ->
+            viewModel.perform(CreditFormEvent.AddCreditProduct(creditProductBackResult))
         }
     )
 

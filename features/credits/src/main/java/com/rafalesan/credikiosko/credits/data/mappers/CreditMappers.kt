@@ -1,11 +1,11 @@
 package com.rafalesan.credikiosko.credits.data.mappers
 
 import com.rafalesan.credikiosko.core.commons.data.mappers.toCustomerDomain
+import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.room.entity.CreditEntity
 import com.rafalesan.credikiosko.core.room.entity.CreditProductEntity
 import com.rafalesan.credikiosko.core.room.entity.CreditWithCustomerAndProductsEntity
 import com.rafalesan.credikiosko.credits.domain.entity.Credit
-import com.rafalesan.credikiosko.credits.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.credits.domain.entity.CreditWithCustomerAndProducts
 
 fun CreditEntity.toCreditDomain(): Credit {

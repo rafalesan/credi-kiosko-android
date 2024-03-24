@@ -1,11 +1,13 @@
 package com.rafalesan.credikiosko.credits.presentation.credit_form
 
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
+import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCreditProductDomain
 import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCustomerDomain
+import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.models.CustomerParcelable
 import com.rafalesan.credikiosko.core.commons.zeroLong
-import com.rafalesan.credikiosko.credits.domain.entity.CreditProduct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +36,18 @@ class CreditFormViewModel @Inject constructor(
             is CreditFormEvent.DeleteProductLine -> handleDeleteProductLineEvent(event.creditProduct)
             is CreditFormEvent.EditProductLine -> handleEditProductLineEvent(event.creditProduct)
             is CreditFormEvent.SetCustomer -> handleSetCustomerEvent(event.customer)
+            is CreditFormEvent.AddCreditProduct -> handleAddCreditProductEvent(event.creditProduct)
+        }
+    }
+
+    private fun handleAddCreditProductEvent(creditProduct: CreditProductParcelable) {
+        if (creditProduct.productId == zeroLong) {
+            return
+        }
+        _viewState.update {
+            it.copy(
+                productLines = it.productLines + creditProduct.toCreditProductDomain()
+            )
         }
     }
 
@@ -42,13 +55,11 @@ class CreditFormViewModel @Inject constructor(
         if (customer.id == zeroLong) {
             return
         }
-        Timber.d("setting customer: ${customer.name} - ${customer.id}")
         _viewState.update {
             it.copy(
                 customerSelected = customer.toCustomerDomain()
             )
         }
-        Timber.d(viewState.value.toString())
     }
 
     private fun handleEditProductLineEvent(creditProduct: CreditProduct) {

@@ -1,9 +1,9 @@
 package com.rafalesan.credikiosko.credits.domain.repository
 
 import androidx.paging.PagingData
+import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.credits.domain.entity.Credit
-import com.rafalesan.credikiosko.credits.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.credits.domain.entity.CreditWithCustomerAndProducts
 import kotlinx.coroutines.flow.Flow
 
