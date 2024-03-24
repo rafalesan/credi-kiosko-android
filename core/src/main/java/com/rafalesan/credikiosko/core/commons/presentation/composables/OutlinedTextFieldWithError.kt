@@ -20,6 +20,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +32,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutlinedTextFieldWithError(
     modifier: Modifier = Modifier,
@@ -43,10 +44,7 @@ fun OutlinedTextFieldWithError(
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = {
-        if (errorStringId != null)
-            Icon(Icons.Filled.Error, "error", tint = MaterialTheme.colorScheme.error)
-    },
+    trailingIcon: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -77,7 +75,17 @@ fun OutlinedTextFieldWithError(
             label = label,
             placeholder = placeholder,
             leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
+            trailingIcon = {
+                if (!hasError) {
+                    trailingIcon?.invoke()
+                } else {
+                    Icon(
+                        Icons.Filled.Error,
+                        "error",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
             isError = hasError,
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,

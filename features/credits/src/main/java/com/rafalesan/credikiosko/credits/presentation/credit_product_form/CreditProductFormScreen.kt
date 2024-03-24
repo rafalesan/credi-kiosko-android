@@ -89,7 +89,10 @@ fun CreditProductFormUIPreview() {
         CreditProductFormUI(
             viewState = remember {
                 mutableStateOf(
-                    CreditProductFormViewState(totalAmount = "100.00")
+                    CreditProductFormViewState(
+                        productSelectedError = R.string.empty_product_validation_desc,
+                        totalAmount = "100.00"
+                    )
                 )
             }
         )
@@ -201,12 +204,18 @@ fun ProductSelectorInput(
             },
         enabled = false,
         colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+            disabledTextColor = productSelectedError?.let {
+                MaterialTheme.colorScheme.error
+            } ?: MaterialTheme.colorScheme.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledBorderColor = MaterialTheme.colorScheme.outline,
+            disabledBorderColor = productSelectedError?.let {
+                MaterialTheme.colorScheme.error
+            } ?: MaterialTheme.colorScheme.outline,
             disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
             disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledLabelColor = productSelectedError?.let {
+                MaterialTheme.colorScheme.error
+            } ?: MaterialTheme.colorScheme.onSurfaceVariant,
             disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
             disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
             disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -282,7 +291,7 @@ fun ProductsQuantityInput(
             .padding(horizontal = Dimens.space2x)
             .padding(top = Dimens.space2x),
         value = productsQuantityText.value,
-        label = { Text(text = stringResource(id = CoreR.string.product_price)) },
+        label = { Text(text = stringResource(id = R.string.quantity)) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
             imeAction = ImeAction.Done

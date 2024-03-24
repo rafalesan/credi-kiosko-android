@@ -15,7 +15,8 @@
     <string name="edit_product_line">Editar línea de producto</string>
     <string name="quantity_x">Cantidad: %s</string>
     <string name="unit_price_x">Precio/U: C$ %s</string>
-    <string name="quantity">Cantidad:</string>
+    <string name="quantity">Cantidad</string>
+    <string name="quantity_equals">Cantidad:</string>
     <string name="unit_price">Precio/U:</string>
     <string name="cordoba_symbol_x">C$ %s</string>
     <string name="add">Agregar\n</string>
@@ -24,4 +25,9 @@
     <string name="no_product_selected">No ha seleccionado un producto</string>
     <string name="product">Producto</string>
     <string name="add_x">Agregar (C$%s)</string>
+    <string name="empty_product_validation_desc">Debe seleccionar un producto</string>
+    <string name="empty_product_price_valication_desc">Debe ingresar un precio</string>
+    <string name="empty_products_quantity_validation_desc">Debe ingresar la cantidad</string>
+    <string name="invalid_product_price_is_zero_validation_desc">Debe ingresar un precio mayor a cero</string>
+    <string name="invalid_products_quantity_is_zero_validation_desc">Debe ingresar una cantidad mayor a cero</string>
 </resources>

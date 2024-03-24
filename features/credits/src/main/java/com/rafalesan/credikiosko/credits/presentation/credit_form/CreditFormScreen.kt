@@ -344,7 +344,7 @@ fun ProductLineItem(
         DotBetweenTextUI(
             modifier = Modifier
                 .padding(horizontal = Dimens.spaceDefault),
-            start = stringResource(id = R.string.quantity),
+            start = stringResource(id = R.string.quantity_equals),
             end = creditProduct.quantity
         )
 
