@@ -4,6 +4,7 @@ import com.rafalesan.credikiosko.core.commons.domain.entity.Product
 import com.rafalesan.credikiosko.core.commons.emptyString
 
 data class CreditProductFormViewState(
+    val creditProductId: Long? = null,
     val productSelected: Product? = null,
     val productPrice: String? = null,
     val productsQuantity: String = 1.toString(),

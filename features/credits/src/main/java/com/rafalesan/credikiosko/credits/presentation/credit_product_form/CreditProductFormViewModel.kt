@@ -1,7 +1,10 @@
 package com.rafalesan.credikiosko.credits.presentation.credit_product_form
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.commons.creditProductNavKey
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
+import com.rafalesan.credikiosko.core.commons.domain.entity.Product
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
@@ -25,6 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreditProductFormViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val calculateProductLineTotalUseCase: CalculateProductLineTotalUseCase,
     private val validateCreditProductDataUseCase: ValidateCreditProductDataUseCase
 ) : BaseViewModel() {
@@ -34,6 +38,15 @@ class CreditProductFormViewModel @Inject constructor(
 
     private val _action = Channel<CreditProductFormAction>(Channel.BUFFERED)
     val action = _action.receiveAsFlow()
+
+    init {
+        val creditProductFromNav = savedStateHandle.get<CreditProductParcelable>(creditProductNavKey)
+
+        creditProductFromNav?.let { creditProduct ->
+            initViewStateWith(creditProduct)
+        }
+
+    }
 
     fun perform(event: CreditProductFormEvent) {
         when (event) {
@@ -155,9 +168,29 @@ class CreditProductFormViewModel @Inject constructor(
         }
     }
 
+    private fun initViewStateWith(creditProduct: CreditProductParcelable) {
+        _viewState.update {
+
+            val productSelected = Product(
+                id = creditProduct.productId,
+                name = creditProduct.productName,
+                price = creditProduct.productPrice
+            )
+
+            it.copy(
+                productSelected = productSelected,
+                creditProductId = creditProduct.id,
+                productPrice = creditProduct.productPrice,
+                productsQuantity = creditProduct.quantity,
+                totalAmount = creditProduct.total
+            )
+        }
+    }
+
     private fun buildCreditProductParcelableFromViewState(): CreditProductParcelable {
         return with(viewState.value) {
             CreditProductParcelable(
+                id = creditProductId ?: zeroLong,
                 productId = productSelected!!.id,
                 productName = productSelected.name,
                 productPrice = productPrice!!,
@@ -170,6 +203,7 @@ class CreditProductFormViewModel @Inject constructor(
     private fun buildCreditProductFromViewState(): CreditProduct {
         return with(viewState.value) {
             CreditProduct(
+                id = creditProductId ?: zeroLong,
                 productId = productSelected?.id ?: zeroLong,
                 productName = productSelected?.name ?: emptyString,
                 productPrice = productPrice ?: emptyString,

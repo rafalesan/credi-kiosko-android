@@ -52,8 +52,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.rafalesan.credikiosko.core.commons.creditProductNavKey
 import com.rafalesan.credikiosko.core.commons.creditProductNavResultKey
 import com.rafalesan.credikiosko.core.commons.customerNavResultKey
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
@@ -62,6 +64,7 @@ import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetwee
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.CollectNavigationBackResult
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.navigate
 import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.models.CustomerParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
@@ -83,7 +86,7 @@ fun CreditFormScreen(
         onCustomerSelectorPressed = { viewModel.perform(CreditFormEvent.CustomerSelectorPressed) },
         onDeleteProductLinePressed = { viewModel.perform(CreditFormEvent.DeleteProductLine(it)) },
         onEditProductLinePressed = { viewModel.perform(CreditFormEvent.EditProductLine(it)) },
-        onAddProductLinePressed = { viewModel.perform(CreditFormEvent.AddProductLine) },
+        onAddProductLinePressed = { viewModel.perform(CreditFormEvent.AddProductLinePressed) },
         onCreateCredit = { viewModel.perform(CreditFormEvent.CreateCredit) },
     )
 
@@ -411,8 +414,13 @@ fun ActionHandler(
                 CreditFormAction.ShowCustomerSelector -> {
                     navController.navigate("customer_selector")
                 }
-                CreditFormAction.ShowCreditProductForm -> {
-                    navController.navigate("credit_product_form")
+                is CreditFormAction.ShowCreditProductForm -> {
+                    navController.navigate(
+                        "credit_product_form",
+                        args = bundleOf(
+                            creditProductNavKey to action.creditProduct
+                        )
+                    )
                 }
             }
         }
@@ -438,7 +446,7 @@ fun NavigationBackResultsHandler(
         key = creditProductNavResultKey,
         initialValue = CreditProductParcelable(),
         resultCallback = { creditProductBackResult ->
-            viewModel.perform(CreditFormEvent.AddCreditProduct(creditProductBackResult))
+            viewModel.perform(CreditFormEvent.AddOrReplaceCreditProduct(creditProductBackResult))
         }
     )
 
