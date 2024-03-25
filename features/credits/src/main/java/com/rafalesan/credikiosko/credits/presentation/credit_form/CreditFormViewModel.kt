@@ -106,7 +106,13 @@ class CreditFormViewModel @Inject constructor(
     }
 
     private fun handleDeleteProductLineEvent(creditProduct: CreditProduct) {
-        toast("En Construcción (${creditProduct.productId})")
+        _viewState.update {
+            val currentProductLines = it.productLines.toMutableList()
+            currentProductLines.remove(creditProduct)
+            it.copy(
+                productLines = currentProductLines
+            )
+        }
     }
 
     private fun handleCustomerSelectorPressed() {
