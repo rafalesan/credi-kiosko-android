@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCreditProductDomain
+import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCustomerDomain
 import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.models.CustomerParcelable
@@ -32,21 +33,55 @@ class CreditFormViewModel @Inject constructor(
         when (event) {
             CreditFormEvent.CustomerSelectorPressed -> handleCustomerSelectorPressed()
             CreditFormEvent.CreateCredit -> handleCreateCreditEvent()
-            CreditFormEvent.AddProductLine -> handleAddProductLineEvent()
+            CreditFormEvent.AddProductLinePressed -> handleAddProductLineEvent()
             is CreditFormEvent.DeleteProductLine -> handleDeleteProductLineEvent(event.creditProduct)
             is CreditFormEvent.EditProductLine -> handleEditProductLineEvent(event.creditProduct)
             is CreditFormEvent.SetCustomer -> handleSetCustomerEvent(event.customer)
-            is CreditFormEvent.AddCreditProduct -> handleAddCreditProductEvent(event.creditProduct)
+            is CreditFormEvent.AddOrReplaceCreditProduct -> handleAddOrReplaceCreditProductEvent(event.creditProduct)
         }
     }
 
-    private fun handleAddCreditProductEvent(creditProduct: CreditProductParcelable) {
+    private fun handleAddOrReplaceCreditProductEvent(creditProduct: CreditProductParcelable) {
         if (creditProduct.productId == zeroLong) {
             return
         }
-        _viewState.update {
-            it.copy(
-                productLines = it.productLines + creditProduct.toCreditProductDomain()
+
+        if (creditProduct.id != zeroLong) {
+            replaceCreditProductWith(creditProduct.toCreditProductDomain())
+            return
+        }
+
+        addCreditProduct(creditProduct.toCreditProductDomain())
+
+    }
+
+    private fun replaceCreditProductWith(creditProduct: CreditProduct) {
+        _viewState.update { creditFormState ->
+            val currentProductLines = creditFormState.productLines.toMutableList()
+
+            val indexForReplace = currentProductLines.indexOfFirst {
+                it.id == creditProduct.id
+            }
+
+            currentProductLines[indexForReplace] = creditProduct
+
+            creditFormState.copy(
+                productLines = currentProductLines
+            )
+
+        }
+    }
+
+    private fun addCreditProduct(creditProduct: CreditProduct) {
+        _viewState.update { creditFormState ->
+
+            val currentProductLines = creditFormState.productLines
+            val temporalId = currentProductLines.size + 1
+            val newCreditProductToAdd = creditProduct
+                .copy(id = temporalId.toLong())
+
+            creditFormState.copy(
+                productLines = creditFormState.productLines + newCreditProductToAdd
             )
         }
     }
@@ -63,7 +98,11 @@ class CreditFormViewModel @Inject constructor(
     }
 
     private fun handleEditProductLineEvent(creditProduct: CreditProduct) {
-        toast("En Construcción (${creditProduct.productId})")
+        viewModelScope.launch {
+            _action.send(
+                CreditFormAction.ShowCreditProductForm(creditProduct.toCreditProductParcelable())
+            )
+        }
     }
 
     private fun handleDeleteProductLineEvent(creditProduct: CreditProduct) {
@@ -82,7 +121,7 @@ class CreditFormViewModel @Inject constructor(
 
     private fun handleAddProductLineEvent() {
         viewModelScope.launch {
-            _action.send(CreditFormAction.ShowCreditProductForm)
+            _action.send(CreditFormAction.ShowCreditProductForm())
         }
     }
 

@@ -1,6 +1,10 @@
 package com.rafalesan.credikiosko.credits.presentation.credit_form
 
+import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
+
 sealed class CreditFormAction {
     data object ShowCustomerSelector : CreditFormAction()
-    data object ShowCreditProductForm : CreditFormAction()
+    class ShowCreditProductForm(
+        val creditProduct: CreditProductParcelable? = null
+    ) : CreditFormAction()
 }

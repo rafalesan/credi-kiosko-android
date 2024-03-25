@@ -10,7 +10,7 @@ sealed class CreditFormEvent {
     data object CreateCredit: CreditFormEvent()
     class DeleteProductLine(val creditProduct: CreditProduct): CreditFormEvent()
     class EditProductLine(val creditProduct: CreditProduct): CreditFormEvent()
-    data object AddProductLine : CreditFormEvent()
+    data object AddProductLinePressed : CreditFormEvent()
     class SetCustomer(val customer: CustomerParcelable): CreditFormEvent()
-    class AddCreditProduct(val creditProduct: CreditProductParcelable): CreditFormEvent()
+    class AddOrReplaceCreditProduct(val creditProduct: CreditProductParcelable): CreditFormEvent()
 }
