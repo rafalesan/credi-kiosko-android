@@ -147,10 +147,21 @@ fun CreditFormUI(
             )
         },
         floatingActionButton = {
+
+            val totalAmount by remember {
+                derivedStateOf { viewState.value.totalCreditAmount }
+            }
+
+            val addButtonText = if (totalAmount.isBlank()) {
+                stringResource(id = R.string.lend)
+            } else {
+                stringResource(id = R.string.lend_x, totalAmount)
+            }
+
             ExtendedFloatingActionButton(
                 onClick = onCreateCredit,
                 icon = { Icon(Icons.Filled.Check, stringResource(id = R.string.lend)) },
-                text = { Text(stringResource(id = R.string.lend)) },
+                text = { Text(addButtonText) },
                 shape = RoundedCornerShape(16.dp),
             )
         }
@@ -471,5 +482,6 @@ private val MOCKED_CREDITS_FOR_PREVIEW = CreditFormState(
             quantity = "2",
             total = "120.00"
         )
-    )
+    ),
+    totalCreditAmount = "170.00"
 )
