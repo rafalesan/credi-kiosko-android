@@ -48,11 +48,11 @@ class CreditFormViewModel @Inject constructor(
 
         if (creditProduct.id != zeroLong) {
             replaceCreditProductWith(creditProduct.toCreditProductDomain())
-            return
+        } else {
+            addCreditProduct(creditProduct.toCreditProductDomain())
         }
 
-        addCreditProduct(creditProduct.toCreditProductDomain())
-
+        calculateTotalCreditAmount()
     }
 
     private fun replaceCreditProductWith(creditProduct: CreditProduct) {
@@ -113,6 +113,7 @@ class CreditFormViewModel @Inject constructor(
                 productLines = currentProductLines
             )
         }
+        calculateTotalCreditAmount()
     }
 
     private fun handleCustomerSelectorPressed() {
@@ -129,6 +130,14 @@ class CreditFormViewModel @Inject constructor(
         viewModelScope.launch {
             _action.send(CreditFormAction.ShowCreditProductForm())
         }
+    }
+
+    private fun calculateTotalCreditAmount() {
+        _viewState.update {
+            val totalAmount = it.productLines.sumOf { product -> product.total.toBigDecimal() }
+            it.copy(totalCreditAmount = totalAmount.toString())
+        }
+
     }
 
 }

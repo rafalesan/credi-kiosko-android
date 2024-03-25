@@ -30,4 +30,5 @@
     <string name="empty_products_quantity_validation_desc">Debe ingresar la cantidad</string>
     <string name="invalid_product_price_is_zero_validation_desc">Debe ingresar un precio mayor a cero</string>
     <string name="invalid_products_quantity_is_zero_validation_desc">Debe ingresar una cantidad mayor a cero</string>
+    <string name="lend_x">"Prestar (C$%s) "</string>
 </resources>
