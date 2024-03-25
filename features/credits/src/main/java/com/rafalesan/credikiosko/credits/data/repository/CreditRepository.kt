@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.BusinessLocalDataSource
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
-import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.credits.data.datasource.CreditLocalDataSource
 import com.rafalesan.credikiosko.credits.data.mappers.toCreditEntity
 import com.rafalesan.credikiosko.credits.data.mappers.toCreditProductEntity
@@ -23,13 +22,11 @@ class CreditRepository(
 ) : ICreditRepository {
     override suspend fun saveCredit(
         credit: Credit,
-        customer: Customer,
         creditProducts: List<CreditProduct>
     ) {
         val creditEntity = credit
             .copy(
-                businessId = businessLocalDataSource.getBusiness().id,
-                customerId = customer.id
+                businessId = businessLocalDataSource.getBusiness().id
             ).toCreditEntity()
 
         val savedCreditId = creditLocalDataSource.saveCredit(creditEntity)
