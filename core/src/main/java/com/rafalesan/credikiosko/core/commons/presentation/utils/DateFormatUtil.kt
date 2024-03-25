@@ -8,6 +8,11 @@ object DateFormatUtil {
 
     private const val BACKEND_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss"
 
+    fun getCurrentDateString(): String {
+        val formatter = DateTimeFormatter.ofPattern(BACKEND_DATE_TIME_PATTERN)
+        return LocalDateTime.now().format(formatter)
+    }
+
     fun getUIDateFormatFrom(dateString: String): String {
         val localDateTime = getLocalDateTimeFromBackendPattern(dateString)
         val justLocalDate = localDateTime.toLocalDate()

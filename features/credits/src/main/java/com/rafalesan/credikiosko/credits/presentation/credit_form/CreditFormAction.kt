@@ -7,4 +7,6 @@ sealed class CreditFormAction {
     class ShowCreditProductForm(
         val creditProduct: CreditProductParcelable? = null
     ) : CreditFormAction()
+
+    data object ReturnToCredits : CreditFormAction()
 }

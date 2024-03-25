@@ -8,7 +8,10 @@ import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCreditProdu
 import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCustomerDomain
 import com.rafalesan.credikiosko.core.commons.presentation.models.CreditProductParcelable
 import com.rafalesan.credikiosko.core.commons.presentation.models.CustomerParcelable
+import com.rafalesan.credikiosko.core.commons.presentation.utils.DateFormatUtil
 import com.rafalesan.credikiosko.core.commons.zeroLong
+import com.rafalesan.credikiosko.credits.domain.entity.Credit
+import com.rafalesan.credikiosko.credits.domain.usecase.SaveCreditUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreditFormViewModel @Inject constructor(
-
+    private val saveCreditUseCase: SaveCreditUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableStateFlow(CreditFormState())
@@ -123,7 +126,17 @@ class CreditFormViewModel @Inject constructor(
     }
 
     private fun handleCreateCreditEvent() {
-        toast("Customer Selected: ${viewState.value.customerSelected?.name}")
+        val credit = buildCreditFromViewState()
+        val productLines = buildProductLinesResetIds()
+
+        viewModelScope.launch {
+            saveCreditUseCase(
+                credit,
+                productLines
+            )
+            _action.send(CreditFormAction.ReturnToCredits)
+        }
+
     }
 
     private fun handleAddProductLineEvent() {
@@ -138,6 +151,24 @@ class CreditFormViewModel @Inject constructor(
             it.copy(totalCreditAmount = totalAmount.toString())
         }
 
+    }
+
+    private fun buildCreditFromViewState(): Credit {
+        return with(viewState.value) {
+            Credit(
+                businessId = zeroLong,
+                customerId = customerSelected?.id ?: zeroLong,
+                date = DateFormatUtil.getCurrentDateString(),
+                total = totalCreditAmount
+            )
+        }
+    }
+
+    private fun buildProductLinesResetIds(): List<CreditProduct> {
+        return viewState
+            .value
+            .productLines
+            .map { it.copy(id = zeroLong) }
     }
 
 }

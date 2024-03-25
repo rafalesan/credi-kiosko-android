@@ -433,6 +433,9 @@ fun ActionHandler(
                         )
                     )
                 }
+                CreditFormAction.ReturnToCredits -> {
+                    navController.navigateUp()
+                }
             }
         }
     }
