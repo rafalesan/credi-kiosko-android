@@ -11,6 +11,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.devtools.ksp")
 }
 
 apply(from = "android.gradle")
@@ -99,7 +100,7 @@ dependencies {
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.Retrofit2.converter.moshi)
     implementation(Square.moshi.adapters)
-    kapt(Square.moshi.kotlinCodegen)
+    ksp(Square.moshi.kotlinCodegen)
     implementation(Square.OkHttp3.loggingInterceptor)
     implementation(Chucker.library)
     implementation(JakeWharton.timber)

@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -60,7 +61,7 @@ dependencies {
 
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.moshi)
-    kapt(Square.moshi.kotlinCodegen)
+    ksp(Square.moshi.kotlinCodegen)
 
     implementation(AndroidX.paging.runtimeKtx)
     implementation(AndroidX.paging.compose)
