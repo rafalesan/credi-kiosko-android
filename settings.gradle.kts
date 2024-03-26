@@ -1,29 +1,19 @@
 pluginManagement {
+
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
     }
 
-    //https://stackoverflow.com/questions/64644810/get-gradle-property-from-settings
-    val properties = File(rootDir, "versions.properties").inputStream().use {
-        java.util.Properties().apply { load(it) }
-    }
-    val kotlinVersion = properties.getValue("version.kotlin") as String
-    val androidGradleVersion = properties.getValue("plugin.android") as String
-    val daggerHiltVersion = properties.getValue("version.google.dagger") as String
-
     plugins {
-        id ("com.android.application") version androidGradleVersion apply false
-        id ("com.android.library") version androidGradleVersion apply false
-        id("org.jetbrains.kotlin.android") version kotlinVersion apply false
-        id("com.google.dagger.hilt.android") version daggerHiltVersion apply false
+        // See https://jmfayard.github.io/refreshVersions
+        id("de.fayard.refreshVersions") version "0.60.5"
     }
 }
 
 plugins {
-    // See https://jmfayard.github.io/refreshVersions
-    id("de.fayard.refreshVersions") version "0.60.3"
+    id("de.fayard.refreshVersions")
 }
 
 @Suppress("UnstableApiUsage")

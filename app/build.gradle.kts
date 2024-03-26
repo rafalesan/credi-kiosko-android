@@ -72,6 +72,10 @@ android {
         buildConfig = true
     }
 
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
     flavorDimensions.add("default")
 
     productFlavors {
@@ -89,6 +93,8 @@ android {
 }
 
 dependencies {
+
+    coreLibraryDesugaring(Android.tools.desugarJdkLibs)
 
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.Retrofit2.converter.moshi)
