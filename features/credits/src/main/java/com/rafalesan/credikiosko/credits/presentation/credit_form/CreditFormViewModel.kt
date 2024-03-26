@@ -2,6 +2,7 @@ package com.rafalesan.credikiosko.credits.presentation.credit_form
 
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
+import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCreditProductDomain
 import com.rafalesan.credikiosko.core.commons.presentation.mappers.toCreditProductParcelable
@@ -12,6 +13,9 @@ import com.rafalesan.credikiosko.core.commons.presentation.utils.DateFormatUtil
 import com.rafalesan.credikiosko.core.commons.zeroLong
 import com.rafalesan.credikiosko.credits.domain.entity.Credit
 import com.rafalesan.credikiosko.credits.domain.usecase.SaveCreditUseCase
+import com.rafalesan.credikiosko.credits.domain.validator.CreditInputsValidator
+import com.rafalesan.credikiosko.credits.domain.validator.CreditInputsValidator.CreditInputValidation.EMPTY_CREDIT_PRODUCT_LINES
+import com.rafalesan.credikiosko.credits.domain.validator.CreditInputsValidator.CreditInputValidation.EMPTY_CUSTOMER
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,7 +89,8 @@ class CreditFormViewModel @Inject constructor(
                 .copy(id = temporalId.toLong())
 
             creditFormState.copy(
-                productLines = creditFormState.productLines + newCreditProductToAdd
+                productLines = creditFormState.productLines + newCreditProductToAdd,
+                productLinesError = null
             )
         }
     }
@@ -95,7 +101,8 @@ class CreditFormViewModel @Inject constructor(
         }
         _viewState.update {
             it.copy(
-                customerSelected = customer.toCustomerDomain()
+                customerSelected = customer.toCustomerDomain(),
+                customerNameSelectedError = null
             )
         }
     }
@@ -126,17 +133,55 @@ class CreditFormViewModel @Inject constructor(
     }
 
     private fun handleCreateCreditEvent() {
+
+        clearInputValidations()
+
         val credit = buildCreditFromViewState()
         val productLines = buildProductLinesResetIds()
 
         viewModelScope.launch {
-            saveCreditUseCase(
+            val result = saveCreditUseCase(
                 credit,
                 productLines
             )
-            _action.send(CreditFormAction.ReturnToCredits)
+
+            when (result) {
+                is ResultOf.Success -> {
+                    _action.send(CreditFormAction.ReturnToCredits)
+                }
+                is ResultOf.Failure.InvalidData -> {
+                    handleInvalidData(result.validations)
+                }
+                else -> { Timber.e("Operation not supported: $result") }
+            }
+
+
         }
 
+    }
+
+    private fun clearInputValidations() {
+        _viewState.update {
+            it.copy(
+                customerNameSelectedError = null,
+                productLinesError = null
+            )
+        }
+    }
+
+    private fun handleInvalidData(
+        validations: List<CreditInputsValidator.CreditInputValidation>
+    ) {
+        validations.forEach { validation ->
+            when (validation) {
+                EMPTY_CUSTOMER -> _viewState.update {
+                    it.copy(customerNameSelectedError = validation.errorResId)
+                }
+                EMPTY_CREDIT_PRODUCT_LINES -> _viewState.update {
+                    it.copy(productLinesError = validation.errorResId)
+                }
+            }
+        }
     }
 
     private fun handleAddProductLineEvent() {

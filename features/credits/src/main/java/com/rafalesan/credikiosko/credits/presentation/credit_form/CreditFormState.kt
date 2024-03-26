@@ -8,5 +8,6 @@ data class CreditFormState(
     val customerSelected: Customer? = null,
     val customerNameSelectedError: Int? = null,
     val productLines: List<CreditProduct> = emptyList(),
+    val productLinesError: Int? = null,
     val totalCreditAmount: String = emptyString
 )
