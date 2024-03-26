@@ -24,7 +24,7 @@ interface CreditDao {
     suspend fun insertCreditProducts(creditProducts: List<CreditProductEntity>)
 
     @Transaction
-    @Query("SELECT * FROM credits")
+    @Query("SELECT * FROM credits ORDER BY id DESC")
     fun getCreditsWithCustomerAndProductsPaged(): PagingSource<Int, CreditWithCustomerAndProductsEntity>
 
     @Delete

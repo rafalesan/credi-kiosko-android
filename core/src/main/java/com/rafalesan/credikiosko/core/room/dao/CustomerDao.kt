@@ -14,7 +14,7 @@ interface CustomerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomer(customer: CustomerEntity)
 
-    @Query("SELECT * FROM customers")
+    @Query("SELECT * FROM customers ORDER BY id DESC")
     fun getCustomerPaged(): PagingSource<Int, CustomerEntity>
 
     @Delete
