@@ -3,10 +3,10 @@ import de.fayard.refreshVersions.core.versionFor
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
 }
 
 android {
@@ -50,7 +50,7 @@ dependencies {
     implementation(Square.Retrofit2.retrofit)
     implementation(Square.OkHttp3.okHttp)
     implementation(Square.moshi)
-    kapt(Square.moshi.kotlinCodegen)
+    ksp(Square.moshi.kotlinCodegen)
 
     implementation(KotlinX.coroutines.android)
     implementation(JakeWharton.timber)
