@@ -7,9 +7,9 @@ plugins {
     id ("com.android.library") apply false
     id ("org.jetbrains.kotlin.android") apply false
     id("com.google.dagger.hilt.android") apply false
-    id("com.google.devtools.ksp") version "1.9.22-1.0.17" apply false
-    id("com.google.gms.google-services") version "4.4.1" apply false
-    id("com.google.firebase.crashlytics") version "2.9.9" apply false
+    id("com.google.devtools.ksp") apply false
+    id("com.google.gms.google-services")apply false
+    id("com.google.firebase.crashlytics") apply false
 }
 //https://www.droidcon.com/2022/03/11/reducing-gradle-boilerplate-in-multi-module-android-projects/
 fun BaseExtension.baseConfig() {
@@ -56,5 +56,5 @@ subprojects {
 }
 
 tasks.register("clean", Delete::class){
-    delete(rootProject.buildDir)
+    delete(project.layout.buildDirectory)
 }
