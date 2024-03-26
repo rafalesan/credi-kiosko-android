@@ -2,8 +2,13 @@
 
 package com.rafalesan.credikiosko.credits.presentation.credit_form
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,10 +26,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
@@ -45,10 +51,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,7 +65,7 @@ import com.rafalesan.credikiosko.core.commons.customerNavResultKey
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetweenTextUI
-import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
+import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldClickable
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.CollectNavigationBackResult
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.navigate
@@ -233,7 +237,10 @@ fun CreditFormUI(
             }
 
             item {
-                AddProductLineButton(onAddProductLinePressed)
+                AddProductLineButton(
+                    viewState,
+                    onAddProductLinePressed
+                )
             }
 
         }
@@ -265,7 +272,7 @@ fun CustomerSelectorInput(
         }
     }
 
-    OutlinedTextFieldWithError(
+    OutlinedTextFieldClickable(
         modifier = Modifier
             .padding(horizontal = Dimens.space2x)
             .padding(top = Dimens.space2x)
@@ -273,24 +280,8 @@ fun CustomerSelectorInput(
             .clickable {
                 onCustomerSelectorPressed.invoke()
             },
-        enabled = false,
-        colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = Color.Transparent,
-            disabledBorderColor = MaterialTheme.colorScheme.outline,
-            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
-        value = customerNameSelectedText ?: stringResource(id = R.string.no_customer_selected),
         label = { Text(text = stringResource(id = R.string.customer)) },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next
-        ),
+        value = customerNameSelectedText ?: stringResource(id = R.string.no_customer_selected),
         errorStringId = customerNameSelectedError,
         trailingIcon = {
             Icon(
@@ -298,7 +289,6 @@ fun CustomerSelectorInput(
                 contentDescription = stringResource(id = R.string.customer)
             )
         },
-        onValueChange = {}
     )
 }
 
@@ -386,30 +376,77 @@ fun ProductLineItem(
 
 @Composable
 fun AddProductLineButton(
+    viewState: State<CreditFormState>,
     onAddProductLinePressed: (() -> Unit)
 ) {
 
-    OutlinedButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = Dimens.space2x, vertical = Dimens.space2x),
-        onClick = onAddProductLinePressed
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = stringResource(id = R.string.add_product)
-            )
-            Spacer(modifier = Modifier.width(Dimens.spaceDefault))
-            Text(
-                text = stringResource(id = R.string.add_product).uppercase()
-            )
+    val productLinesError by remember {
+        derivedStateOf {
+            viewState.value.productLinesError
         }
     }
+
+    val buttonBorder = if (productLinesError == null) {
+        ButtonDefaults.outlinedButtonBorder
+    } else {
+        BorderStroke(
+            Dimens.space1Unit,
+            MaterialTheme.colorScheme.error
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Dimens.space2x, vertical = Dimens.space2x)
+    ) {
+
+        OutlinedButton(
+            modifier = Modifier
+                .fillMaxWidth(),
+            border = buttonBorder,
+            onClick = onAddProductLinePressed
+        ) {
+
+            val buttonTextColor = if (productLinesError == null) {
+                LocalContentColor.current
+            } else {
+                MaterialTheme.colorScheme.error
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = stringResource(id = R.string.add_product),
+                    tint = buttonTextColor
+                )
+                Spacer(modifier = Modifier.width(Dimens.spaceDefault))
+                Text(
+                    text = stringResource(id = R.string.add_product).uppercase(),
+                    color = buttonTextColor
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = productLinesError != null,
+            enter = slideInVertically(),
+            exit = slideOutVertically()
+        ) {
+            Text(
+                text = stringResource(id = productLinesError ?: CoreR.string.empty_string),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = Dimens.space2x)
+            )
+        }
+
+    }
+
 
 }
 

@@ -32,7 +32,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.creditProductNavResultKey
 import com.rafalesan.credikiosko.core.commons.emptyString
+import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldClickable
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.extensions.CollectNavigationBackResult
@@ -194,7 +194,7 @@ fun ProductSelectorInput(
         }
     }
 
-    OutlinedTextFieldWithError(
+    OutlinedTextFieldClickable(
         modifier = Modifier
             .padding(horizontal = Dimens.space2x)
             .padding(top = Dimens.space2x)
@@ -202,30 +202,8 @@ fun ProductSelectorInput(
             .clickable {
                 onProductSelectorPressed.invoke()
             },
-        enabled = false,
-        colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = productSelectedError?.let {
-                MaterialTheme.colorScheme.error
-            } ?: MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = Color.Transparent,
-            disabledBorderColor = productSelectedError?.let {
-                MaterialTheme.colorScheme.error
-            } ?: MaterialTheme.colorScheme.outline,
-            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-            disabledLabelColor = productSelectedError?.let {
-                MaterialTheme.colorScheme.error
-            } ?: MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
-        value = productNameSelectedText ?: stringResource(id = R.string.no_product_selected),
         label = { Text(text = stringResource(id = R.string.product)) },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next
-        ),
+        value = productNameSelectedText ?: stringResource(id = R.string.no_product_selected),
         errorStringId = productSelectedError,
         trailingIcon = {
             Icon(
@@ -233,8 +211,8 @@ fun ProductSelectorInput(
                 contentDescription = stringResource(id = R.string.product)
             )
         },
-        onValueChange = {}
     )
+
 }
 
 @Composable
