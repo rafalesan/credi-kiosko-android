@@ -27,4 +27,8 @@ class CreditLocalDataSource @Inject constructor(
         return creditDao.getCreditsWithCustomerAndProductsPaged()
     }
 
+    suspend fun findCredit(creditId: Long): CreditWithCustomerAndProductsEntity {
+        return creditDao.findCredit(creditId)
+    }
+
 }

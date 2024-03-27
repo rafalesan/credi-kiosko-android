@@ -4,6 +4,7 @@ const val emptyString = ""
 const val zeroLong = 0L
 
 const val creditProductNavKey = "credit_product"
+const val creditIdNavKey = "credit_id"
 
 const val customerNavResultKey = "customer"
 const val productNavResultKey = "product"

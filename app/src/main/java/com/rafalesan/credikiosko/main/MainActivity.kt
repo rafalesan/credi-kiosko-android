@@ -20,6 +20,7 @@ import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.credits.presentation.credit_form.CreditFormScreen
 import com.rafalesan.credikiosko.credits.presentation.credit_product_form.CreditProductFormScreen
+import com.rafalesan.credikiosko.credits.presentation.credit_viewer.CreditViewerScreen
 import com.rafalesan.credikiosko.credits.presentation.credits_list.CreditsScreen
 import com.rafalesan.credikiosko.customers.presentation.customer_form.CustomerFormScreen
 import com.rafalesan.credikiosko.customers.presentation.customer_selector.CustomerSelectorScreen
@@ -143,6 +144,10 @@ class MainActivity : ComponentActivity() {
 
                     composable("credit_product_form") {
                         CreditProductFormScreen(navHostController = navController)
+                    }
+
+                    composable("credit_viewer") {
+                        CreditViewerScreen(navController = navController)
                     }
 
                 }
