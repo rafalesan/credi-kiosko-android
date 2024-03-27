@@ -36,13 +36,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.rafalesan.credikiosko.core.commons.creditIdNavKey
 import com.rafalesan.credikiosko.core.commons.domain.entity.Customer
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
+import com.rafalesan.credikiosko.core.commons.presentation.extensions.navigate
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.utils.DateFormatUtil
 import com.rafalesan.credikiosko.credits.R
@@ -218,6 +221,14 @@ fun ActionHandler(
             when (action) {
                 CreditsAction.ShowCreditForm -> {
                     navController.navigate("credit_form")
+                }
+                is CreditsAction.ShowCreditViewer -> {
+                    navController.navigate(
+                        "credit_viewer",
+                        args = bundleOf(
+                            creditIdNavKey to action.credit.id
+                        )
+                    )
                 }
             }
         }

@@ -39,7 +39,9 @@ class CreditsViewModel @Inject constructor(
     }
 
     private fun handleShowCreditEvent(credit: Credit) {
-        toast("En construcción (${credit.id})")
+        viewModelScope.launch {
+            _action.send(CreditsAction.ShowCreditViewer(credit))
+        }
     }
 
     private fun handleCreateNewCreditEvent() {

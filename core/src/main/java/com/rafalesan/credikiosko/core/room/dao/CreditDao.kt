@@ -30,4 +30,7 @@ interface CreditDao {
     @Delete
     suspend fun deleteCredit(credit: CreditEntity)
 
+    @Query("SELECT * FROM credits WHERE id = :creditId")
+    suspend fun findCredit(creditId: Long): CreditWithCustomerAndProductsEntity
+
 }

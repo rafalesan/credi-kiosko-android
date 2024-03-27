@@ -56,5 +56,10 @@ class CreditRepository(
             }
     }
 
+    override suspend fun findCredit(creditId: Long): CreditWithCustomerAndProducts {
+        return creditLocalDataSource
+            .findCredit(creditId)
+            .toCreditWithCustomerAndProductsDomain()
+    }
 
 }

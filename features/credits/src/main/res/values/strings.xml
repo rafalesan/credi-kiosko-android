@@ -33,4 +33,7 @@
     <string name="lend_x">"Prestar (C$%s) "</string>
     <string name="empty_customer_validation_desc">Debe seleccionar al cliente</string>
     <string name="empty_credit_product_lines_validation_desc">Debe ingresar al menos un producto</string>
+    <string name="print">Imprimir</string>
+    <string name="credit_detail">Detalle del crédito</string>
+    <string name="total">Total</string>
 </resources>
