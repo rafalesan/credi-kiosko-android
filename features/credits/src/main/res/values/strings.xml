@@ -4,6 +4,7 @@
     <string name="create_new_credit">Crear nuevo crédito</string>
     <string name="empty_credit_list_desc">Aún no ha agregado créditos</string>
     <string name="date_x">Fecha: %s</string>
+    <string name="date_equals">Fecha:</string>
     <string name="time_x">Hora: %s</string>
     <string name="total_x">Total: C$ %s</string>
     <string name="lend">Prestar</string>
@@ -18,7 +19,7 @@
     <string name="quantity">Cantidad</string>
     <string name="quantity_equals">Cantidad:</string>
     <string name="unit_price">Precio/U:</string>
-    <string name="cordoba_symbol_x">C$ %s</string>
+    <string name="cordoba_symbol_x">C$%s</string>
     <string name="add">Agregar\n</string>
     <string name="add_product_to_credit">Agregar producto al crédito</string>
     <string name="product_to_lend">Producto a fiar</string>
@@ -36,4 +37,14 @@
     <string name="print">Imprimir</string>
     <string name="credit_detail">Detalle del crédito</string>
     <string name="total">Total</string>
+    <string name="customer_equals">Cliente:</string>
+    <string name="time_equals">Hora:</string>
+    <string name="product_equals">Producto:</string>
+    <string name="price_times_quantity">Precio x Cant</string>
+    <string name="unable_to_connect_to_printer">No se pudo conectar a la impresora</string>
+    <string name="connecting_printer">Conectando Impresora</string>
+    <string name="printer_connected">Impresora conectada</string>
+    <string name="printing">Imprimiendo</string>
+    <string name="connection_error">Error de conexión</string>
+    <string name="retry">Reintentar</string>
 </resources>

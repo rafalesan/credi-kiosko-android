@@ -2,13 +2,21 @@
 
 package com.rafalesan.credikiosko.credits.presentation.credit_viewer
 
+import android.Manifest
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,7 +29,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -31,22 +41,28 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetweenTextUI
+import com.rafalesan.credikiosko.core.commons.presentation.composables.LoadingDialog
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.utils.DateFormatUtil
 import com.rafalesan.credikiosko.credits.R
+import timber.log.Timber
 import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
@@ -55,13 +71,49 @@ fun CreditViewerScreen(
     viewModel: CreditViewerViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allPermissionGranted = !permissions.containsValue(false)
+        if (allPermissionGranted) {
+            viewModel.perform(CreditViewerEvent.PrintCredit)
+        } else {
+            Toast.makeText(context, "Bluetooth Granted", Toast.LENGTH_LONG).show()
+        }
+    }
+
     CreditViewerUI(
         viewState = viewModel.viewState.collectAsState(),
         onBackPressed = { navController.navigateUp() },
-        onPrintButtonPressed = { viewModel.perform(CreditViewerEvent.PrintCredit) }
+        onPrintButtonPressed = { checkBluetoothPermission(permissionLauncher) },
+        onCancelPrintingRetry = { viewModel.perform(CreditViewerEvent.CancelPrintingRetry) },
+        onRetryPrinting = { viewModel.perform(CreditViewerEvent.RetryPrinting) }
     )
 
     ToastHandlerComposable(viewModel = viewModel)
+
+}
+
+fun checkBluetoothPermission(
+    permissionsLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>
+) {
+
+    val requiredPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        arrayOf(
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_SCAN,
+        )
+    } else {
+        arrayOf(
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    }
+
+    permissionsLauncher.launch(requiredPermissions)
 
 }
 
@@ -81,8 +133,83 @@ fun CreditViewerUIPreview() {
 fun CreditViewerUI(
     viewState: State<CreditViewerState>,
     onBackPressed: () -> Unit = {},
-    onPrintButtonPressed: () -> Unit = {}
+    onPrintButtonPressed: () -> Unit = {},
+    onCancelPrintingRetry: () -> Unit = {},
+    onRetryPrinting: () -> Unit = {}
 ) {
+
+    val printLoadingTextId by remember {
+        derivedStateOf {
+            viewState.value.printLoadingStringResId
+        }
+    }
+
+    val printerConnectionError by remember {
+        derivedStateOf {
+            viewState.value.printerConnectionError
+        }
+    }
+
+    printLoadingTextId?.let {
+        Timber.d("printLoadingText: ${stringResource(id = it)}")
+        LoadingDialog(loadingText = stringResource(id = it))
+    }
+
+    printerConnectionError?.let {
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+                usePlatformDefaultWidth = false,
+            ),
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.space2x),
+                shape = RoundedCornerShape(Dimens.dialogBorderRadius)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(top = Dimens.space2x)
+                            .padding(horizontal = Dimens.space2x),
+                        text = stringResource(id = R.string.connection_error),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(top = Dimens.space2x)
+                            .padding(horizontal = Dimens.space2x),
+                        text = stringResource(id = it),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center,
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Dimens.spaceDefault),
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        TextButton(onClick = onCancelPrintingRetry) {
+                            Text(text = stringResource(id = CoreR.string.cancel))
+                        }
+                        Spacer(modifier = Modifier.width(Dimens.space12units))
+                        TextButton(onClick = onRetryPrinting) {
+                            Text(text = stringResource(id = R.string.retry))
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
