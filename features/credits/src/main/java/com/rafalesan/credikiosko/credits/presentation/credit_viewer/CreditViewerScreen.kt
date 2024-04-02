@@ -3,6 +3,10 @@
 package com.rafalesan.credikiosko.credits.presentation.credit_viewer
 
 import android.Manifest
+import android.app.Activity
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -51,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
@@ -72,17 +77,36 @@ fun CreditViewerScreen(
 ) {
 
     val context = LocalContext.current
+    val bluetoothManager = ContextCompat.getSystemService(context, BluetoothManager::class.java)
+    val bluetoothAdapter = bluetoothManager?.adapter ?: run {
+        Timber.e("This android devices does not support bluetooth")
+        null
+    }
+
+    val requestEnableBluetoothLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        if (activityResult.resultCode == Activity.RESULT_OK) {
+            viewModel.perform(CreditViewerEvent.PrintCredit)
+        }
+    }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         val allPermissionGranted = !permissions.containsValue(false)
         if (allPermissionGranted) {
-            viewModel.perform(CreditViewerEvent.PrintCredit)
+            if (bluetoothAdapter?.isEnabled == true) {
+                viewModel.perform(CreditViewerEvent.PrintCredit)
+                return@rememberLauncherForActivityResult
+            }
+            val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            requestEnableBluetoothLauncher.launch(intent)
         } else {
             Toast.makeText(context, "Bluetooth Granted", Toast.LENGTH_LONG).show()
         }
     }
+
 
     CreditViewerUI(
         viewState = viewModel.viewState.collectAsState(),
