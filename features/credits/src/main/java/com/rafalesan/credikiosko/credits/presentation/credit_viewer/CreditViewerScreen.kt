@@ -39,6 +39,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -76,68 +77,23 @@ fun CreditViewerScreen(
     viewModel: CreditViewerViewModel = hiltViewModel()
 ) {
 
-    val context = LocalContext.current
-    val bluetoothManager = ContextCompat.getSystemService(context, BluetoothManager::class.java)
-    val bluetoothAdapter = bluetoothManager?.adapter ?: run {
-        Timber.e("This android devices does not support bluetooth")
-        null
-    }
-
-    val requestEnableBluetoothLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { activityResult ->
-        if (activityResult.resultCode == Activity.RESULT_OK) {
-            viewModel.perform(CreditViewerEvent.PrintCredit)
-        }
-    }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        val allPermissionGranted = !permissions.containsValue(false)
-        if (allPermissionGranted) {
-            if (bluetoothAdapter?.isEnabled == true) {
-                viewModel.perform(CreditViewerEvent.PrintCredit)
-                return@rememberLauncherForActivityResult
-            }
-            val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            requestEnableBluetoothLauncher.launch(intent)
-        } else {
-            Toast.makeText(context, "Bluetooth Granted", Toast.LENGTH_LONG).show()
-        }
-    }
-
-
     CreditViewerUI(
         viewState = viewModel.viewState.collectAsState(),
         onBackPressed = { navController.navigateUp() },
-        onPrintButtonPressed = { checkBluetoothPermission(permissionLauncher) },
+        onPrintButtonPressed = {
+            viewModel.perform(
+                CreditViewerEvent.PrintCredit(checkBluetoothAvailability = true)
+            )
+        },
         onCancelPrintingRetry = { viewModel.perform(CreditViewerEvent.CancelPrintingRetry) },
         onRetryPrinting = { viewModel.perform(CreditViewerEvent.RetryPrinting) }
     )
 
+    ActionHandler(
+        viewModel = viewModel
+    )
+
     ToastHandlerComposable(viewModel = viewModel)
-
-}
-
-fun checkBluetoothPermission(
-    permissionsLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>
-) {
-
-    val requiredPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        arrayOf(
-            Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_SCAN,
-        )
-    } else {
-        arrayOf(
-            Manifest.permission.BLUETOOTH,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-    }
-
-    permissionsLauncher.launch(requiredPermissions)
 
 }
 
@@ -454,6 +410,79 @@ fun CreditViewerHeader(
             text = stringResource(id = R.string.time_x, creditTime),
         )
     }
+}
+
+@Composable
+private fun ActionHandler(
+    viewModel: CreditViewerViewModel
+) {
+
+    val context = LocalContext.current
+    val bluetoothManager = ContextCompat.getSystemService(context, BluetoothManager::class.java)
+    val bluetoothAdapter = bluetoothManager?.adapter ?: run {
+        Timber.e("This android devices does not support bluetooth")
+        null
+    }
+
+    val requestEnableBluetoothLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        if (activityResult.resultCode == Activity.RESULT_OK) {
+            viewModel.perform(
+                CreditViewerEvent.PrintCredit(checkBluetoothAvailability = false)
+            )
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allPermissionGranted = !permissions.containsValue(false)
+        if (allPermissionGranted) {
+            if (bluetoothAdapter?.isEnabled == true) {
+                viewModel.perform(
+                    CreditViewerEvent.PrintCredit(checkBluetoothAvailability = false)
+                )
+                return@rememberLauncherForActivityResult
+            }
+            val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            requestEnableBluetoothLauncher.launch(intent)
+        } else {
+            Toast.makeText(context, "Bluetooth Granted", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.action.collect { action ->
+            when (action) {
+                CreditViewerAction.CheckBluetoothPermissionAndAvailability -> {
+                    checkBluetoothPermission(permissionLauncher)
+                }
+            }
+        }
+    }
+
+}
+
+private fun checkBluetoothPermission(
+    permissionsLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
+) {
+
+    val requiredPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        arrayOf(
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_SCAN,
+        )
+    } else {
+        arrayOf(
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    }
+
+    permissionsLauncher.launch(requiredPermissions)
+
 }
 
 private val MOCKED_VIEWER_STATE_FOR_PREVIEW = CreditViewerState(

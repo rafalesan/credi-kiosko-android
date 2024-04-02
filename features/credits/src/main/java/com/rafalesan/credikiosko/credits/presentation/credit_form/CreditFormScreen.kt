@@ -451,7 +451,7 @@ fun AddProductLineButton(
 }
 
 @Composable
-fun ActionHandler(
+private fun ActionHandler(
     navController: NavHostController,
     viewModel: CreditFormViewModel
 ) {

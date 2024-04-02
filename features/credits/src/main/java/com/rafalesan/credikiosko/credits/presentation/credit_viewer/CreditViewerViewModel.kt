@@ -9,8 +9,10 @@ import com.rafalesan.credikiosko.credits.R
 import com.rafalesan.credikiosko.credits.domain.usecase.FindCreditUseCase
 import com.rafalesan.credikiosko.credits.domain.usecase.PrintCreditUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -26,13 +28,16 @@ class CreditViewerViewModel @Inject constructor(
     private val _viewState = MutableStateFlow(CreditViewerState())
     val viewState = _viewState.asStateFlow()
 
+    private val _action = Channel<CreditViewerAction>(Channel.BUFFERED)
+    val action = _action.receiveAsFlow()
+
     init {
         loadCreditFrom(savedStateHandle)
     }
 
     fun perform(event: CreditViewerEvent) {
         when (event) {
-            CreditViewerEvent.PrintCredit -> handlePrintCreditEvent()
+            is CreditViewerEvent.PrintCredit -> handlePrintCreditEvent(event.checkBluetoothAvailability)
             CreditViewerEvent.CancelPrintingRetry -> handleCancelPrintingRetryEvent()
             CreditViewerEvent.RetryPrinting -> handleRetryPrintingEvent()
         }
@@ -42,7 +47,9 @@ class CreditViewerViewModel @Inject constructor(
         _viewState.update {
             it.copy(printerConnectionError = null)
         }
-        handlePrintCreditEvent()
+        handlePrintCreditEvent(
+            checkBluetoothAvailability = false
+        )
     }
 
     private fun handleCancelPrintingRetryEvent() {
@@ -51,7 +58,17 @@ class CreditViewerViewModel @Inject constructor(
         }
     }
 
-    private fun handlePrintCreditEvent() {
+    private fun handlePrintCreditEvent(
+        checkBluetoothAvailability: Boolean
+    ) {
+
+        if (checkBluetoothAvailability) {
+            viewModelScope.launch {
+                _action.send(CreditViewerAction.CheckBluetoothPermissionAndAvailability)
+            }
+            return
+        }
+
         viewModelScope.launch {
             printCreditUseCase(viewState.value.creditId)
                 .collect { printStatus ->
