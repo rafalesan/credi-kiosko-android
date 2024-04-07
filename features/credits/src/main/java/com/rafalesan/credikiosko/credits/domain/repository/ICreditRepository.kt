@@ -1,7 +1,7 @@
 package com.rafalesan.credikiosko.credits.domain.repository
 
 import androidx.paging.PagingData
-import com.rafalesan.credikiosko.core.bluetooth_printer.PrintStatus
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintStatus
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.credits.domain.entity.Credit
 import com.rafalesan.credikiosko.credits.domain.entity.CreditWithCustomerAndProducts
@@ -12,7 +12,7 @@ interface ICreditRepository {
     suspend fun saveCredit(
         credit: Credit,
         creditProducts: List<CreditProduct>
-    )
+    ): Long
 
     suspend fun deleteCredit(credit: Credit)
 

@@ -14,7 +14,7 @@ class SaveCreditUseCase @Inject constructor (
     suspend operator fun invoke(
         credit: Credit,
         creditProducts: List<CreditProduct>
-    ) : ResultOf<Unit, CreditInputsValidator.CreditInputValidation> {
+    ) : ResultOf<Long, CreditInputsValidator.CreditInputValidation> {
 
         val validations = CreditInputsValidator.validateCreditInputs(
             credit.customerId,
@@ -25,12 +25,12 @@ class SaveCreditUseCase @Inject constructor (
             return ResultOf.Failure.InvalidData(validations)
         }
 
-        creditRepository.saveCredit(
+        val creditIdSaved = creditRepository.saveCredit(
             credit,
             creditProducts
         )
 
-        return ResultOf.Success(Unit)
+        return ResultOf.Success(creditIdSaved)
 
     }
 

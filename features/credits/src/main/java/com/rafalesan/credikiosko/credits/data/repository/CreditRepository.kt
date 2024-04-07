@@ -5,11 +5,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.rafalesan.credikiosko.core.bluetooth_printer.PrintAlignment
-import com.rafalesan.credikiosko.core.bluetooth_printer.PrintFont
-import com.rafalesan.credikiosko.core.bluetooth_printer.PrintStatus
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource.ThermalPrinterDataSource
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintAlignment
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintFont
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintStatus
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.BusinessLocalDataSource
-import com.rafalesan.credikiosko.core.commons.data.datasource.local.ThermalPrinterDataSource
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.presentation.utils.DateFormatUtil
 import com.rafalesan.credikiosko.core.room.entity.BusinessEntity
@@ -37,7 +37,7 @@ class CreditRepository(
     override suspend fun saveCredit(
         credit: Credit,
         creditProducts: List<CreditProduct>
-    ) {
+    ): Long {
         val creditEntity = credit
             .copy(
                 businessId = businessLocalDataSource.getBusiness().id
@@ -52,6 +52,7 @@ class CreditRepository(
 
         creditLocalDataSource.saveCreditProducts(creditProductEntities)
 
+        return savedCreditId
     }
 
     override suspend fun deleteCredit(credit: Credit) {

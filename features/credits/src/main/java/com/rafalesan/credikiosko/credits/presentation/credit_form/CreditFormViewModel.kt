@@ -147,7 +147,8 @@ class CreditFormViewModel @Inject constructor(
 
             when (result) {
                 is ResultOf.Success -> {
-                    _action.send(CreditFormAction.ReturnToCredits)
+                    val savedCreditId = result.value
+                    _action.send(CreditFormAction.ShowCreditViewer(savedCreditId))
                 }
                 is ResultOf.Failure.InvalidData -> {
                     handleInvalidData(result.validations)

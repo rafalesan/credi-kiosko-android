@@ -8,5 +8,5 @@ sealed class CreditFormAction {
         val creditProduct: CreditProductParcelable? = null
     ) : CreditFormAction()
 
-    data object ReturnToCredits : CreditFormAction()
+    class ShowCreditViewer(val creditId: Long) : CreditFormAction()
 }

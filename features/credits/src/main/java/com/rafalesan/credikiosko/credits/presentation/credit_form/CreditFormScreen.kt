@@ -59,6 +59,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.navOptions
+import com.rafalesan.credikiosko.core.commons.creditIdNavKey
 import com.rafalesan.credikiosko.core.commons.creditProductNavKey
 import com.rafalesan.credikiosko.core.commons.creditProductNavResultKey
 import com.rafalesan.credikiosko.core.commons.customerNavResultKey
@@ -470,8 +472,16 @@ private fun ActionHandler(
                         )
                     )
                 }
-                CreditFormAction.ReturnToCredits -> {
-                    navController.navigateUp()
+                is CreditFormAction.ShowCreditViewer -> {
+                    navController.navigate(
+                        route = "credit_viewer",
+                        args = bundleOf(
+                            creditIdNavKey to action.creditId
+                        ),
+                        navOptions {
+                            popUpTo("credits")
+                        }
+                    )
                 }
             }
         }
