@@ -47,4 +47,7 @@
     <string name="printing">Imprimiendo</string>
     <string name="connection_error">Error de conexión</string>
     <string name="retry">Reintentar</string>
+    <string name="printer_not_configured">Impresora no configurada</string>
+    <string name="printer_not_configured_desc">Aún no ha configurado una impresora.\n¿Desea configurar una?</string>
+    <string name="configure">Configurar</string>
 </resources>

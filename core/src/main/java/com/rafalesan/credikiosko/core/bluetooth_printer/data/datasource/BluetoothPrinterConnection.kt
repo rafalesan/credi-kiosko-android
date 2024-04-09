@@ -1,8 +1,9 @@
-package com.rafalesan.credikiosko.core.bluetooth_printer
+package com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
+import com.rafalesan.credikiosko.core.room.entity.BluetoothPrinterEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -13,7 +14,8 @@ class BluetoothPrinterConnection(
     private val bluetoothManager: BluetoothManager
 ) {
 
-    private val defaultPrinter = BluetoothPrinter(
+    //TODO: this defaultPrinter implementation should be removed
+    private val defaultPrinter = BluetoothPrinterEntity(
         name = "Bluetooth Printer",
         macAddress = "66:22:DF:ED:8D:AE"
     )
@@ -23,11 +25,15 @@ class BluetoothPrinterConnection(
 
     @SuppressLint("MissingPermission")
     suspend fun connectDevice(
+        bluetoothPrinter: BluetoothPrinterEntity?,
         onConnectionError: (Exception) -> Unit,
         onConnected: () -> Unit
     ) {
 
-        val device = bluetoothManager.adapter.getRemoteDevice(defaultPrinter.macAddress)
+        val device = bluetoothManager.adapter.getRemoteDevice(
+            bluetoothPrinter?.macAddress ?:
+            defaultPrinter.macAddress
+        )
 
         bluetoothSocket = device.createRfcommSocketToServiceRecord(
             bluetoothPrinterUUID

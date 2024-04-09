@@ -2,7 +2,8 @@ package com.rafalesan.credikiosko.credits.presentation.credit_viewer
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.rafalesan.credikiosko.core.bluetooth_printer.PrintStatus
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintStatus
+import com.rafalesan.credikiosko.core.bluetooth_printer.domain.usecases.IsBluetoothPrinterConfiguredUseCase
 import com.rafalesan.credikiosko.core.commons.creditIdNavKey
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.credits.R
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class CreditViewerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val findCreditUseCase: FindCreditUseCase,
-    private val printCreditUseCase: PrintCreditUseCase
+    private val printCreditUseCase: PrintCreditUseCase,
+    private val isBluetoothPrinterConfiguredUseCase: IsBluetoothPrinterConfiguredUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableStateFlow(CreditViewerState())
@@ -40,6 +42,21 @@ class CreditViewerViewModel @Inject constructor(
             is CreditViewerEvent.PrintCredit -> handlePrintCreditEvent(event.checkBluetoothAvailability)
             CreditViewerEvent.CancelPrintingRetry -> handleCancelPrintingRetryEvent()
             CreditViewerEvent.RetryPrinting -> handleRetryPrintingEvent()
+            CreditViewerEvent.CancelPrinterConfiguration -> handleCancelPrinterConfigurationEvent()
+            CreditViewerEvent.StartPrinterConfiguration -> handleStartPrinterConfigurationEvent()
+        }
+    }
+
+    private fun handleStartPrinterConfigurationEvent() {
+        _viewState.update {
+            it.copy(isShowingPrinterNotConfiguredMessage = false)
+        }
+        toast("En Construcción")
+    }
+
+    private fun handleCancelPrinterConfigurationEvent() {
+        _viewState.update {
+            it.copy(isShowingPrinterNotConfiguredMessage = false)
         }
     }
 
@@ -70,6 +87,14 @@ class CreditViewerViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
+
+            if (!isBluetoothPrinterConfiguredUseCase()) {
+                _viewState.update {
+                    it.copy(isShowingPrinterNotConfiguredMessage = true)
+                }
+                return@launch
+            }
+
             printCreditUseCase(viewState.value.creditId)
                 .collect { printStatus ->
                     val printLoadingTextId = when (printStatus) {

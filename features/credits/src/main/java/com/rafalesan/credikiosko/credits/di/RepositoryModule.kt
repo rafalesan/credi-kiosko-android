@@ -1,8 +1,8 @@
 package com.rafalesan.credikiosko.credits.di
 
 import android.content.Context
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource.ThermalPrinterDataSource
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.BusinessLocalDataSource
-import com.rafalesan.credikiosko.core.commons.data.datasource.local.ThermalPrinterDataSource
 import com.rafalesan.credikiosko.credits.data.datasource.CreditLocalDataSource
 import com.rafalesan.credikiosko.credits.data.repository.CreditRepository
 import com.rafalesan.credikiosko.credits.domain.repository.ICreditRepository

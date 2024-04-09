@@ -3,6 +3,7 @@ package com.rafalesan.credikiosko.core.di
 import android.content.Context
 import androidx.room.Room
 import com.rafalesan.credikiosko.core.room.AppDatabase
+import com.rafalesan.credikiosko.core.room.dao.BluetoothPrinterDao
 import com.rafalesan.credikiosko.core.room.dao.BusinessDao
 import com.rafalesan.credikiosko.core.room.dao.CreditDao
 import com.rafalesan.credikiosko.core.room.dao.CustomerDao
@@ -50,6 +51,11 @@ class RoomDatabaseModule {
     @Provides
     fun provideCreditDao(appDatabase: AppDatabase): CreditDao {
         return appDatabase.creditDao()
+    }
+
+    @Provides
+    fun provideBluetoothPrinterDao(appDatabase: AppDatabase): BluetoothPrinterDao {
+        return appDatabase.bluetoothPrinterDao()
     }
 
 }

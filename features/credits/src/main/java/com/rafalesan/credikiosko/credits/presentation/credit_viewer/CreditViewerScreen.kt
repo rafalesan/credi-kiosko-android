@@ -16,11 +16,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,7 +31,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -46,7 +43,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -54,13 +50,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.emptyString
+import com.rafalesan.credikiosko.core.commons.presentation.composables.CommonDialog
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetweenTextUI
 import com.rafalesan.credikiosko.core.commons.presentation.composables.LoadingDialog
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
@@ -86,7 +81,9 @@ fun CreditViewerScreen(
             )
         },
         onCancelPrintingRetry = { viewModel.perform(CreditViewerEvent.CancelPrintingRetry) },
-        onRetryPrinting = { viewModel.perform(CreditViewerEvent.RetryPrinting) }
+        onRetryPrinting = { viewModel.perform(CreditViewerEvent.RetryPrinting) },
+        onCancelPrinterConfiguration = { viewModel.perform(CreditViewerEvent.CancelPrinterConfiguration) },
+        onStartPrinterConfiguration = { viewModel.perform(CreditViewerEvent.StartPrinterConfiguration) }
     )
 
     ActionHandler(
@@ -115,7 +112,9 @@ fun CreditViewerUI(
     onBackPressed: () -> Unit = {},
     onPrintButtonPressed: () -> Unit = {},
     onCancelPrintingRetry: () -> Unit = {},
-    onRetryPrinting: () -> Unit = {}
+    onRetryPrinting: () -> Unit = {},
+    onCancelPrinterConfiguration: () -> Unit = {},
+    onStartPrinterConfiguration: () -> Unit = {}
 ) {
 
     val printLoadingTextId by remember {
@@ -130,65 +129,53 @@ fun CreditViewerUI(
         }
     }
 
+    val isShowingPrinterNotConfiguredMessage by remember {
+        derivedStateOf {
+            viewState.value.isShowingPrinterNotConfiguredMessage
+        }
+    }
+
     printLoadingTextId?.let {
         Timber.d("printLoadingText: ${stringResource(id = it)}")
         LoadingDialog(loadingText = stringResource(id = it))
     }
 
-    printerConnectionError?.let {
-        Dialog(
-            onDismissRequest = {},
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false,
-                usePlatformDefaultWidth = false,
-            ),
-        ) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Dimens.space2x),
-                shape = RoundedCornerShape(Dimens.dialogBorderRadius)
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(top = Dimens.space2x)
-                            .padding(horizontal = Dimens.space2x),
-                        text = stringResource(id = R.string.connection_error),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        modifier = Modifier
-                            .padding(top = Dimens.space2x)
-                            .padding(horizontal = Dimens.space2x),
-                        text = stringResource(id = it),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center,
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(Dimens.spaceDefault),
-                        horizontalArrangement = Arrangement.End,
-                    ) {
-                        TextButton(onClick = onCancelPrintingRetry) {
-                            Text(text = stringResource(id = CoreR.string.cancel))
-                        }
-                        Spacer(modifier = Modifier.width(Dimens.space12units))
-                        TextButton(onClick = onRetryPrinting) {
-                            Text(text = stringResource(id = R.string.retry))
-                        }
-                    }
+    printerConnectionError?.let { connectionErrorStringId ->
+
+        CommonDialog(
+            title = stringResource(id = R.string.connection_error),
+            descriptionMessage = stringResource(id = connectionErrorStringId),
+            negativeButton = {
+                TextButton(onClick = onCancelPrintingRetry) {
+                    Text(text = stringResource(id = CoreR.string.cancel))
+                }
+            },
+            positiveButton = {
+                TextButton(onClick = onRetryPrinting) {
+                    Text(text = stringResource(id = R.string.retry))
                 }
             }
-        }
+        )
+
+    }
+
+    if (isShowingPrinterNotConfiguredMessage) {
+
+        CommonDialog(
+            title = stringResource(id = R.string.printer_not_configured),
+            descriptionMessage = stringResource(id = R.string.printer_not_configured_desc),
+            negativeButton = {
+                TextButton(onClick = onCancelPrinterConfiguration) {
+                    Text(text = stringResource(id = CoreR.string.cancel))
+                }
+            },
+            positiveButton = {
+                TextButton(onClick = onStartPrinterConfiguration) {
+                    Text(text = stringResource(id = R.string.configure))
+                }
+            }
+        )
+
     }
 
     Scaffold(

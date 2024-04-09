@@ -10,5 +10,6 @@ data class CreditViewerState(
     val creditTotal: String? = null,
     val creditProducts: List<CreditProduct> = emptyList(),
     val printLoadingStringResId: Int? = null,
-    val printerConnectionError: Int? = null
+    val printerConnectionError: Int? = null,
+    val isShowingPrinterNotConfiguredMessage: Boolean = false
 )

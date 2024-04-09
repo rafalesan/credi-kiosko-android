@@ -1,4 +1,4 @@
-package com.rafalesan.credikiosko.core.bluetooth_printer
+package com.rafalesan.credikiosko.core.bluetooth_printer.data.models
 
 sealed class PrintStatus {
 

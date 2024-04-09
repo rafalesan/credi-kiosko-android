@@ -1,5 +1,8 @@
 package com.rafalesan.credikiosko.core.di
 
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource.BluetoothPrinterLocalDataSource
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.repository.BluetoothPrinterRepository
+import com.rafalesan.credikiosko.core.bluetooth_printer.domain.repository.IBluetoothPrinterRepository
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.BusinessLocalDataSource
 import com.rafalesan.credikiosko.core.commons.data.repository.BusinessRepository
 import com.rafalesan.credikiosko.core.commons.domain.repository.IBusinessRepository
@@ -19,6 +22,14 @@ class RepositoryModule {
         businessLocalDataSource: BusinessLocalDataSource
     ): IBusinessRepository {
         return BusinessRepository(businessLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBluetoothPrinterRepository(
+        bluetoothPrinterLocalDataSource: BluetoothPrinterLocalDataSource
+    ): IBluetoothPrinterRepository {
+        return BluetoothPrinterRepository(bluetoothPrinterLocalDataSource)
     }
 
 }

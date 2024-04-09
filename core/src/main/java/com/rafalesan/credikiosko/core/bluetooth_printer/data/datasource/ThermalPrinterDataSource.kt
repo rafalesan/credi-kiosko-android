@@ -1,16 +1,17 @@
-package com.rafalesan.credikiosko.core.commons.data.datasource.local
+package com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource
 
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.core.content.ContextCompat
-import com.rafalesan.credikiosko.core.bluetooth_printer.BluetoothPrinterConnection
-import com.rafalesan.credikiosko.core.bluetooth_printer.PrintAlignment
-import com.rafalesan.credikiosko.core.bluetooth_printer.PrintFont
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintAlignment
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintFont
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+//TODO: This class is more like a service, rename this class and change location to a better place
 class ThermalPrinterDataSource @Inject constructor(
     @ApplicationContext val context: Context,
+    private val bluetoothPrinterLocalDataSource: BluetoothPrinterLocalDataSource
 ) {
 
     private val charsPerRowNormal = 42
@@ -39,7 +40,10 @@ class ThermalPrinterDataSource @Inject constructor(
             bluetoothManager
         )
 
+        val bluetoothPrinterConfigured = bluetoothPrinterLocalDataSource.getBluetoothPrinterConfigured()
+
         bluetoothPrinterConnection.connectDevice(
+            bluetoothPrinterConfigured,
             onConnectionError = onConnectionError,
             onConnected = onConnected
         )
