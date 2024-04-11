@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.rafalesan.credikiosko.core.bluetooth_printer.presentation.BluetoothPrinterConfigBottomSheet
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.composables.CommonDialog
@@ -83,7 +84,10 @@ fun CreditViewerScreen(
         onCancelPrintingRetry = { viewModel.perform(CreditViewerEvent.CancelPrintingRetry) },
         onRetryPrinting = { viewModel.perform(CreditViewerEvent.RetryPrinting) },
         onCancelPrinterConfiguration = { viewModel.perform(CreditViewerEvent.CancelPrinterConfiguration) },
-        onStartPrinterConfiguration = { viewModel.perform(CreditViewerEvent.StartPrinterConfiguration) }
+        onStartPrinterConfiguration = { viewModel.perform(CreditViewerEvent.StartPrinterConfiguration) },
+        onDismissPrintersConfiguration = { isPrinterConfigured ->
+            viewModel.perform(CreditViewerEvent.DismissPrinterConfiguration(isPrinterConfigured))
+        }
     )
 
     ActionHandler(
@@ -114,7 +118,8 @@ fun CreditViewerUI(
     onCancelPrintingRetry: () -> Unit = {},
     onRetryPrinting: () -> Unit = {},
     onCancelPrinterConfiguration: () -> Unit = {},
-    onStartPrinterConfiguration: () -> Unit = {}
+    onStartPrinterConfiguration: () -> Unit = {},
+    onDismissPrintersConfiguration: (Boolean) -> Unit = {}
 ) {
 
     val printLoadingTextId by remember {
@@ -132,6 +137,12 @@ fun CreditViewerUI(
     val isShowingPrinterNotConfiguredMessage by remember {
         derivedStateOf {
             viewState.value.isShowingPrinterNotConfiguredMessage
+        }
+    }
+
+    val isShowingPrintersConfiguration by remember {
+        derivedStateOf {
+            viewState.value.isShowingPrinterConfiguration
         }
     }
 
@@ -218,6 +229,12 @@ fun CreditViewerUI(
             derivedStateOf {
                 viewState.value.creditTotal ?: emptyString
             }
+        }
+
+        if (isShowingPrintersConfiguration) {
+            BluetoothPrinterConfigBottomSheet(
+                onDismissCallback = onDismissPrintersConfiguration
+            )
         }
 
         LazyColumn(

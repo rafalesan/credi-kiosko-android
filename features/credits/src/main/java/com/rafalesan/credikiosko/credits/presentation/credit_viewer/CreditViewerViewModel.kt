@@ -44,14 +44,28 @@ class CreditViewerViewModel @Inject constructor(
             CreditViewerEvent.RetryPrinting -> handleRetryPrintingEvent()
             CreditViewerEvent.CancelPrinterConfiguration -> handleCancelPrinterConfigurationEvent()
             CreditViewerEvent.StartPrinterConfiguration -> handleStartPrinterConfigurationEvent()
+            is CreditViewerEvent.DismissPrinterConfiguration -> handleDismissPrinterConfigurationEvent(event.isPrinterConfigured)
+        }
+    }
+
+    private fun handleDismissPrinterConfigurationEvent(isPrinterConfigured: Boolean) {
+        _viewState.update {
+            it.copy(isShowingPrinterConfiguration = false)
+        }
+        if (isPrinterConfigured) {
+            handlePrintCreditEvent(
+                checkBluetoothAvailability = true
+            )
         }
     }
 
     private fun handleStartPrinterConfigurationEvent() {
         _viewState.update {
-            it.copy(isShowingPrinterNotConfiguredMessage = false)
+            it.copy(
+                isShowingPrinterNotConfiguredMessage = false,
+                isShowingPrinterConfiguration = true
+            )
         }
-        toast("En Construcción")
     }
 
     private fun handleCancelPrinterConfigurationEvent() {

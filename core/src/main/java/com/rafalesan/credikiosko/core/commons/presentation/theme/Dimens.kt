@@ -18,4 +18,5 @@ object Dimens {
     val dialogBorderRadius = 8.dp
     val iconDialogSize = 80.dp
     val drawerWidth = 280.dp
+    val dividerThickness = 1.dp
 }

@@ -49,4 +49,5 @@
     <string name="navigate_back">Navegar atrás</string>
     <string name="delete">Eliminar</string>
     <string name="product_price">Precio del producto</string>
+    <string name="select_the_printer">Seleccione la impresora</string>
 </resources>

@@ -74,7 +74,10 @@ dependencies {
     implementation(AndroidX.compose.ui)
     implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material.icons.extended)
+    implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.ui.toolingPreview)
+
+    implementation(AndroidX.hilt.navigationCompose)
 
     implementation(AndroidX.core.splashscreen)
 

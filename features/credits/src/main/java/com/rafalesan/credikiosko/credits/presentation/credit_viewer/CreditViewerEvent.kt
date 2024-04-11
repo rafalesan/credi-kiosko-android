@@ -6,4 +6,5 @@ sealed class CreditViewerEvent {
     data object RetryPrinting : CreditViewerEvent()
     data object CancelPrinterConfiguration : CreditViewerEvent()
     data object StartPrinterConfiguration : CreditViewerEvent()
+    class DismissPrinterConfiguration(val isPrinterConfigured: Boolean) : CreditViewerEvent()
 }
