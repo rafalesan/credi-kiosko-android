@@ -50,4 +50,5 @@
     <string name="delete">Eliminar</string>
     <string name="product_price">Precio del producto</string>
     <string name="select_the_printer">Seleccione la impresora</string>
+    <string name="bluetooth_icon">Icono del dispositivo bluetooth</string>
 </resources>
