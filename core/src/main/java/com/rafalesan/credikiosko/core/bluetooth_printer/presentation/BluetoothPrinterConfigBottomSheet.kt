@@ -3,7 +3,6 @@
 package com.rafalesan.credikiosko.core.bluetooth_printer.presentation
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,17 +26,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rafalesan.credikiosko.core.R
-import com.rafalesan.credikiosko.core.bluetooth_printer.presentation.model.BluetoothDeviceInfo
+import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.BluetoothDevice
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
-import timber.log.Timber
 
 @SuppressLint("MissingPermission")
 @Composable
@@ -46,19 +42,6 @@ fun BluetoothPrinterConfigBottomSheet(
 ) {
 
     val viewModel: BluetoothPrinterConfigViewModel = hiltViewModel()
-
-    val context = LocalContext.current
-    val bluetoothManager = ContextCompat.getSystemService(context, BluetoothManager::class.java)
-    val bluetoothAdapter = bluetoothManager?.adapter ?: run {
-        Timber.e("This android devices does not support bluetooth")
-        null
-    }
-
-    bluetoothAdapter?.let {
-        viewModel.perform(
-            BluetoothPrinterConfigEvent.SetBondedBluetoothDevices(it.bondedDevices.toList())
-        )
-    }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -97,7 +80,7 @@ fun BluetoothPrinterConfigUIPreview() {
 fun BluetoothPrinterConfigUI(
     viewState: State<BluetoothPrinterConfigViewState>,
     onDismissCallback: (Boolean) -> Unit = {},
-    onBluetoothDevicePressed: (BluetoothDeviceInfo) -> Unit = {}
+    onBluetoothDevicePressed: (BluetoothDevice) -> Unit = {}
 ) {
 
 
@@ -151,8 +134,8 @@ fun BluetoothPrinterConfigUI(
 @SuppressLint("MissingPermission")
 @Composable
 fun BluetoothDeviceItem(
-    bluetoothDevice: BluetoothDeviceInfo,
-    onBluetoothDevicePressed: (BluetoothDeviceInfo) -> Unit
+    bluetoothDevice: BluetoothDevice,
+    onBluetoothDevicePressed: (BluetoothDevice) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -179,19 +162,19 @@ fun BluetoothDeviceItem(
 
 private val MOCKED_BLUETOOTH_DEVICES_FOR_PREVIEW = BluetoothPrinterConfigViewState(
     bondedBluetoothDevices = listOf(
-        BluetoothDeviceInfo(
+        BluetoothDevice(
             name = "Device 1",
             macAddress = "00:00:00:00:00:00"
         ),
-        BluetoothDeviceInfo(
+        BluetoothDevice(
             name = "Device 2",
             macAddress = "00:00:00:00:00:01"
         ),
-        BluetoothDeviceInfo(
+        BluetoothDevice(
             name = "Device 3",
             macAddress = "00:00:00:00:00:02"
         ),
-        BluetoothDeviceInfo(
+        BluetoothDevice(
             name = "Device 4",
             macAddress = "00:00:00:00:00:03"
         ),

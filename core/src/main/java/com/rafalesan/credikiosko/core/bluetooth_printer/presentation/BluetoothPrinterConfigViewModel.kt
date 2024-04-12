@@ -1,37 +1,43 @@
 package com.rafalesan.credikiosko.core.bluetooth_printer.presentation
 
-import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.BluetoothDevice
+import com.rafalesan.credikiosko.core.bluetooth_printer.domain.usecases.GetBondedBluetoothDevicesUseCase
 import com.rafalesan.credikiosko.core.bluetooth_printer.domain.usecases.SavePrinterUseCase
-import com.rafalesan.credikiosko.core.bluetooth_printer.presentation.mappers.toBluetoothDeviceInfo
-import com.rafalesan.credikiosko.core.bluetooth_printer.presentation.mappers.toBluetoothPrinter
-import com.rafalesan.credikiosko.core.bluetooth_printer.presentation.model.BluetoothDeviceInfo
+import com.rafalesan.credikiosko.core.commons.domain.utils.Result
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class BluetoothPrinterConfigViewModel @Inject constructor(
+    private val getBondedBluetoothDevicesUseCase: GetBondedBluetoothDevicesUseCase,
     private val savePrinterUseCase: SavePrinterUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableStateFlow(BluetoothPrinterConfigViewState())
     val viewState = _viewState.asStateFlow()
 
+    init {
+        fetchBluetoothDevices()
+    }
+
     fun perform(event: BluetoothPrinterConfigEvent) {
         when (event) {
-            is BluetoothPrinterConfigEvent.SetBondedBluetoothDevices -> handleSetBluetoothBondedDevices(event.devices)
-            is BluetoothPrinterConfigEvent.BluetoothDevicePressed -> handleBluetoothDevicePressedEvent(event.bluetoothDeviceInfo)
+            is BluetoothPrinterConfigEvent.BluetoothDevicePressed -> {
+                handleBluetoothDevicePressedEvent(event.bluetoothDevice)
+            }
         }
     }
 
-    private fun handleBluetoothDevicePressedEvent(bluetoothDeviceInfo: BluetoothDeviceInfo) {
+    private fun handleBluetoothDevicePressedEvent(bluetoothDevice: BluetoothDevice) {
         viewModelScope.launch {
-            savePrinterUseCase(bluetoothDeviceInfo.toBluetoothPrinter())
+            savePrinterUseCase(bluetoothDevice)
             _viewState.update {
                 it.copy(
                     isPrinterConfigured = true
@@ -40,14 +46,21 @@ class BluetoothPrinterConfigViewModel @Inject constructor(
         }
     }
 
-    private fun handleSetBluetoothBondedDevices(devices: List<BluetoothDevice>) {
-        _viewState.update {
-            it.copy(
-                bondedBluetoothDevices = devices.map { device ->
-                    device.toBluetoothDeviceInfo()
-                }
-            )
+    private fun fetchBluetoothDevices() {
+        val result = getBondedBluetoothDevicesUseCase()
+
+        when (result) {
+            is Result.Success -> _viewState.update {
+                it.copy(
+                    bondedBluetoothDevices = result.data
+                )
+            }
+            is Result.Error -> {
+                Timber.e(result.exception)
+            }
         }
+
+
     }
 
 }

@@ -1,10 +1,10 @@
 package com.rafalesan.credikiosko.core.bluetooth_printer.domain.repository
 
-import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.BluetoothPrinter
+import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.BluetoothDevice
 
 interface IBluetoothPrinterRepository {
 
-    suspend fun savePrinter(printer: BluetoothPrinter)
+    suspend fun savePrinter(bluetoothDevice: BluetoothDevice)
     suspend fun existsPrinterConfigured(): Boolean
 
 }
