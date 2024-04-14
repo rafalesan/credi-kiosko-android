@@ -35,6 +35,9 @@ class BluetoothPrinterConfigViewModel @Inject constructor(
             is BluetoothPrinterConfigEvent.ShowAllDevicesChanged -> {
                 handleShowAllDevicesChangedEvent(event.showAllBluetoothDevices)
             }
+            BluetoothPrinterConfigEvent.RefreshBluetoothDevices -> {
+                fetchBluetoothDevices(!viewState.value.showAllBluetoothDevices)
+            }
         }
     }
 

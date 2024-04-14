@@ -76,6 +76,7 @@ dependencies {
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.ui.toolingPreview)
+    implementation(AndroidX.lifecycle.runtime.compose)
 
     implementation(AndroidX.hilt.navigationCompose)
 

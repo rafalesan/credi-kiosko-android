@@ -3,6 +3,9 @@
 package com.rafalesan.credikiosko.core.bluetooth_printer.presentation
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +34,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -41,11 +45,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import com.rafalesan.credikiosko.core.R
 import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.BluetoothDevice
 import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.DeviceType
@@ -60,6 +68,7 @@ import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.DeviceType
 import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.DeviceType.Watch
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
+import timber.log.Timber
 
 @SuppressLint("MissingPermission")
 @Composable
@@ -68,6 +77,20 @@ fun BluetoothPrinterConfigBottomSheet(
 ) {
 
     val viewModel: BluetoothPrinterConfigViewModel = hiltViewModel()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(lifecycleState) {
+        when (lifecycleState) {
+            Lifecycle.State.RESUMED -> {
+                viewModel.perform(BluetoothPrinterConfigEvent.RefreshBluetoothDevices)
+            }
+            else -> {
+                Timber.d("No operation for: $lifecycleState")
+            }
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -152,11 +175,14 @@ fun BluetoothPrinterConfigUI(
 
         Row(
             modifier = Modifier
+                .padding(bottom = Dimens.spaceDefault)
                 .clickable {
                     onShowAllDevicesChanged(!showAllBluetoothDevices)
                 }
                 .fillMaxWidth()
-                .padding(horizontal = Dimens.space2x),
+                .padding(
+                    horizontal = Dimens.space2x,
+                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -171,6 +197,8 @@ fun BluetoothPrinterConfigUI(
             )
         }
 
+        Divider(color = Color.LightGray, thickness = Dimens.dividerThickness)
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = Dimens.space4x)
@@ -181,6 +209,10 @@ fun BluetoothPrinterConfigUI(
                     onBluetoothDevicePressed = onBluetoothDevicePressed
                 )
                 Divider(color = Color.LightGray, thickness = Dimens.dividerThickness)
+            }
+
+            item {
+                BindNewBluetoothDeviceItem()
             }
         }
 
@@ -231,6 +263,28 @@ fun BluetoothDeviceItem(
         }
     }
 
+}
+
+@Composable
+fun BindNewBluetoothDeviceItem() {
+
+    val context = LocalContext.current
+
+    Text(
+        modifier = Modifier
+            .clickable {
+                openBluetoothSettings(context)
+            }
+            .fillMaxWidth()
+            .padding(vertical = Dimens.spaceDefault),
+        text = stringResource(id = R.string.bind_new_device_desc),
+        textAlign = TextAlign.Center
+    )
+}
+
+fun openBluetoothSettings(context: Context) {
+    val intent = Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
+    context.startActivity(intent)
 }
 
 @Composable
