@@ -32,7 +32,21 @@ class BluetoothPrinterConfigViewModel @Inject constructor(
             is BluetoothPrinterConfigEvent.BluetoothDevicePressed -> {
                 handleBluetoothDevicePressedEvent(event.bluetoothDevice)
             }
+            is BluetoothPrinterConfigEvent.ShowAllDevicesChanged -> {
+                handleShowAllDevicesChangedEvent(event.showAllBluetoothDevices)
+            }
         }
+    }
+
+    private fun handleShowAllDevicesChangedEvent(showAllBluetoothDevices: Boolean) {
+        _viewState.update {
+            it.copy(
+                showAllBluetoothDevices = showAllBluetoothDevices
+            )
+        }
+        fetchBluetoothDevices(
+            showOnlyPrinters = !showAllBluetoothDevices
+        )
     }
 
     private fun handleBluetoothDevicePressedEvent(bluetoothDevice: BluetoothDevice) {
@@ -46,8 +60,10 @@ class BluetoothPrinterConfigViewModel @Inject constructor(
         }
     }
 
-    private fun fetchBluetoothDevices() {
-        val result = getBondedBluetoothDevicesUseCase()
+    private fun fetchBluetoothDevices(
+        showOnlyPrinters: Boolean = true
+    ) {
+        val result = getBondedBluetoothDevicesUseCase(showOnlyPrinters)
 
         when (result) {
             is Result.Success -> _viewState.update {

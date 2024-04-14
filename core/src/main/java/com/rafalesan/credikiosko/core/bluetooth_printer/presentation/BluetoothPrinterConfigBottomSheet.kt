@@ -4,6 +4,7 @@ package com.rafalesan.credikiosko.core.bluetooth_printer.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -77,6 +79,9 @@ fun BluetoothPrinterConfigBottomSheet(
             onDismissCallback = onDismissCallback,
             onBluetoothDevicePressed = {
                 viewModel.perform(BluetoothPrinterConfigEvent.BluetoothDevicePressed(it))
+            },
+            onShowAllDevicesChanged = {
+                viewModel.perform(BluetoothPrinterConfigEvent.ShowAllDevicesChanged(it))
             }
         )
     }
@@ -104,7 +109,8 @@ fun BluetoothPrinterConfigUIPreview() {
 fun BluetoothPrinterConfigUI(
     viewState: State<BluetoothPrinterConfigViewState>,
     onDismissCallback: (Boolean) -> Unit = {},
-    onBluetoothDevicePressed: (BluetoothDevice) -> Unit = {}
+    onBluetoothDevicePressed: (BluetoothDevice) -> Unit = {},
+    onShowAllDevicesChanged: (Boolean) -> Unit = {}
 ) {
 
 
@@ -124,6 +130,12 @@ fun BluetoothPrinterConfigUI(
         }
     }
 
+    val showAllBluetoothDevices by remember {
+        derivedStateOf {
+            viewState.value.showAllBluetoothDevices
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -137,6 +149,27 @@ fun BluetoothPrinterConfigUI(
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
+
+        Row(
+            modifier = Modifier
+                .clickable {
+                    onShowAllDevicesChanged(!showAllBluetoothDevices)
+                }
+                .fillMaxWidth()
+                .padding(horizontal = Dimens.space2x),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                modifier = Modifier
+                    .weight(1f),
+                text = stringResource(id = R.string.show_all_devices_not_only_printers),
+            )
+            Switch(
+                checked = showAllBluetoothDevices,
+                onCheckedChange = onShowAllDevicesChanged
+            )
+        }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

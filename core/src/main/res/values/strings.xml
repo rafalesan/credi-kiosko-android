@@ -51,4 +51,5 @@
     <string name="product_price">Precio del producto</string>
     <string name="select_the_printer">Seleccione la impresora</string>
     <string name="bluetooth_icon">Icono del dispositivo bluetooth</string>
+    <string name="show_all_devices_not_only_printers">Mostrar todos los dispositivos no solo impresoras</string>
 </resources>

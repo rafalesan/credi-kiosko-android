@@ -4,4 +4,5 @@ import com.rafalesan.credikiosko.core.bluetooth_printer.domain.entity.BluetoothD
 
 sealed class BluetoothPrinterConfigEvent {
     class BluetoothDevicePressed(val bluetoothDevice: BluetoothDevice): BluetoothPrinterConfigEvent()
+    class ShowAllDevicesChanged(val showAllBluetoothDevices: Boolean): BluetoothPrinterConfigEvent()
 }
