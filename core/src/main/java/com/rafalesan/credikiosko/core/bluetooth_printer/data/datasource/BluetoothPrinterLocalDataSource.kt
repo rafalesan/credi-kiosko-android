@@ -20,4 +20,8 @@ class BluetoothPrinterLocalDataSource @Inject constructor(
         return bluetoothPrinterDao.getBluetoothPrinter()
     }
 
+    suspend fun removePrinter() {
+        bluetoothPrinterDao.removePrinter()
+    }
+
 }

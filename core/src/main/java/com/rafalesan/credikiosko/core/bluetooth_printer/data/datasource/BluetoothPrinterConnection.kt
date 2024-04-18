@@ -3,6 +3,7 @@ package com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.exceptions.BluetoothConnectionFailException
 import com.rafalesan.credikiosko.core.room.entity.BluetoothPrinterEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,12 +14,6 @@ import java.util.UUID
 class BluetoothPrinterConnection(
     private val bluetoothManager: BluetoothManager
 ) {
-
-    //TODO: this defaultPrinter implementation should be removed
-    private val defaultPrinter = BluetoothPrinterEntity(
-        name = "Bluetooth Printer",
-        macAddress = "66:22:DF:ED:8D:AE"
-    )
 
     lateinit var bluetoothSocket: BluetoothSocket
     private val bluetoothPrinterUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
@@ -31,8 +26,7 @@ class BluetoothPrinterConnection(
     ) {
 
         val device = bluetoothManager.adapter.getRemoteDevice(
-            bluetoothPrinter?.macAddress ?:
-            defaultPrinter.macAddress
+            bluetoothPrinter?.macAddress
         )
 
         bluetoothSocket = device.createRfcommSocketToServiceRecord(
@@ -48,7 +42,9 @@ class BluetoothPrinterConnection(
 
         } catch (ex: Exception) {
             Timber.e(ex)
-            onConnectionError(ex)
+            onConnectionError(
+                BluetoothConnectionFailException(device.name)
+            )
         }
 
     }

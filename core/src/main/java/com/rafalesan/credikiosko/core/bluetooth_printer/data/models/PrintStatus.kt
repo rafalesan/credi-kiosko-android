@@ -6,6 +6,6 @@ sealed class PrintStatus {
     data object PrinterConnected: PrintStatus()
     data object Printing: PrintStatus()
     data object PrintSuccess: PrintStatus()
-    class PrinterConnectionError(val errorDescription: String): PrintStatus()
+    class PrinterConnectionError(val exception: Exception): PrintStatus()
 
 }

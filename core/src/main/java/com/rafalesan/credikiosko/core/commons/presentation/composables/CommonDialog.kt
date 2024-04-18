@@ -26,6 +26,7 @@ fun CommonDialog(
     descriptionMessage: String,
     positiveButton: @Composable () -> Unit,
     negativeButton: @Composable (() -> Unit)? = null,
+    neutralButton: @Composable (() -> Unit)? = null,
 ) {
     Dialog(
         onDismissRequest = {},
@@ -71,6 +72,10 @@ fun CommonDialog(
                 ) {
                     negativeButton?.invoke()
                     Spacer(modifier = Modifier.width(Dimens.space12units))
+                    neutralButton?.let {
+                        neutralButton.invoke()
+                        Spacer(modifier = Modifier.width(Dimens.space12units))
+                    }
                     positiveButton()
                 }
             }

@@ -66,6 +66,11 @@ class BluetoothPrinterConfigViewModel @Inject constructor(
     private fun fetchBluetoothDevices(
         showOnlyPrinters: Boolean = true
     ) {
+        _viewState.update {
+            it.copy(
+                isPrinterConfigured = false
+            )
+        }
         val result = getBondedBluetoothDevicesUseCase(showOnlyPrinters)
 
         when (result) {

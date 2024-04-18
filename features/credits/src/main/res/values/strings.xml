@@ -50,4 +50,6 @@
     <string name="printer_not_configured">Impresora no configurada</string>
     <string name="printer_not_configured_desc">Aún no ha configurado una impresora.\n¿Desea configurar una?</string>
     <string name="configure">Configurar</string>
+    <string name="unable_to_connect_to_printer_x">No se puede conectar a la impresora %s.</string>
+    <string name="configure_new_printer">Configurar nueva impresora</string>
 </resources>

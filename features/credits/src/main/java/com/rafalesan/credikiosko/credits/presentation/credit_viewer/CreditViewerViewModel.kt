@@ -2,8 +2,10 @@ package com.rafalesan.credikiosko.credits.presentation.credit_viewer
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.exceptions.BluetoothConnectionFailException
 import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintStatus
 import com.rafalesan.credikiosko.core.bluetooth_printer.domain.usecases.IsBluetoothPrinterConfiguredUseCase
+import com.rafalesan.credikiosko.core.bluetooth_printer.domain.usecases.RemovePrinterConfigured
 import com.rafalesan.credikiosko.core.commons.creditIdNavKey
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.credits.R
@@ -24,7 +26,8 @@ class CreditViewerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val findCreditUseCase: FindCreditUseCase,
     private val printCreditUseCase: PrintCreditUseCase,
-    private val isBluetoothPrinterConfiguredUseCase: IsBluetoothPrinterConfiguredUseCase
+    private val isBluetoothPrinterConfiguredUseCase: IsBluetoothPrinterConfiguredUseCase,
+    private val removePrinterConfigured: RemovePrinterConfigured
 ) : BaseViewModel() {
 
     private val _viewState = MutableStateFlow(CreditViewerState())
@@ -60,11 +63,15 @@ class CreditViewerViewModel @Inject constructor(
     }
 
     private fun handleStartPrinterConfigurationEvent() {
-        _viewState.update {
-            it.copy(
-                isShowingPrinterNotConfiguredMessage = false,
-                isShowingPrinterConfiguration = true
-            )
+        viewModelScope.launch {
+            removePrinterConfigured()
+            _viewState.update {
+                it.copy(
+                    isShowingPrinterNotConfiguredMessage = false,
+                    isShowingPrinterConfiguration = true,
+                    printerThatConnectionFailed = null
+                )
+            }
         }
     }
 
@@ -76,7 +83,10 @@ class CreditViewerViewModel @Inject constructor(
 
     private fun handleRetryPrintingEvent() {
         _viewState.update {
-            it.copy(printerConnectionError = null)
+            it.copy(
+                printerConnectionError = null,
+                printerThatConnectionFailed = null
+            )
         }
         handlePrintCreditEvent(
             checkBluetoothAvailability = false
@@ -85,7 +95,10 @@ class CreditViewerViewModel @Inject constructor(
 
     private fun handleCancelPrintingRetryEvent() {
         _viewState.update {
-            it.copy(printerConnectionError = null)
+            it.copy(
+                printerConnectionError = null,
+                printerThatConnectionFailed = null
+            )
         }
     }
 
@@ -116,10 +129,15 @@ class CreditViewerViewModel @Inject constructor(
                         PrintStatus.PrinterConnected -> R.string.printer_connected
                         PrintStatus.Printing -> R.string.printing
                         is PrintStatus.PrinterConnectionError -> {
-                            _viewState.update {
-                                it.copy(printerConnectionError = R.string.unable_to_connect_to_printer)
+                            val exception = printStatus.exception
+                            when (exception) {
+                                is BluetoothConnectionFailException -> _viewState.update {
+                                    it.copy(printerThatConnectionFailed = exception.bluetoothDeviceName)
+                                }
+                                else -> _viewState.update {
+                                    it.copy(printerConnectionError = R.string.unable_to_connect_to_printer)
+                                }
                             }
-                            R.string.unable_to_connect_to_printer
                             null
                         }
                         PrintStatus.PrintSuccess -> null

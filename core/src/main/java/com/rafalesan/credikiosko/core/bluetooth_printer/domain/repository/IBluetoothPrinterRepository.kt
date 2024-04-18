@@ -6,5 +6,5 @@ interface IBluetoothPrinterRepository {
 
     suspend fun savePrinter(bluetoothDevice: BluetoothDevice)
     suspend fun existsPrinterConfigured(): Boolean
-
+    suspend fun removePrinterAlreadyConfigured()
 }

@@ -20,4 +20,7 @@ class BluetoothPrinterRepository(
         return bluetoothPrinterLocalDataSource.existsPrinter()
     }
 
+    override suspend fun removePrinterAlreadyConfigured() {
+        bluetoothPrinterLocalDataSource.removePrinter()
+    }
 }

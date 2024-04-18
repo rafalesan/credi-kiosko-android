@@ -3,9 +3,13 @@ package com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.core.content.ContextCompat
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.exceptions.BluetoothConnectionFailException
+import com.rafalesan.credikiosko.core.bluetooth_printer.data.exceptions.BluetoothNotSupported
 import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintAlignment
 import com.rafalesan.credikiosko.core.bluetooth_printer.data.models.PrintFont
+import com.rafalesan.credikiosko.core.room.entity.BluetoothPrinterEntity
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import javax.inject.Inject
 
 //TODO: This class is more like a service, rename this class and change location to a better place
@@ -19,6 +23,7 @@ class ThermalPrinterDataSource @Inject constructor(
     private val supportAccentedChars = true
 
     private lateinit var bluetoothPrinterConnection: BluetoothPrinterConnection
+    private var printerConfigured: BluetoothPrinterEntity? = null
 
     suspend fun connect(
         onConnectionError: (Exception) -> Unit,
@@ -30,7 +35,7 @@ class ThermalPrinterDataSource @Inject constructor(
             BluetoothManager::class.java
         ) ?: run {
             onConnectionError.invoke(
-                Exception("This device does not support bluetooth")
+                BluetoothNotSupported()
             )
             return
         }
@@ -40,10 +45,10 @@ class ThermalPrinterDataSource @Inject constructor(
             bluetoothManager
         )
 
-        val bluetoothPrinterConfigured = bluetoothPrinterLocalDataSource.getBluetoothPrinterConfigured()
+        printerConfigured = bluetoothPrinterLocalDataSource.getBluetoothPrinterConfigured()
 
         bluetoothPrinterConnection.connectDevice(
-            bluetoothPrinterConfigured,
+            printerConfigured,
             onConnectionError = onConnectionError,
             onConnected = onConnected
         )
@@ -99,7 +104,12 @@ class ThermalPrinterDataSource @Inject constructor(
     }
 
     private fun callPrinter(bytes: ByteArray) {
-        bluetoothPrinterConnection.bluetoothSocket.outputStream.write(bytes, 0, bytes.size)
+        try {
+            bluetoothPrinterConnection.bluetoothSocket.outputStream.write(bytes, 0, bytes.size)
+        } catch (ex: Exception) {
+            Timber.e(ex)
+            throw BluetoothConnectionFailException(printerConfigured?.name)
+        }
     }
 
     private fun printAndLine() {

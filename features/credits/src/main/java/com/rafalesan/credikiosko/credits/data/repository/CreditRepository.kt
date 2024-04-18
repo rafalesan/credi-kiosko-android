@@ -25,7 +25,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import com.rafalesan.credikiosko.core.R as CoreR
 
 class CreditRepository(
@@ -85,9 +84,10 @@ class CreditRepository(
         val credit = findCredit(creditId)
 
         thermalPrinterDataSource.connect(
-            onConnectionError = {
-                Timber.e(it)
-                trySend(PrintStatus.PrinterConnectionError(context.getString(R.string.unable_to_connect_to_printer)))
+            onConnectionError = { connectionException ->
+                trySend(
+                    PrintStatus.PrinterConnectionError(connectionException)
+                )
                 close()
             },
             onConnected = {
@@ -103,8 +103,9 @@ class CreditRepository(
                 credit
             )
         } catch (ex: Exception) {
-            Timber.e(ex)
-            trySend(PrintStatus.PrinterConnectionError(context.getString(R.string.unable_to_connect_to_printer)))
+            trySend(
+                PrintStatus.PrinterConnectionError(ex)
+            )
             close()
         }
 

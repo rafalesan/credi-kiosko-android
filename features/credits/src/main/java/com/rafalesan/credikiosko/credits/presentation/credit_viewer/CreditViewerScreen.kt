@@ -146,6 +146,12 @@ fun CreditViewerUI(
         }
     }
 
+    val printerThatConnectionFailed by remember {
+        derivedStateOf {
+            viewState.value.printerThatConnectionFailed
+        }
+    }
+
     printLoadingTextId?.let {
         Timber.d("printLoadingText: ${stringResource(id = it)}")
         LoadingDialog(loadingText = stringResource(id = it))
@@ -168,6 +174,34 @@ fun CreditViewerUI(
             }
         )
 
+    }
+
+    printerThatConnectionFailed?.let { printerConnectionFailed ->
+
+        val message = stringResource(
+            id = R.string.unable_to_connect_to_printer_x,
+            printerConnectionFailed
+        )
+
+        CommonDialog(
+            title = stringResource(id = R.string.connection_error),
+            descriptionMessage = message,
+            negativeButton = {
+                TextButton(onClick = onCancelPrintingRetry) {
+                    Text(text = stringResource(id = CoreR.string.cancel))
+                }
+            },
+            neutralButton = {
+                TextButton(onClick = onStartPrinterConfiguration) {
+                    Text(text = stringResource(id = R.string.configure_new_printer))
+                }
+            },
+            positiveButton = {
+                TextButton(onClick = onRetryPrinting) {
+                    Text(text = stringResource(id = R.string.retry))
+                }
+            }
+        )
     }
 
     if (isShowingPrinterNotConfiguredMessage) {

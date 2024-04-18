@@ -17,4 +17,7 @@ interface BluetoothPrinterDao {
     @Query("SELECT EXISTS(SELECT * FROM bluetooth_printers)")
     suspend fun existsPrinter(): Boolean
 
+    @Query("DELETE FROM bluetooth_printers")
+    suspend fun removePrinter()
+
 }
