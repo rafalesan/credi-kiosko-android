@@ -13,5 +13,6 @@ data class CreditViewerState(
     val printerConnectionError: Int? = null,
     val printerThatConnectionFailed: String? = null,
     val isShowingPrinterNotConfiguredMessage: Boolean = false,
-    val isShowingPrinterConfiguration: Boolean = false
+    val isShowingPrinterConfiguration: Boolean = false,
+    val isShowingBluetoothPermissionDeniedMessage: Boolean = false
 )

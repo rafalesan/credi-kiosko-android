@@ -6,9 +6,11 @@ import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
-import android.widget.Toast
+import android.provider.Settings
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -87,6 +89,12 @@ fun CreditViewerScreen(
         onStartPrinterConfiguration = { viewModel.perform(CreditViewerEvent.StartPrinterConfiguration) },
         onDismissPrintersConfiguration = { isPrinterConfigured ->
             viewModel.perform(CreditViewerEvent.DismissPrinterConfiguration(isPrinterConfigured))
+        },
+        onCancelBluetoothPermissionRequestFromSettings = {
+            viewModel.perform(CreditViewerEvent.CancelBluetoothPermissionRequestFromSettings)
+        },
+        onRequestBluetoothPermissionFromSettings = {
+            viewModel.perform(CreditViewerEvent.RequestBluetoothPermissionFromSettings)
         }
     )
 
@@ -119,7 +127,9 @@ fun CreditViewerUI(
     onRetryPrinting: () -> Unit = {},
     onCancelPrinterConfiguration: () -> Unit = {},
     onStartPrinterConfiguration: () -> Unit = {},
-    onDismissPrintersConfiguration: (Boolean) -> Unit = {}
+    onDismissPrintersConfiguration: (Boolean) -> Unit = {},
+    onCancelBluetoothPermissionRequestFromSettings: () -> Unit = {},
+    onRequestBluetoothPermissionFromSettings: () -> Unit = {}
 ) {
 
     val printLoadingTextId by remember {
@@ -221,6 +231,29 @@ fun CreditViewerUI(
             }
         )
 
+    }
+
+    val isShowingBluetoothPermissionDeniedMessage by remember {
+        derivedStateOf {
+            viewState.value.isShowingBluetoothPermissionDeniedMessage
+        }
+    }
+
+    if (isShowingBluetoothPermissionDeniedMessage) {
+        CommonDialog(
+            title = stringResource(id = R.string.bluetooth_permission_denied),
+            descriptionMessage = stringResource(id = R.string.bluetooth_permission_denied_desc),
+            negativeButton = {
+                TextButton(onClick = onCancelBluetoothPermissionRequestFromSettings) {
+                    Text(text = stringResource(id = CoreR.string.cancel))
+                }
+            },
+            positiveButton = {
+                TextButton(onClick = onRequestBluetoothPermissionFromSettings) {
+                    Text(text = stringResource(id = R.string.go_to_settings))
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -486,7 +519,7 @@ private fun ActionHandler(
             val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             requestEnableBluetoothLauncher.launch(intent)
         } else {
-            Toast.makeText(context, "Bluetooth Granted", Toast.LENGTH_LONG).show()
+            viewModel.perform(CreditViewerEvent.BluetoothPermissionDenied)
         }
     }
 
@@ -496,10 +529,24 @@ private fun ActionHandler(
                 CreditViewerAction.CheckBluetoothPermissionAndAvailability -> {
                     checkBluetoothPermission(permissionLauncher)
                 }
+                CreditViewerAction.OpenAppPermissionsSettings -> {
+                    openAppSettings(context)
+                }
             }
         }
     }
 
+}
+
+private fun openAppSettings(context: Context) {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    val uri = Uri.fromParts(
+        "package",
+        context.packageName,
+        null
+    )
+    intent.data = uri
+    context.startActivity(intent)
 }
 
 private fun checkBluetoothPermission(

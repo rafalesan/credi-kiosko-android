@@ -7,4 +7,7 @@ sealed class CreditViewerEvent {
     data object CancelPrinterConfiguration : CreditViewerEvent()
     data object StartPrinterConfiguration : CreditViewerEvent()
     class DismissPrinterConfiguration(val isPrinterConfigured: Boolean) : CreditViewerEvent()
+    data object BluetoothPermissionDenied : CreditViewerEvent()
+    data object CancelBluetoothPermissionRequestFromSettings : CreditViewerEvent()
+    data object RequestBluetoothPermissionFromSettings : CreditViewerEvent()
 }

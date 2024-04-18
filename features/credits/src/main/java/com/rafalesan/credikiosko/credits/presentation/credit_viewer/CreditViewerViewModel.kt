@@ -48,6 +48,30 @@ class CreditViewerViewModel @Inject constructor(
             CreditViewerEvent.CancelPrinterConfiguration -> handleCancelPrinterConfigurationEvent()
             CreditViewerEvent.StartPrinterConfiguration -> handleStartPrinterConfigurationEvent()
             is CreditViewerEvent.DismissPrinterConfiguration -> handleDismissPrinterConfigurationEvent(event.isPrinterConfigured)
+            CreditViewerEvent.BluetoothPermissionDenied -> handleBluetoothPermissionDeniedEvent()
+            CreditViewerEvent.CancelBluetoothPermissionRequestFromSettings -> handleCancelBluetoothPermissionRequestFromSettingsEvent()
+            CreditViewerEvent.RequestBluetoothPermissionFromSettings -> handleRequestBluetoothPermissionFromSettingsEvent()
+        }
+    }
+
+    private fun handleRequestBluetoothPermissionFromSettingsEvent() {
+        _viewState.update {
+            it.copy(isShowingBluetoothPermissionDeniedMessage = false)
+        }
+        viewModelScope.launch {
+            _action.send(CreditViewerAction.OpenAppPermissionsSettings)
+        }
+    }
+
+    private fun handleCancelBluetoothPermissionRequestFromSettingsEvent() {
+        _viewState.update {
+            it.copy(isShowingBluetoothPermissionDeniedMessage = false)
+        }
+    }
+
+    private fun handleBluetoothPermissionDeniedEvent() {
+        _viewState.update {
+            it.copy(isShowingBluetoothPermissionDeniedMessage = true)
         }
     }
 

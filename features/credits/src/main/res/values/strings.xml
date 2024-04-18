@@ -52,4 +52,7 @@
     <string name="configure">Configurar</string>
     <string name="unable_to_connect_to_printer_x">No se puede conectar a la impresora %s.</string>
     <string name="configure_new_printer">Configurar nueva impresora</string>
+    <string name="bluetooth_permission_denied">Permiso bluetooth denegado</string>
+    <string name="bluetooth_permission_denied_desc">No podemos conectar la impresora porque el permiso de bluetooth fue denegado cuando se solicitó. Deberá ir a las configuraciones para habilitar el permiso.</string>
+    <string name="go_to_settings">Ir a configuración</string>
 </resources>
