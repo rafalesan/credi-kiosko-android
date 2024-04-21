@@ -6,6 +6,11 @@ import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Groups2
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.data.build_config_provider.BuildConfigFieldsProvider
+import com.rafalesan.credikiosko.core.commons.domain.exception.ValidationsException
+import com.rafalesan.credikiosko.core.commons.domain.utils.Result
+import com.rafalesan.credikiosko.core.commons.domain.validator.BusinessInputValidator
+import com.rafalesan.credikiosko.core.commons.domain.validator.BusinessInputValidator.BusinessInputValidation.EMPTY_BUSINESS_NAME
+import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.home.R
 import com.rafalesan.credikiosko.home.domain.usecase.GetBusinessUseCase
@@ -58,19 +63,38 @@ class HomeViewModel @Inject constructor(
     private fun handleCancelBusinessNameEdit() {
         _viewState.update {
             it.copy(
-                isShowingEditBusinessNameDialog = false
+                isShowingEditBusinessNameDialog = false,
+                inputBusinessName = emptyString
             )
         }
     }
 
     private fun handleSubmitBusinessName() {
         viewModelScope.launch {
-            updateBusinessNameUseCase(viewState.value.inputBusinessName)
-            _viewState.update {
-                it.copy(
-                    isShowingEditBusinessNameDialog = false,
-                    businessName = getBusinessUseCase().name
-                )
+            val result = updateBusinessNameUseCase(viewState.value.inputBusinessName)
+
+            when (result) {
+                is Result.Success -> _viewState.update {
+                    it.copy(
+                        isShowingEditBusinessNameDialog = false,
+                        businessName = getBusinessUseCase().name,
+                        inputBusinessName = emptyString
+                    )
+                }
+                is Result.Error -> handleSubmitBusinessNameErrors(result.exception)
+            }
+
+        }
+    }
+
+    private fun handleSubmitBusinessNameErrors(exception: Exception) {
+        val validationException = exception as? ValidationsException ?: return
+        validationException.validations.forEach {
+            val validation = it as BusinessInputValidator.BusinessInputValidation
+            when (validation) {
+                EMPTY_BUSINESS_NAME -> _viewState.update { state ->
+                    state.copy(inputBusinessNameError = validation.errorResId)
+                }
             }
         }
     }
@@ -86,7 +110,8 @@ class HomeViewModel @Inject constructor(
     private fun handleBusinessNameInputChanged(businessName: String) {
         _viewState.update {
             it.copy(
-                inputBusinessName = businessName
+                inputBusinessName = businessName,
+                inputBusinessNameError = null
             )
         }
     }

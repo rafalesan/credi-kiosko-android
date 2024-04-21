@@ -3,10 +3,10 @@ package com.rafalesan.credikiosko.onboarding.presentation
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.domain.usecases.ExistBusinessUseCase
 import com.rafalesan.credikiosko.core.commons.domain.utils.ResultOf
+import com.rafalesan.credikiosko.core.commons.domain.validator.BusinessInputValidator
+import com.rafalesan.credikiosko.core.commons.domain.validator.BusinessInputValidator.BusinessInputValidation.EMPTY_BUSINESS_NAME
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.onboarding.domain.usecase.SaveBusinessUseCase
-import com.rafalesan.credikiosko.onboarding.domain.validator.BusinessInputValidator
-import com.rafalesan.credikiosko.onboarding.domain.validator.BusinessInputValidator.BusinessInputValidation.EMPTY_BUSINESS_NAME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

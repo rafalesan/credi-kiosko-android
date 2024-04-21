@@ -1,6 +1,6 @@
-package com.rafalesan.credikiosko.onboarding.domain.validator
+package com.rafalesan.credikiosko.core.commons.domain.validator
 
-import com.rafalesan.credikiosko.onboarding.R
+import com.rafalesan.credikiosko.core.R
 
 object BusinessInputValidator {
 
