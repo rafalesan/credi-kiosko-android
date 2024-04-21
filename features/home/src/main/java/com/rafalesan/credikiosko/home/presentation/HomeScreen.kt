@@ -3,7 +3,6 @@ package com.rafalesan.credikiosko.home.presentation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Groups2
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -33,13 +34,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
+import com.rafalesan.credikiosko.home.R
 import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
@@ -75,13 +79,17 @@ fun HomeUIPreview() {
                 HomeState(
                     homeOptions = listOf(
                         HomeOption(
-                            com.rafalesan.credikiosko.home.R.string.products,
+                            R.string.products,
                             Icons.Filled.Category,
                             "products"
                         ),
                         HomeOption(
-                            com.rafalesan.credikiosko.home.R.string.customers,
+                            R.string.customers,
                             Icons.Filled.Groups2
+                        ),
+                        HomeOption(
+                            R.string.credits,
+                            Icons.Filled.CreditCard
                         )
                     ),
                     businessName = "Kiosko Alegría"
@@ -127,19 +135,50 @@ fun HomeUI(
                 style = MaterialTheme.typography.headlineMedium
             )
 
+            val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+
             LazyVerticalGrid(
                 modifier = Modifier
-                    .layoutId(OptionsList),
+                    .layoutId(OptionsList)
+                    .wrapContentSize()
+                    .padding(horizontal = Dimens.space2x),
                 columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(Dimens.space2x),
                 verticalArrangement = Arrangement.spacedBy(Dimens.space2x),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.space2x)
             ) {
-                items(items = homeOptions) { homeOption ->
-                    HomeOptionItem(
-                        homeOption = homeOption,
-                        onOptionPressed = onOptionPressed
-                    )
+                items(
+                    homeOptions.size,
+                    span = {
+                        if (
+                            homeOptions.size % 2 != 0 &&
+                            homeOptions.lastIndex == it
+                        ) {
+                            GridItemSpan(2)
+                        } else {
+                            GridItemSpan(1)
+                        }
+                    }
+                ) { index ->
+
+                    if (
+                        homeOptions.lastIndex == index &&
+                        homeOptions.size % 2 != 0
+                    ) {
+
+                        HomeOptionItem(
+                            modifier = Modifier
+                                .padding(horizontal = (screenWidth / 4)),
+                            homeOption = homeOptions[index],
+                            onOptionPressed = onOptionPressed
+                        )
+
+                    } else {
+                        HomeOptionItem(
+                            homeOption = homeOptions[index],
+                            onOptionPressed = onOptionPressed
+                        )
+                    }
+
                 }
             }
 
@@ -164,14 +203,15 @@ fun HomeUI(
 
 @Composable
 fun HomeOptionItem(
+    modifier: Modifier = Modifier,
     homeOption: HomeOption,
     onOptionPressed: (HomeOption) -> Unit
 ) {
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .aspectRatio(1.0f)
-            .fillMaxSize()
+            //.fillMaxSize()
             .clickable {
                 onOptionPressed(homeOption)
             }
