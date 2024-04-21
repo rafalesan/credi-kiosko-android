@@ -3,6 +3,7 @@ package com.rafalesan.credikiosko.home.presentation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,19 +11,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Groups2
+import androidx.compose.material.icons.outlined.Store
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -36,11 +44,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.home.R
@@ -60,6 +75,22 @@ fun HomeScreen(
             viewModel.perform(
                 HomeEvent.HomeOptionSelected(homeOption)
             )
+        },
+        onEditBusinessName = {
+            viewModel.perform(
+                HomeEvent.EditBusinessName
+            )
+        },
+        onBusinessNameChanged = {
+            viewModel.perform(
+                HomeEvent.BusinessNameInputChanged(it)
+            )
+        },
+        onCancelBusinessNameEdit = {
+            viewModel.perform(HomeEvent.CancelBusinessNameEdit)
+        },
+        onSubmitBusinessNameEdit = {
+            viewModel.perform(HomeEvent.SubmitBusinessName)
         }
     )
 
@@ -77,6 +108,7 @@ fun HomeUIPreview() {
         viewState = remember {
             mutableStateOf(
                 HomeState(
+                    isShowingEditBusinessNameDialog = true,
                     homeOptions = listOf(
                         HomeOption(
                             R.string.products,
@@ -95,15 +127,18 @@ fun HomeUIPreview() {
                     businessName = "Kiosko Alegría"
                 )
             )
-        },
-        onOptionPressed = {}
+        }
     )
 }
 
 @Composable
 fun HomeUI(
     viewState: State<HomeState>,
-    onOptionPressed: (HomeOption) -> Unit
+    onOptionPressed: (HomeOption) -> Unit = {},
+    onEditBusinessName: () -> Unit =  {},
+    onBusinessNameChanged: (String) -> Unit = {},
+    onCancelBusinessNameEdit: () -> Unit = {},
+    onSubmitBusinessNameEdit: () -> Unit = {}
 ) {
     val homeOptions by remember {
         derivedStateOf { viewState.value.homeOptions }
@@ -116,6 +151,13 @@ fun HomeUI(
     val appVersion by remember {
         derivedStateOf { viewState.value.appVersion }
     }
+
+    EditBusinessNameDialog(
+        viewState = viewState,
+        onBusinessNameChanged = onBusinessNameChanged,
+        onCancelBusinessNameEdit = onCancelBusinessNameEdit,
+        onSubmitBusinessNameEdit = onSubmitBusinessNameEdit
+    )
 
     Surface(
         modifier = Modifier
@@ -134,6 +176,18 @@ fun HomeUI(
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
+
+            IconButton(
+                modifier = Modifier
+                    .layoutId(EditBusinessNameButton),
+                onClick = onEditBusinessName
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = stringResource(id = R.string.edit_business_name)
+                )
+            }
 
             val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
@@ -211,7 +265,7 @@ fun HomeOptionItem(
     Card(
         modifier = modifier
             .aspectRatio(1.0f)
-            //.fillMaxSize()
+            .fillMaxSize()
             .clickable {
                 onOptionPressed(homeOption)
             }
@@ -242,6 +296,109 @@ fun HomeOptionItem(
         }
     }
 
+}
+
+@Composable
+fun EditBusinessNameDialog(
+    viewState: State<HomeState>,
+    onBusinessNameChanged: (String) -> Unit,
+    onCancelBusinessNameEdit: () -> Unit,
+    onSubmitBusinessNameEdit: () -> Unit
+) {
+    val isShowingEditBusinessNameDialog by remember {
+        derivedStateOf {
+            viewState.value.isShowingEditBusinessNameDialog
+        }
+    }
+
+    if (isShowingEditBusinessNameDialog) {
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+            ),
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.space2x),
+                shape = RoundedCornerShape(Dimens.dialogBorderRadius)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(top = Dimens.space2x)
+                            .padding(horizontal = Dimens.space2x),
+                        text = stringResource(id = R.string.type_new_business_name),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    BusinessNameInput(
+                        viewState = viewState,
+                        onBusinessNameChanged = onBusinessNameChanged
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Dimens.spaceDefault),
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        TextButton(
+                            onClick = onCancelBusinessNameEdit
+                        ) {
+                            Text(text = stringResource(id = CoreR.string.cancel))
+                        }
+                        Spacer(modifier = Modifier.width(Dimens.space12units))
+                        TextButton(
+                            onClick = onSubmitBusinessNameEdit
+                        ) {
+                            Text(text = stringResource(id = CoreR.string.accept))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun BusinessNameInput(
+    viewState: State<HomeState>,
+    onBusinessNameChanged: (String) -> Unit
+) {
+    val businessNameText = remember {
+        derivedStateOf { viewState.value.inputBusinessName }
+    }
+    val businessNameError = remember {
+        derivedStateOf { viewState.value.inputBusinessNameError }
+    }
+
+    OutlinedTextFieldWithError(
+        modifier = Modifier
+            .padding(horizontal = Dimens.space2x)
+            .padding(top = Dimens.space2x),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done
+        ),
+        value = businessNameText.value,
+        errorStringId = businessNameError.value,
+        onValueChange = onBusinessNameChanged,
+        label = { Text(text = stringResource(id = CoreR.string.kiosk_name)) },
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+        singleLine = true,
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Store,
+                contentDescription = stringResource(id = CoreR.string.kiosk)
+            )
+        }
+    )
 }
 
 @Composable

@@ -22,4 +22,10 @@ class BusinessLocalDataSource @Inject constructor(
         return businessDao.existsBusiness()
     }
 
+    suspend fun updateBusinessName(businessName: String) {
+        val business = businessDao.getBusiness()
+        val businessUpdated = business.copy(name = businessName)
+        businessDao.insertBusiness(businessUpdated)
+    }
+
 }

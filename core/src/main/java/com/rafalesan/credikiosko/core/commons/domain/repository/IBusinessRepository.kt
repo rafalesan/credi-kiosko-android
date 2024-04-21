@@ -6,4 +6,5 @@ interface IBusinessRepository {
     suspend fun saveBusiness(businessName: String)
     suspend fun getBusiness(): Business
     suspend fun existsBusiness(): Boolean
+    suspend fun updateBusinessName(businessName: String)
 }

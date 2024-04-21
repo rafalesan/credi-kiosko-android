@@ -4,4 +4,6 @@
     <string name="customers">Clientes</string>
     <string name="credits">Créditos</string>
     <string name="cutoffs">Cortes</string>
+    <string name="edit_business_name">Editar nombre del negocio</string>
+    <string name="type_new_business_name">Ingrese el nuevo nombre</string>
 </resources>

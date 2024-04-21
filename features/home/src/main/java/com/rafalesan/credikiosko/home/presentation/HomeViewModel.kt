@@ -9,6 +9,7 @@ import com.rafalesan.credikiosko.core.commons.data.build_config_provider.BuildCo
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.home.R
 import com.rafalesan.credikiosko.home.domain.usecase.GetBusinessUseCase
+import com.rafalesan.credikiosko.home.domain.usecase.UpdateBusinessNameUseCase
 import com.rafalesan.credikiosko.home.presentation.HomeEvent.HomeOptionSelected
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val buildConfigFieldsProvider: BuildConfigFieldsProvider,
-    private val getBusinessUseCase: GetBusinessUseCase
+    private val getBusinessUseCase: GetBusinessUseCase,
+    private val updateBusinessNameUseCase: UpdateBusinessNameUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableStateFlow(HomeState())
@@ -46,6 +48,46 @@ class HomeViewModel @Inject constructor(
     fun perform(action: HomeEvent) {
         when(action) {
             is HomeOptionSelected -> handleHomeOptionSelected(action.homeOption)
+            is HomeEvent.BusinessNameInputChanged -> handleBusinessNameInputChanged(action.businessName)
+            HomeEvent.EditBusinessName -> handleEditBusinessName()
+            HomeEvent.SubmitBusinessName -> handleSubmitBusinessName()
+            HomeEvent.CancelBusinessNameEdit -> handleCancelBusinessNameEdit()
+        }
+    }
+
+    private fun handleCancelBusinessNameEdit() {
+        _viewState.update {
+            it.copy(
+                isShowingEditBusinessNameDialog = false
+            )
+        }
+    }
+
+    private fun handleSubmitBusinessName() {
+        viewModelScope.launch {
+            updateBusinessNameUseCase(viewState.value.inputBusinessName)
+            _viewState.update {
+                it.copy(
+                    isShowingEditBusinessNameDialog = false,
+                    businessName = getBusinessUseCase().name
+                )
+            }
+        }
+    }
+
+    private fun handleEditBusinessName() {
+        _viewState.update {
+            it.copy(
+                isShowingEditBusinessNameDialog = true
+            )
+        }
+    }
+
+    private fun handleBusinessNameInputChanged(businessName: String) {
+        _viewState.update {
+            it.copy(
+                inputBusinessName = businessName
+            )
         }
     }
 

@@ -53,4 +53,6 @@
     <string name="bluetooth_icon">Icono del dispositivo bluetooth</string>
     <string name="show_all_devices_not_only_printers">Mostrar todos los dispositivos no solo impresoras</string>
     <string name="bind_new_device_desc">¿No encuentra su impresora bluetooth?\nHaga click acá para vincular un nuevo dispositivo</string>
+    <string name="kiosk_name">Nombre del Kiosko</string>
+    <string name="kiosk">Kiosko</string>
 </resources>

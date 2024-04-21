@@ -6,6 +6,7 @@ import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
 sealed class Tag
 internal data object BusinessNameLabel: Tag()
+internal data object EditBusinessNameButton: Tag()
 internal data object OptionsList: Tag()
 internal data object CrediKioskoLabel: Tag()
 internal data object VersionLabel: Tag()
@@ -13,6 +14,7 @@ internal data object VersionLabel: Tag()
 internal val homeScreenConstraintSet = ConstraintSet {
 
     val businessNameLabel = createRefFor(BusinessNameLabel)
+    val editBusinessNameButton = createRefFor(EditBusinessNameButton)
     val optionsList = createRefFor(OptionsList)
     val versionLabel = createRefFor(VersionLabel)
     val crediKioskoLabel = createRefFor(CrediKioskoLabel)
@@ -20,9 +22,15 @@ internal val homeScreenConstraintSet = ConstraintSet {
     constrain(businessNameLabel) {
         top.linkTo(parent.top, margin = Dimens.space2x)
         start.linkTo(parent.start, margin = Dimens.space2x)
-        end.linkTo(parent.end, margin = Dimens.space2x)
-        width = Dimension.fillToConstraints
+        end.linkTo(editBusinessNameButton.start, margin = Dimens.space2x)
         height = Dimension.wrapContent
+    }
+
+    constrain(editBusinessNameButton) {
+        top.linkTo(businessNameLabel.top)
+        bottom.linkTo(businessNameLabel.bottom)
+        start.linkTo(businessNameLabel.end)
+        width = Dimension.wrapContent
     }
 
     constrain(optionsList) {

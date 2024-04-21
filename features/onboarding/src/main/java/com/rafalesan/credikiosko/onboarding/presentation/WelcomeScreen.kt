@@ -44,6 +44,7 @@ import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHand
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Teal200
 import com.rafalesan.credikiosko.onboarding.R
+import com.rafalesan.credikiosko.core.R as CoreR
 
 @Composable
 fun WelcomeScreen(
@@ -176,13 +177,13 @@ fun BusinessNameInput(
         value = businessNameText.value,
         errorStringId = businessNameError.value,
         onValueChange = onBusinessNameChanged,
-        label = { Text(text = stringResource(id = R.string.kiosk_name)) },
+        label = { Text(text = stringResource(id = CoreR.string.kiosk_name)) },
         textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
         singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Store,
-                contentDescription = stringResource(id = R.string.kiosk)
+                contentDescription = stringResource(id = CoreR.string.kiosk)
             )
         }
     )

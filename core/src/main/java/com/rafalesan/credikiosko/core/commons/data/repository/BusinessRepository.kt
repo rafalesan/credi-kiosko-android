@@ -22,4 +22,8 @@ class BusinessRepository(
         return businessLocalDataSource.existsBusiness()
     }
 
+    override suspend fun updateBusinessName(businessName: String) {
+        businessLocalDataSource.updateBusinessName(businessName)
+    }
+
 }
