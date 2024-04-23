@@ -10,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Store
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -42,7 +41,6 @@ import com.rafalesan.credikiosko.core.commons.presentation.composables.AppLogo
 import com.rafalesan.credikiosko.core.commons.presentation.composables.OutlinedTextFieldWithError
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
-import com.rafalesan.credikiosko.core.commons.presentation.theme.Teal200
 import com.rafalesan.credikiosko.onboarding.R
 import com.rafalesan.credikiosko.core.R as CoreR
 
@@ -197,7 +195,6 @@ fun ContinueButton(onContinuePressed: () -> Unit) {
             .padding(horizontal = Dimens.space2x)
             .padding(top = Dimens.space4x, bottom = Dimens.space4x)
             .height(Dimens.space6x),
-        colors = ButtonDefaults.buttonColors(containerColor = Teal200),
         onClick = onContinuePressed
     ) {
         Text(text = stringResource(id = R.string.continue_text).uppercase())
