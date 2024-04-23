@@ -1,5 +1,6 @@
 package com.rafalesan.credikiosko.products.presentation.product_form
 
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.domain.entity.Product
@@ -51,15 +52,31 @@ class ProductFormViewModel @Inject constructor(
 
     fun perform(event: ProductFormEvent) {
         when (event) {
-            is ProductFormEvent.SetProductName -> _viewState.update {
-                it.copy(productName = event.productName)
-            }
-            is ProductFormEvent.SetProductPrice -> _viewState.update {
-                it.copy(productPrice = event.productPrice)
-            }
-
+            is ProductFormEvent.SetProductName -> handleSetProductNameEvent(event.productName)
+            is ProductFormEvent.SetProductPrice -> handleSetProductPriceEvent(event.productPrice)
             ProductFormEvent.SaveProduct -> saveProduct()
             ProductFormEvent.DeleteProduct -> deleteProduct()
+        }
+    }
+
+    private fun handleSetProductNameEvent(productName: String) {
+        _viewState.update {
+            it.copy(
+                productName = productName,
+                productNameError = null
+            )
+        }
+    }
+
+    private fun handleSetProductPriceEvent(productPrice: String) {
+        if (!productPrice.isDigitsOnly()) {
+            return
+        }
+        _viewState.update {
+            it.copy(
+                productPrice = productPrice,
+                productPriceError = null
+            )
         }
     }
 
