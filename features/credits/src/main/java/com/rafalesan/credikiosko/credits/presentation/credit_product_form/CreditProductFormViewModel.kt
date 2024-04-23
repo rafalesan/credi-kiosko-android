@@ -1,5 +1,6 @@
 package com.rafalesan.credikiosko.credits.presentation.credit_product_form
 
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.rafalesan.credikiosko.core.commons.creditProductNavKey
@@ -15,7 +16,11 @@ import com.rafalesan.credikiosko.core.commons.zeroLong
 import com.rafalesan.credikiosko.credits.domain.usecase.CalculateProductLineTotalUseCase
 import com.rafalesan.credikiosko.credits.domain.usecase.ValidateCreditProductDataUseCase
 import com.rafalesan.credikiosko.credits.domain.validator.CreditProductInputsValidator
-import com.rafalesan.credikiosko.credits.domain.validator.CreditProductInputsValidator.CreditProductInputValidation.*
+import com.rafalesan.credikiosko.credits.domain.validator.CreditProductInputsValidator.CreditProductInputValidation.EMPTY_PRODUCT
+import com.rafalesan.credikiosko.credits.domain.validator.CreditProductInputsValidator.CreditProductInputValidation.EMPTY_PRODUCTS_QUANTITY
+import com.rafalesan.credikiosko.credits.domain.validator.CreditProductInputsValidator.CreditProductInputValidation.EMPTY_PRODUCT_PRICE
+import com.rafalesan.credikiosko.credits.domain.validator.CreditProductInputsValidator.CreditProductInputValidation.INVALID_PRODUCTS_QUANTITY_IS_ZERO
+import com.rafalesan.credikiosko.credits.domain.validator.CreditProductInputsValidator.CreditProductInputValidation.INVALID_PRODUCT_PRICE_IS_ZERO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -115,6 +120,9 @@ class CreditProductFormViewModel @Inject constructor(
     }
 
     private fun handleProductsQuantityChangedEvent(productsQuantity: String) {
+        if (!productsQuantity.isDigitsOnly()) {
+            return
+        }
         _viewState.update {
             it.copy(
                 productsQuantity = productsQuantity,
@@ -125,6 +133,9 @@ class CreditProductFormViewModel @Inject constructor(
     }
 
     private fun handleProductPriceChangedEvent(productPrice: String) {
+        if (!productPrice.isDigitsOnly()) {
+            return
+        }
         _viewState.update {
             it.copy(
                 productPrice = productPrice,
