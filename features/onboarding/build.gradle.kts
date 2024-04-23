@@ -32,9 +32,15 @@ android {
         kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
 
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
 }
 
 dependencies {
+
+    coreLibraryDesugaring(Android.tools.desugarJdkLibs)
 
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.lifecycle.runtime.ktx)

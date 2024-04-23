@@ -32,7 +32,10 @@ class WelcomeViewModel @Inject constructor(
     fun perform(event: WelcomeEvent) {
         when (event) {
             is WelcomeEvent.SetBusinessName -> _viewState.update {
-                it.copy(businessName = event.businessName)
+                it.copy(
+                    businessName = event.businessName,
+                    businessInputError = null
+                )
             }
             WelcomeEvent.ConfirmBusinessName -> confirmBusinessName()
             WelcomeEvent.CheckIfBusinessExists -> checkIfBusinessExists()
