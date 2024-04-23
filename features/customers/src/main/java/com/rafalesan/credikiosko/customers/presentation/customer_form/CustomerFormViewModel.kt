@@ -55,13 +55,19 @@ class CustomerFormViewModel @Inject constructor(
     fun perform(event: CustomerFormEvent) {
         when (event) {
             is CustomerFormEvent.SetCustomerName -> _viewState.update {
-                it.copy(customerName = event.customerName)
+                it.copy(
+                    customerName = event.customerName,
+                    customerNameError = null
+                )
             }
             is CustomerFormEvent.SetCustomerNickname -> _viewState.update {
                 it.copy(customerNickname = event.customerNickname)
             }
             is CustomerFormEvent.SetCustomerEmail -> _viewState.update {
-                it.copy(customerEmail = event.customerEmail)
+                it.copy(
+                    customerEmail = event.customerEmail,
+                    customerEmailError = null
+                )
             }
             CustomerFormEvent.SaveCustomer -> handleSaveCustomer()
             CustomerFormEvent.DeleteCustomer -> handleDeleteCustomer()
