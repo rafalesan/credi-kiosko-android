@@ -9,6 +9,7 @@ import com.rafalesan.credikiosko.core.bluetooth_printer.domain.usecases.RemovePr
 import com.rafalesan.credikiosko.core.commons.creditIdNavKey
 import com.rafalesan.credikiosko.core.commons.presentation.base.BaseViewModel
 import com.rafalesan.credikiosko.credits.R
+import com.rafalesan.credikiosko.credits.domain.usecase.DeleteCreditUseCase
 import com.rafalesan.credikiosko.credits.domain.usecase.FindCreditUseCase
 import com.rafalesan.credikiosko.credits.domain.usecase.PrintCreditUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,8 @@ class CreditViewerViewModel @Inject constructor(
     private val findCreditUseCase: FindCreditUseCase,
     private val printCreditUseCase: PrintCreditUseCase,
     private val isBluetoothPrinterConfiguredUseCase: IsBluetoothPrinterConfiguredUseCase,
-    private val removePrinterConfigured: RemovePrinterConfigured
+    private val removePrinterConfigured: RemovePrinterConfigured,
+    private val deleteCreditUseCase: DeleteCreditUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableStateFlow(CreditViewerState())
@@ -51,6 +53,14 @@ class CreditViewerViewModel @Inject constructor(
             CreditViewerEvent.BluetoothPermissionDenied -> handleBluetoothPermissionDeniedEvent()
             CreditViewerEvent.CancelBluetoothPermissionRequestFromSettings -> handleCancelBluetoothPermissionRequestFromSettingsEvent()
             CreditViewerEvent.RequestBluetoothPermissionFromSettings -> handleRequestBluetoothPermissionFromSettingsEvent()
+            CreditViewerEvent.DeleteCredit -> handleDeleteCreditEvent()
+        }
+    }
+
+    private fun handleDeleteCreditEvent() {
+        viewModelScope.launch {
+            deleteCreditUseCase(viewState.value.creditId)
+            _action.send(CreditViewerAction.ReturnToCreditsList)
         }
     }
 

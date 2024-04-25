@@ -14,7 +14,7 @@ interface ICreditRepository {
         creditProducts: List<CreditProduct>
     ): Long
 
-    suspend fun deleteCredit(credit: Credit)
+    suspend fun deleteCredit(creditId: Long)
 
     fun getCreditsWithCustomerAndProducts(): Flow<PagingData<CreditWithCustomerAndProducts>>
 

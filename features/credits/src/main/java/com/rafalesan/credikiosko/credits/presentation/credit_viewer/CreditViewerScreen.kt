@@ -45,6 +45,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -59,6 +60,7 @@ import com.rafalesan.credikiosko.core.bluetooth_printer.presentation.BluetoothPr
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.emptyString
 import com.rafalesan.credikiosko.core.commons.presentation.composables.CommonDialog
+import com.rafalesan.credikiosko.core.commons.presentation.composables.DeleteButton
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetweenTextUI
 import com.rafalesan.credikiosko.core.commons.presentation.composables.LoadingDialog
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
@@ -95,11 +97,15 @@ fun CreditViewerScreen(
         },
         onRequestBluetoothPermissionFromSettings = {
             viewModel.perform(CreditViewerEvent.RequestBluetoothPermissionFromSettings)
+        },
+        onDeleteCreditPressed = {
+            viewModel.perform(CreditViewerEvent.DeleteCredit)
         }
     )
 
     ActionHandler(
-        viewModel = viewModel
+        viewModel = viewModel,
+        navController = navController
     )
 
     ToastHandlerComposable(viewModel = viewModel)
@@ -129,7 +135,8 @@ fun CreditViewerUI(
     onStartPrinterConfiguration: () -> Unit = {},
     onDismissPrintersConfiguration: (Boolean) -> Unit = {},
     onCancelBluetoothPermissionRequestFromSettings: () -> Unit = {},
-    onRequestBluetoothPermissionFromSettings: () -> Unit = {}
+    onRequestBluetoothPermissionFromSettings: () -> Unit = {},
+    onDeleteCreditPressed: () -> Unit = {}
 ) {
 
     val printLoadingTextId by remember {
@@ -308,6 +315,7 @@ fun CreditViewerUI(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(bottom = Dimens.space10x)
         ) {
 
@@ -336,40 +344,53 @@ fun CreditViewerUI(
             }
 
             item {
-                OutlinedCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Dimens.space2x)
-                        .padding(bottom = Dimens.spaceDefault, top = Dimens.spaceDefault)
-                ) {
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = Dimens.spaceDefault,
-                                vertical = Dimens.spaceDefault
-                            ),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Black,
-                            textAlign = TextAlign.End,
-                            text = stringResource(id = R.string.total)
-                        )
-
-                        Text(
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Black,
-                            textAlign = TextAlign.End,
-                            text = stringResource(id = R.string.cordoba_symbol_x, creditTotal)
-                        )
-                    }
-
-                }
+                TotalCard(creditTotal)
             }
 
+            item {
+                DeleteButton(
+                    onDeletePressed = onDeleteCreditPressed
+                )
+            }
+
+        }
+
+    }
+}
+
+@Composable
+fun TotalCard(
+    creditTotal: String
+) {
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Dimens.space2x)
+            .padding(bottom = Dimens.spaceDefault, top = Dimens.spaceDefault)
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = Dimens.spaceDefault,
+                    vertical = Dimens.spaceDefault
+                ),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Black,
+                textAlign = TextAlign.End,
+                text = stringResource(id = R.string.total)
+            )
+
+            Text(
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Black,
+                textAlign = TextAlign.End,
+                text = stringResource(id = R.string.cordoba_symbol_x, creditTotal)
+            )
         }
 
     }
@@ -485,7 +506,8 @@ fun CreditViewerHeader(
 
 @Composable
 private fun ActionHandler(
-    viewModel: CreditViewerViewModel
+    viewModel: CreditViewerViewModel,
+    navController: NavHostController
 ) {
 
     val context = LocalContext.current
@@ -531,6 +553,9 @@ private fun ActionHandler(
                 }
                 CreditViewerAction.OpenAppPermissionsSettings -> {
                     openAppSettings(context)
+                }
+                CreditViewerAction.ReturnToCreditsList -> {
+                    navController.navigateUp()
                 }
             }
         }

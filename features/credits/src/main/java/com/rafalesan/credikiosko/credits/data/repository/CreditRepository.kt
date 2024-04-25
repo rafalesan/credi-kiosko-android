@@ -1,6 +1,5 @@
 package com.rafalesan.credikiosko.credits.data.repository
 
-import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -28,7 +27,6 @@ import kotlinx.coroutines.flow.map
 import com.rafalesan.credikiosko.core.R as CoreR
 
 class CreditRepository(
-    private val context: Context,
     private val creditLocalDataSource: CreditLocalDataSource,
     private val businessLocalDataSource: BusinessLocalDataSource,
     private val thermalPrinterDataSource: ThermalPrinterDataSource
@@ -54,8 +52,9 @@ class CreditRepository(
         return savedCreditId
     }
 
-    override suspend fun deleteCredit(credit: Credit) {
-        creditLocalDataSource.deleteCredit(credit.toCreditEntity())
+    override suspend fun deleteCredit(creditId: Long) {
+        val creditToDelete = creditLocalDataSource.findCredit(creditId)
+        creditLocalDataSource.deleteCredit(creditToDelete.credit)
     }
 
     override fun getCreditsWithCustomerAndProducts(): Flow<PagingData<CreditWithCustomerAndProducts>> {

@@ -1,6 +1,5 @@
 package com.rafalesan.credikiosko.credits.di
 
-import android.content.Context
 import com.rafalesan.credikiosko.core.bluetooth_printer.data.datasource.ThermalPrinterDataSource
 import com.rafalesan.credikiosko.core.commons.data.datasource.local.BusinessLocalDataSource
 import com.rafalesan.credikiosko.credits.data.datasource.CreditLocalDataSource
@@ -9,7 +8,6 @@ import com.rafalesan.credikiosko.credits.domain.repository.ICreditRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -20,13 +18,11 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideCreditRepository(
-        @ApplicationContext context: Context,
         creditLocalDataSource: CreditLocalDataSource,
         businessLocalDataSource: BusinessLocalDataSource,
         thermalPrinterDataSource: ThermalPrinterDataSource,
     ): ICreditRepository {
         return CreditRepository(
-            context,
             creditLocalDataSource,
             businessLocalDataSource,
             thermalPrinterDataSource

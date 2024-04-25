@@ -10,4 +10,5 @@ sealed class CreditViewerEvent {
     data object BluetoothPermissionDenied : CreditViewerEvent()
     data object CancelBluetoothPermissionRequestFromSettings : CreditViewerEvent()
     data object RequestBluetoothPermissionFromSettings : CreditViewerEvent()
+    data object DeleteCredit : CreditViewerEvent()
 }

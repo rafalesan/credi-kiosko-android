@@ -45,7 +45,8 @@ fun OutlinedTextFieldClickable(
         ),
         errorStringId = errorStringId,
         trailingIcon = trailingIcon,
-        onValueChange = {}
+        onValueChange = {},
+        readOnly = true
     )
 
 }
