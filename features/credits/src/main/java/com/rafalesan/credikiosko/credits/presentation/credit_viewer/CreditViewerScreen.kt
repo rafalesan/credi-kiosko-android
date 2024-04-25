@@ -34,7 +34,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -59,15 +58,18 @@ import androidx.navigation.NavHostController
 import com.rafalesan.credikiosko.core.bluetooth_printer.presentation.BluetoothPrinterConfigBottomSheet
 import com.rafalesan.credikiosko.core.commons.domain.entity.CreditProduct
 import com.rafalesan.credikiosko.core.commons.emptyString
-import com.rafalesan.credikiosko.core.commons.presentation.composables.CommonDialog
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DeleteButton
 import com.rafalesan.credikiosko.core.commons.presentation.composables.DotBetweenTextUI
-import com.rafalesan.credikiosko.core.commons.presentation.composables.LoadingDialog
 import com.rafalesan.credikiosko.core.commons.presentation.composables.ToastHandlerComposable
 import com.rafalesan.credikiosko.core.commons.presentation.theme.CrediKioskoTheme
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 import com.rafalesan.credikiosko.core.commons.presentation.utils.DateFormatUtil
 import com.rafalesan.credikiosko.credits.R
+import com.rafalesan.credikiosko.credits.presentation.credit_viewer.composables.BluetoothPermissionDeniedMessageDialog
+import com.rafalesan.credikiosko.credits.presentation.credit_viewer.composables.PrinterConnectionErrorDialog
+import com.rafalesan.credikiosko.credits.presentation.credit_viewer.composables.PrinterNotConfiguredMessageDialog
+import com.rafalesan.credikiosko.credits.presentation.credit_viewer.composables.PrinterThatConnectionFailedDialog
+import com.rafalesan.credikiosko.credits.presentation.credit_viewer.composables.PrintingLoadingDialog
 import timber.log.Timber
 import com.rafalesan.credikiosko.core.R as CoreR
 
@@ -139,129 +141,32 @@ fun CreditViewerUI(
     onDeleteCreditPressed: () -> Unit = {}
 ) {
 
-    val printLoadingTextId by remember {
-        derivedStateOf {
-            viewState.value.printLoadingStringResId
-        }
-    }
+    PrintingLoadingDialog(viewState = viewState)
 
-    val printerConnectionError by remember {
-        derivedStateOf {
-            viewState.value.printerConnectionError
-        }
-    }
+    PrinterConnectionErrorDialog(
+        viewState = viewState,
+        onCancelPrintingRetry = onCancelPrintingRetry,
+        onRetryPrinting = onRetryPrinting
+    )
 
-    val isShowingPrinterNotConfiguredMessage by remember {
-        derivedStateOf {
-            viewState.value.isShowingPrinterNotConfiguredMessage
-        }
-    }
+    PrinterNotConfiguredMessageDialog(
+        viewState = viewState,
+        onCancelPrinterConfiguration = onCancelPrinterConfiguration,
+        onStartPrinterConfiguration = onStartPrinterConfiguration
+    )
 
-    val isShowingPrintersConfiguration by remember {
-        derivedStateOf {
-            viewState.value.isShowingPrinterConfiguration
-        }
-    }
+    PrinterThatConnectionFailedDialog(
+        viewState = viewState,
+        onCancelPrintingRetry = onCancelPrintingRetry,
+        onStartPrinterConfiguration = onStartPrinterConfiguration,
+        onRetryPrinting = onRetryPrinting
+    )
 
-    val printerThatConnectionFailed by remember {
-        derivedStateOf {
-            viewState.value.printerThatConnectionFailed
-        }
-    }
-
-    printLoadingTextId?.let {
-        Timber.d("printLoadingText: ${stringResource(id = it)}")
-        LoadingDialog(loadingText = stringResource(id = it))
-    }
-
-    printerConnectionError?.let { connectionErrorStringId ->
-
-        CommonDialog(
-            title = stringResource(id = R.string.connection_error),
-            descriptionMessage = stringResource(id = connectionErrorStringId),
-            negativeButton = {
-                TextButton(onClick = onCancelPrintingRetry) {
-                    Text(text = stringResource(id = CoreR.string.cancel))
-                }
-            },
-            positiveButton = {
-                TextButton(onClick = onRetryPrinting) {
-                    Text(text = stringResource(id = R.string.retry))
-                }
-            }
-        )
-
-    }
-
-    printerThatConnectionFailed?.let { printerConnectionFailed ->
-
-        val message = stringResource(
-            id = R.string.unable_to_connect_to_printer_x,
-            printerConnectionFailed
-        )
-
-        CommonDialog(
-            title = stringResource(id = R.string.connection_error),
-            descriptionMessage = message,
-            negativeButton = {
-                TextButton(onClick = onCancelPrintingRetry) {
-                    Text(text = stringResource(id = CoreR.string.cancel))
-                }
-            },
-            neutralButton = {
-                TextButton(onClick = onStartPrinterConfiguration) {
-                    Text(text = stringResource(id = R.string.configure_new_printer))
-                }
-            },
-            positiveButton = {
-                TextButton(onClick = onRetryPrinting) {
-                    Text(text = stringResource(id = R.string.retry))
-                }
-            }
-        )
-    }
-
-    if (isShowingPrinterNotConfiguredMessage) {
-
-        CommonDialog(
-            title = stringResource(id = R.string.printer_not_configured),
-            descriptionMessage = stringResource(id = R.string.printer_not_configured_desc),
-            negativeButton = {
-                TextButton(onClick = onCancelPrinterConfiguration) {
-                    Text(text = stringResource(id = CoreR.string.cancel))
-                }
-            },
-            positiveButton = {
-                TextButton(onClick = onStartPrinterConfiguration) {
-                    Text(text = stringResource(id = R.string.configure))
-                }
-            }
-        )
-
-    }
-
-    val isShowingBluetoothPermissionDeniedMessage by remember {
-        derivedStateOf {
-            viewState.value.isShowingBluetoothPermissionDeniedMessage
-        }
-    }
-
-    if (isShowingBluetoothPermissionDeniedMessage) {
-        CommonDialog(
-            title = stringResource(id = R.string.bluetooth_permission_denied),
-            descriptionMessage = stringResource(id = R.string.bluetooth_permission_denied_desc),
-            negativeButton = {
-                TextButton(onClick = onCancelBluetoothPermissionRequestFromSettings) {
-                    Text(text = stringResource(id = CoreR.string.cancel))
-                }
-            },
-            positiveButton = {
-                TextButton(onClick = onRequestBluetoothPermissionFromSettings) {
-                    Text(text = stringResource(id = R.string.go_to_settings))
-                }
-            }
-        )
-    }
+    BluetoothPermissionDeniedMessageDialog(
+        viewState = viewState,
+        onCancelBluetoothPermissionRequestFromSettings = onCancelBluetoothPermissionRequestFromSettings,
+        onRequestBluetoothPermissionFromSettings = onRequestBluetoothPermissionFromSettings
+    )
 
     Scaffold(
         topBar = {
@@ -302,6 +207,12 @@ fun CreditViewerUI(
         val creditTotal by remember {
             derivedStateOf {
                 viewState.value.creditTotal ?: emptyString
+            }
+        }
+
+        val isShowingPrintersConfiguration by remember {
+            derivedStateOf {
+                viewState.value.isShowingPrinterConfiguration
             }
         }
 

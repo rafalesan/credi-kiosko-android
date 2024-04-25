@@ -2,11 +2,10 @@ package com.rafalesan.credikiosko.core.commons.presentation.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,6 +19,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.rafalesan.credikiosko.core.commons.presentation.theme.Dimens
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CommonDialog(
     title: String,
@@ -64,18 +64,14 @@ fun CommonDialog(
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                 )
-                Row(
+                FlowRow(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(Dimens.spaceDefault),
                     horizontalArrangement = Arrangement.End,
                 ) {
                     negativeButton?.invoke()
-                    Spacer(modifier = Modifier.width(Dimens.space12units))
-                    neutralButton?.let {
-                        neutralButton.invoke()
-                        Spacer(modifier = Modifier.width(Dimens.space12units))
-                    }
+                    neutralButton?.invoke()
                     positiveButton()
                 }
             }
