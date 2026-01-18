@@ -29,7 +29,7 @@ fun BaseExtension.baseConfig() {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "17"
         }
     }
 }
