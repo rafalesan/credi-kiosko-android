@@ -17,3 +17,6 @@ local.properties
 /release_keystore.properties
 /.idea/shelf/Changes.xml
 /.idea/shelf/Changes/shelved.patch
+
+.ci/
+app/google-services.json
