@@ -1,0 +1,4 @@
+{
+  "name": "Credi Kiosko Android",
+  "install": "./scripts/cloud-agent-install.sh"
+}
