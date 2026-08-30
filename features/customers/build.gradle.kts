@@ -9,7 +9,6 @@ plugins {
 
 android {
     namespace = "com.rafalesan.credikiosko.customers"
-    compileSdk = 34
 
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
