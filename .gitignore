@@ -17,6 +17,8 @@ local.properties
 /release_keystore.properties
 /.idea/shelf/Changes.xml
 /.idea/shelf/Changes/shelved.patch
+/.idea/copilot.data.migration.agent.xml
+/.idea/git_toolbox_prj.xml
 
 .ci/
 app/google-services.json
