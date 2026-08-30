@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "agent-device": {
+      "command": "/Users/rafalesan/.nvm/versions/node/v22.23.2/bin/agent-device",
+      "args": ["mcp"]
+    }
+  }
+}
